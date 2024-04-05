@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.1](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.1.0...v1.1.1) (2024-04-05)
+
+
+### Features
+
+* **components:** add components example to runtime ([269b18b](https://github.com/toantranmei/mei-nuxt3-ui/commit/269b18b43be785184e821c8572662c54cdc16cf9))
+
+
+### Bug Fixes
+
+* **plugins:** change type-check by vue-tsc with components ([d60a927](https://github.com/toantranmei/mei-nuxt3-ui/commit/d60a927abcf124af9df2b78eda60083d49db63a8))
+
 ## [1.1.0](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.0.3...v1.1.0) (2024-04-05)
 
 ## [1.0.3](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.0.2...v1.0.3) (2024-04-05)
