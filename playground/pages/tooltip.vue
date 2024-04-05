@@ -5,7 +5,9 @@
       text="Tooltip example"
       :shortcuts="['⌘', 'O']"
     >
-      <button>aaa</button>
+      <mei-button color="gray">
+        aaa
+      </mei-button>
     </mei-tooltip>
   </div>
 </template>
