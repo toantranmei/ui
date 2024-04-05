@@ -17,7 +17,7 @@ body:
         - Nuxt Version:     `3.7.3`
         - CLI Version:      `3.8.4`
         - Nitro Version:    `2.6.3`
-        - Package Manager:  `pnpm@8.7.4`
+        - Package Manager:  `npm@8.7.4`
         - Builder:          `-`
         - User Config:      `-`
         - Runtime Modules:  `-`

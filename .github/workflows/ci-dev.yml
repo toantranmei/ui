@@ -29,53 +29,23 @@ jobs:
       - name: checkout
         uses: actions/checkout@master
 
-      - uses: pnpm/action-setup@v2
-        name: Install pnpm
-        id: pnpm-install
-        with:
-          version: 8
-          run_install: false
-
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
-
-      - uses: actions/cache@v4
-        name: Setup pnpm cache
-        with:
-          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-
-      - uses: dorny/paths-filter@v3
-        id: changes
-        with:
-          filters: |
-            src:
-              - 'src/**'
-              - 'package.json'
-              - 'pnpm-lock.yaml'
-
       - name: Install dependencies
-        run: pnpm install
+        run: npm install
 
       - name: Prepare
-        run: pnpm run dev:prepare
+        run: npm run dev:prepare
 
       - name: Lint
-        run: pnpm run lint
+        run: npm run lint
 
       - name: Typecheck
-        run: pnpm run typecheck
+        run: npm run typecheck
 
       - name: Build
-        run: pnpm run prepack
+        run: npm run prepack
 
       - name: Test
-        run: pnpm run test
+        run: npm run test
 
       - name: Release Edge
         if: github.event_name == 'push' && steps.changes.outputs.src == 'true'

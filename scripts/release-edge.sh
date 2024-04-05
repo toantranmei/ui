@@ -4,7 +4,7 @@
 git restore -s@ -SW  -- .
 
 # Bump versions to edge
-pnpm jiti ./scripts/bump-edge
+npx jiti ./scripts/bump-edge
 
 # Update token
 if [[ ! -z ${NODE_AUTH_TOKEN} ]] ; then
