@@ -10,3 +10,5 @@ export { default as kbd } from "./kbd";
 export { default as dropdown } from "./dropdown";
 export { default as avatar } from "./avatar";
 export { default as modal } from "./modal";
+export { default as card } from "./card";
+
