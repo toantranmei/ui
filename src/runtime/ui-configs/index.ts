@@ -12,3 +12,5 @@ export { default as avatar } from "./avatar";
 export { default as modal } from "./modal";
 export { default as card } from "./card";
 export { default as input } from "./input";
+export { default as card } from "./card";
+
