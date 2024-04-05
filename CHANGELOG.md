@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.3](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.0.2...v1.0.3) (2024-04-05)
+
+
+### Bug Fixes
+
+* **git:** add permission read script files before release process ([ba036f4](https://github.com/toantranmei/mei-nuxt3-ui/commit/ba036f4d5a9557fa392bf0bfbf968dd8e43f9b99))
+
 ## [1.0.2](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.0.1...v1.0.2) (2024-04-05)
 
 
