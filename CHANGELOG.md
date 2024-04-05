@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.2](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.1.1...v1.1.2) (2024-04-05)
+
+
+### Bug Fixes
+
+* **app:** declare @nuxt/schema with custom key module ([c2db499](https://github.com/toantranmei/mei-nuxt3-ui/commit/c2db499a2649d893718814e9bc0a3f0e93595d9d))
+
 ## [1.1.1](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.1.0...v1.1.1) (2024-04-05)
 
 
