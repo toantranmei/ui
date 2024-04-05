@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.1.6](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.1.5...v1.1.6) (2024-04-05)
+
+
+### Features
+
+* **components:** add atom component modal ([e1b4563](https://github.com/toantranmei/mei-nuxt3-ui/commit/e1b45636e0808aaccc738ba711582f44598c51ae))
+* **components:** make alert atom component ui ([a71a95f](https://github.com/toantranmei/mei-nuxt3-ui/commit/a71a95fac49a00e50367c24a249e24cac5398e61))
+* **components:** make card atom component ui ([f68801f](https://github.com/toantranmei/mei-nuxt3-ui/commit/f68801f5eacfae23ea92edc0faebbb5f17a341bb))
+* **components:** make card atom component ui ([20d19ac](https://github.com/toantranmei/mei-nuxt3-ui/commit/20d19ac1b987d42f69c0a0236346385687ed07ad))
+* **components:** make input atom component ui ([24942f7](https://github.com/toantranmei/mei-nuxt3-ui/commit/24942f7ac235b649e0457e5af5afbb73d571ac31))
+* **components:** make input atom component ui ([1bfcbb4](https://github.com/toantranmei/mei-nuxt3-ui/commit/1bfcbb47d95de173d179b2ce47834f8b0d6ad9d2))
+
+
+### Bug Fixes
+
+* **app:** add ignore for defineAppConfig in app config playground ([00c5d02](https://github.com/toantranmei/mei-nuxt3-ui/commit/00c5d02d5bf7b3013ccdf4ecc4c8f5f52b07ffbe))
+* **git:** resolve conflict ([06d8336](https://github.com/toantranmei/mei-nuxt3-ui/commit/06d8336e97c26183223fad7208918e2e9ebfd977))
+* **modules:** add gray scheme color to module ([2ee8e11](https://github.com/toantranmei/mei-nuxt3-ui/commit/2ee8e118a1286af78badaa88f425f8002dab3b19))
+* **modules:** add ui-configs to modules ([ba850ca](https://github.com/toantranmei/mei-nuxt3-ui/commit/ba850ca1aa21fc85e83bc912d9d8bc20596721d0))
+
 ## [1.1.5](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.1.3...v1.1.5) (2024-04-05)
 
 
