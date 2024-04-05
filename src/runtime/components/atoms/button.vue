@@ -62,8 +62,8 @@ import appConfig from "#build/app.config";
 import { button } from "#mei-ui/ui-configs";
 
 const config = mergeConfig<typeof button>(
-  appConfig.ui.strategy,
-  appConfig.ui.button,
+  appConfig.meiUI.strategy,
+  appConfig.meiUI.button,
   button,
 );
 
@@ -110,7 +110,7 @@ export default defineComponent({
       type: String as PropType<ButtonColor>,
       default: () => config.default.color,
       validator(value: string) {
-        return [...appConfig.ui.colors, ...Object.keys(config.color)].includes(
+        return [...appConfig.meiUI.colors, ...Object.keys(config.color)].includes(
           value,
         );
       },
