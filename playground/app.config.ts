@@ -1,6 +1,6 @@
 export default defineAppConfig({
   meiUI: {
-    primary: "green",
+    primary: "purple",
     gray: "cool",
   },
 });

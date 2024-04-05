@@ -8,7 +8,7 @@ import { name } from "../../../package.json";
 export default defineNuxtPlugin(() => {
   const appConfig = useAppConfig();
   const nuxtApp = useNuxtApp();
-  const colors = tailwindConfig.theme.colors
+  const colors = tailwindConfig.theme.colors;
   const root = computed(() => {
     const primary: Record<string, string> | undefined =
       colors[appConfig.meiUI.primary];
@@ -34,9 +34,17 @@ export default defineNuxtPlugin(() => {
         .join("\n")}
       --color-primary-DEFAULT: var(--color-primary-500);
 
+      ${Object.entries(gray || colors.cool)
+        .map(
+          ([key, value]) => `--color-gray-${key}: ${hexToRgb(value as string)};`
+        )
+        .join("\n")}
+      }
+
       .dark {
         --color-primary-DEFAULT: var(--color-primary-400);
-    }`;
+      }
+    `;
   });
 
   // Head
