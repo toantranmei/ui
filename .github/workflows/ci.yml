@@ -48,6 +48,8 @@ jobs:
 
       - name: Release
         if: github.event_name == 'push' && steps.check.outputs.changed == 'true'
-        run: ./scripts/release.sh
+        run: |
+          git update-index --chmod=+x ./scripts/release.sh
+          ./scripts/release.sh
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
