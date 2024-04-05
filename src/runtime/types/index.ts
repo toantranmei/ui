@@ -8,3 +8,4 @@ export * from "./popper";
 export * from "./kbd";
 export * from "./dropdown";
 export * from "./avatar";
+export * from "./input";
