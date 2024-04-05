@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.3](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.1.2...v1.1.3) (2024-04-05)
+
+
+### Bug Fixes
+
+* **vitest:** change test-case to directly module ([b87b337](https://github.com/toantranmei/mei-nuxt3-ui/commit/b87b337da38aff7c5dec4219fcce723a3ecf5f08))
+
 ## [1.1.2](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.1.1...v1.1.2) (2024-04-05)
 
 
