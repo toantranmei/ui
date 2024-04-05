@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.0.1...v1.0.2) (2024-04-05)
+
+
+### Bug Fixes
+
+* **git:** add permission for file execute release.sh ([7f33002](https://github.com/toantranmei/mei-nuxt3-ui/commit/7f3300225af03be7c0e90cbec0c2758b6b1f912e))
+
 ## 1.0.1 (2024-04-05)
 
 
