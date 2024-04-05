@@ -47,14 +47,6 @@ type UI = {
   [key: string]: any;
 } & DeepPartial<typeof config>;
 
-declare module "nuxt/schema" {
-  interface AppConfigInput {
-    meiUI?: UI;
-  }
-  interface AppConfig {
-    meiUI?: UI;
-  }
-}
 declare module "@nuxt/schema" {
   interface AppConfigInput {
     meiUI?: UI;
