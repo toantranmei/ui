@@ -1,3 +1,4 @@
+// @ts-ignore
 export default defineAppConfig({
   meiUI: {
     primary: "purple",
