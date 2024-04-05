@@ -3,6 +3,7 @@ import logger from "consola";
 import { hexToRgb } from "../utils";
 import { defineNuxtPlugin, useAppConfig, useNuxtApp, useHead } from "#imports";
 import colors from "#tailwind-config/index.mjs";
+import { name } from "../../../package.json";
 
 export default defineNuxtPlugin(() => {
   const appConfig = useAppConfig();
@@ -10,20 +11,18 @@ export default defineNuxtPlugin(() => {
 
   const root = computed(() => {
     const primary: Record<string, string> | undefined =
-      // @ts-ignore
       colors[appConfig.meiUI.primary];
     const gray: Record<string, string> | undefined =
-      // @ts-ignore
       colors[appConfig.meiUI.gray];
 
     if (!primary) {
       logger.warn(
-        `[@mei-ui] Primary color '${appConfig.meiUI?.primary}' not found in Tailwind config`
+        `[${name}] Primary color '${appConfig.meiUI?.primary}' not found in Tailwind config`
       );
     }
     if (!gray) {
       logger.warn(
-        `[@mei-ui] Gray color '${appConfig.meiUI?.gray}' not found in Tailwind config`
+        `[${name}] Gray color '${appConfig.meiUI?.gray}' not found in Tailwind config`
       );
     }
 
