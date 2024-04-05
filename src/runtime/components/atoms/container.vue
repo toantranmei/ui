@@ -19,9 +19,9 @@ import appConfig from "#build/app.config.mjs";
 import { container } from "#mei-ui/ui-configs";
 
 const config = mergeConfig<typeof container>(
-  appConfig.meiUI.strategy,
+  appConfig.meiUI.strategy as Strategy,
   appConfig.meiUI.container,
-  container,
+  container
 );
 
 export default defineComponent({
@@ -48,7 +48,7 @@ export default defineComponent({
     const containerClass = computed(() => {
       return twMerge(
         twJoin(ui.value.base, ui.value.padding, ui.value.constrained),
-        props.class,
+        props.class
       );
     });
 

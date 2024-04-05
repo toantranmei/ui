@@ -28,7 +28,7 @@ export default defineComponent({
     const appConfig = useAppConfig();
 
     const dynamicComputed = computed(
-      () => props.dynamic || appConfig.meiUI?.icons?.dynamic,
+      () => props.dynamic || appConfig.meiUI?.icons?.dynamic
     );
 
     return {

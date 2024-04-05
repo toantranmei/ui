@@ -3,6 +3,7 @@
     "changelogen",
     "commitlint",
     "composables",
+    "consola",
     "conventionalcommits",
     "defu",
     "headlessui",
