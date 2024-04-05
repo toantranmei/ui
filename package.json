@@ -32,7 +32,8 @@
     "release": "release-it",
     "prepare": "husky",
     "commit": "./node_modules/cz-customizable/standalone.js",
-    "prepare:commit": "lint-staged"
+    "prepare:commit": "lint-staged",
+    "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {
     "@egoist/tailwindcss-icons": "^1.7.4",
@@ -75,7 +76,8 @@
     "nuxt": "^3.11.1",
     "release-it": "^17.1.1",
     "typescript": "^5.4.4",
-    "vitest": "^1.4.0"
+    "vitest": "^1.4.0",
+    "vue-tsc": "^2.0.10"
   },
   "config": {
     "cz-customizable": {
