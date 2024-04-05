@@ -48,7 +48,7 @@ jobs:
         run: npm run test
 
       - name: Release Edge
-        if: github.event_name == 'push' && steps.changes.outputs.src == 'true'
+        if: github.event_name == 'push' && steps.check.outputs.changed == 'true'
         run: ./scripts/release-edge.sh
         env:
           NODE_AUTH_TOKEN: ${{secrets.NODE_AUTH_TOKEN}}
