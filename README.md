@@ -2,22 +2,22 @@
 Get your module up and running quickly.
 
 Find and replace all on all files (CMD+SHIFT+F):
-- Name: My Module
-- Package name: my-module
-- Description: My new Nuxt module
+- Name: Mei Nuxt3 UI Module
+- Package name: @toantranmei/mei-nuxt3-ui
+- Description: About A UI Library for Modern Web Apps, powered by Vue & Tailwind CSS
 -->
 
-# My Module
+# Mei Nuxt3 UI Module
 
 [![npm version][npm-version-src]][npm-version-href]
 [![npm downloads][npm-downloads-src]][npm-downloads-href]
 [![License][license-src]][license-href]
 [![Nuxt][nuxt-src]][nuxt-href]
 
-My new Nuxt module for doing amazing things.
+About A UI Library for Modern Web Apps, powered by Vue & Tailwind CSS for doing amazing things.
 
 - [✨ &nbsp;Release Notes](/CHANGELOG.md)
-<!-- - [🏀 Online playground](https://stackblitz.com/github/your-org/my-module?file=playground%2Fapp.vue) -->
+<!-- - [🏀 Online playground](https://stackblitz.com/github/your-org/@toantranmei/mei-nuxt3-ui?file=playground%2Fapp.vue) -->
 <!-- - [📖 &nbsp;Documentation](https://example.com) -->
 
 ## Features
@@ -32,10 +32,10 @@ My new Nuxt module for doing amazing things.
 Install the module to your Nuxt application with one command:
 
 ```bash
-npx nuxi module add my-module
+npx nuxi module add @toantranmei/mei-nuxt3-ui
 ```
 
-That's it! You can now use My Module in your Nuxt app ✨
+That's it! You can now use Mei Nuxt3 UI Module in your Nuxt app ✨
 
 
 ## Contribution
@@ -71,14 +71,14 @@ That's it! You can now use My Module in your Nuxt app ✨
 
 
 <!-- Badges -->
-[npm-version-src]: https://img.shields.io/npm/v/my-module/latest.svg?style=flat&colorA=020420&colorB=00DC82
-[npm-version-href]: https://npmjs.com/package/my-module
+[npm-version-src]: https://img.shields.io/npm/v/@toantranmei/mei-nuxt3-ui/latest.svg?style=flat&colorA=020420&colorB=00DC82
+[npm-version-href]: https://npmjs.com/package/@toantranmei/mei-nuxt3-ui
 
-[npm-downloads-src]: https://img.shields.io/npm/dm/my-module.svg?style=flat&colorA=020420&colorB=00DC82
-[npm-downloads-href]: https://npmjs.com/package/my-module
+[npm-downloads-src]: https://img.shields.io/npm/dm/@toantranmei/mei-nuxt3-ui.svg?style=flat&colorA=020420&colorB=00DC82
+[npm-downloads-href]: https://npmjs.com/package/@toantranmei/mei-nuxt3-ui
 
-[license-src]: https://img.shields.io/npm/l/my-module.svg?style=flat&colorA=020420&colorB=00DC82
-[license-href]: https://npmjs.com/package/my-module
+[license-src]: https://img.shields.io/npm/l/@toantranmei/mei-nuxt3-ui.svg?style=flat&colorA=020420&colorB=00DC82
+[license-href]: https://npmjs.com/package/@toantranmei/mei-nuxt3-ui
 
 [nuxt-src]: https://img.shields.io/badge/Nuxt-020420?logo=nuxt.js
 [nuxt-href]: https://nuxt.com

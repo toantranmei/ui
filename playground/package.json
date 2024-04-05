@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "my-module-playground",
+  "name": "@toantranmei/mei-nuxt3-ui-playground",
   "type": "module",
   "scripts": {
     "dev": "nuxi dev",
