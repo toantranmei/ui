@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.5](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.1.3...v1.1.5) (2024-04-05)
+
+
+### Features
+
+* **components:** add common atom component ui ([ccbaff0](https://github.com/toantranmei/mei-nuxt3-ui/commit/ccbaff02ad4dc02c46308215198d545ba53600fc))
+
+
+### Bug Fixes
+
+* **components:** fix undefined from colors of tailwindcss ([89b132c](https://github.com/toantranmei/mei-nuxt3-ui/commit/89b132cad07a7165310b0e9d0961ffcc24f97d24))
+
 ## [1.1.3](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.1.2...v1.1.3) (2024-04-05)
 
 
