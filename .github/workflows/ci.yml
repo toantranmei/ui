@@ -56,10 +56,10 @@ jobs:
         run: pnpm run typecheck
 
       - name: Build
-        run: pnpm run build
+        run: pnpm run prepack
 
       - name: Test
-        run: pnpm run test run
+        run: pnpm run test
 
       - name: Version Check
         id: check
