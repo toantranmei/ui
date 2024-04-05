@@ -2,13 +2,13 @@ import { computed } from "vue";
 import logger from "consola";
 import { hexToRgb } from "../utils";
 import { defineNuxtPlugin, useAppConfig, useNuxtApp, useHead } from "#imports";
-import colors from "#tailwind-config/index.mjs";
+import tailwindConfig from "#tailwind-config/index.mjs";
 import { name } from "../../../package.json";
 
 export default defineNuxtPlugin(() => {
   const appConfig = useAppConfig();
   const nuxtApp = useNuxtApp();
-
+  const colors = tailwindConfig.theme.colors
   const root = computed(() => {
     const primary: Record<string, string> | undefined =
       colors[appConfig.meiUI.primary];
@@ -25,7 +25,6 @@ export default defineNuxtPlugin(() => {
         `[${name}] Gray color '${appConfig.meiUI?.gray}' not found in Tailwind config`
       );
     }
-
     return `:root {
       ${Object.entries(primary || colors.green)
         .map(
