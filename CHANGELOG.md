@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.8](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.1.7...v1.1.8) (2024-04-06)
+
+
+### Features
+
+* **components:** add divider, text, box to atom components ([93cb8d9](https://github.com/toantranmei/mei-nuxt3-ui/commit/93cb8d95aad389593ed52eba5904bb54fb704744))
+
 ## [1.1.7](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.1.6...v1.1.7) (2024-04-06)
 
 ## [1.1.6](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.1.5...v1.1.6) (2024-04-05)
