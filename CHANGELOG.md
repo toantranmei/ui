@@ -1,5 +1,7 @@
 # Changelog
 
+## [1.1.7](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.1.6...v1.1.7) (2024-04-06)
+
 ## [1.1.6](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.1.5...v1.1.6) (2024-04-05)
 
 
