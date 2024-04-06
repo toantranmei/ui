@@ -10,3 +10,4 @@ export * from "./dropdown";
 export * from "./avatar";
 export * from "./input";
 export * from "./alert";
+export * from "./divider";
