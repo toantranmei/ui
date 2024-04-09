@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.9](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.1.8...v1.1.9) (2024-04-09)
+
+
+### Bug Fixes
+
+* **skeleton:** add display text to ignore errot to other app ([bf6a4f3](https://github.com/toantranmei/mei-nuxt3-ui/commit/bf6a4f386a8726ea190b110bb22c71acabeaebae))
+
 ## [1.1.8](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.1.7...v1.1.8) (2024-04-06)
 
 
