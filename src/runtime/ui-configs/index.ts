@@ -14,3 +14,4 @@ export { default as card } from "./card";
 export { default as input } from "./input";
 export { default as alert } from "./alert";
 export { default as divider } from "./divider";
+export { default as tabs } from "./tabs";

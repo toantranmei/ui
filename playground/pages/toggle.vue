@@ -8,5 +8,5 @@
 </template>
 
 <script setup lang="ts">
-const selected = ref(false)
+const selected = ref(false);
 </script>
