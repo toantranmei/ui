@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.10](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.1.9...v1.1.10) (2024-04-14)
+
+
+### Features
+
+* **components:** add badge atom component ([280929c](https://github.com/toantranmei/mei-nuxt3-ui/commit/280929cc597a73cafbdbafce58188f93d8d2d542))
+* **components:** add checkbox \& progress atom components ([9f17b01](https://github.com/toantranmei/mei-nuxt3-ui/commit/9f17b015b3f1e679087c3aaba0e1ef7c99ed202f))
+* **components:** add tabs atom component ([a15b513](https://github.com/toantranmei/mei-nuxt3-ui/commit/a15b5137ede7b4743d0a1e52e3669864d9960c20))
+
 ## [1.1.9](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.1.8...v1.1.9) (2024-04-09)
 
 
