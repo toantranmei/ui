@@ -15,3 +15,4 @@ export { default as input } from "./input";
 export { default as alert } from "./alert";
 export { default as divider } from "./divider";
 export { default as tabs } from "./tabs";
+export { default as badge } from "./badge";

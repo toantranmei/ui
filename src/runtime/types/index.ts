@@ -12,3 +12,4 @@ export * from "./input";
 export * from "./alert";
 export * from "./divider";
 export * from "./tabs";
+export * from "./badge";
