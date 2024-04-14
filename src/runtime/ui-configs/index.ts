@@ -16,3 +16,5 @@ export { default as alert } from "./alert";
 export { default as divider } from "./divider";
 export { default as tabs } from "./tabs";
 export { default as badge } from "./badge";
+export { default as checkbox } from "./checkbox"
+export { default as progress } from "./progress"

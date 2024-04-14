@@ -13,3 +13,4 @@ export * from "./alert";
 export * from "./divider";
 export * from "./tabs";
 export * from "./badge";
+export * from './progress'
