@@ -52,280 +52,339 @@
 </template>
 
 <script lang="ts">
-import { ref, computed, toRef, onMounted, defineComponent } from 'vue'
-import type { PropType } from 'vue'
-import { twMerge, twJoin } from 'tailwind-merge'
+import { ref, computed, toRef, onMounted, defineComponent } from "vue";
+import type { PropType } from "vue";
+import { twMerge, twJoin } from "tailwind-merge";
 
-import { defu } from 'defu'
+import { defu } from "defu";
 import { useMeiUI } from "../../composables/use-mei-ui";
-import { useFormGroupInput } from '../../composables/use-form-group-input'
-import { mergeConfig, looseToNumber } from '../../utils'
-import { useInjectButtonGroup } from '../../composables/use-button-group'
-import type { InputSize, InputColor, InputVariant, Strategy } from '../../types'
+import { useFormGroupInput } from "../../composables/use-form-group-input";
+import { mergeConfig, looseToNumber } from "../../utils";
+import { useInjectButtonGroup } from "../../composables/use-button-group";
+import type {
+  InputSize,
+  InputColor,
+  InputVariant,
+  Strategy,
+} from "../../types";
 // @ts-expect-error
-import appConfig from '#build/app.config'
-import { input } from '#mei-ui/ui-configs'
+import appConfig from "#build/app.config";
+import { input } from "#mei-ui/ui-configs";
 
-const config = mergeConfig<typeof input>(appConfig.meiUI.strategy, appConfig.meiUI.input, input)
+const config = mergeConfig<typeof input>(
+  appConfig.meiUI.strategy,
+  appConfig.meiUI.input,
+  input
+);
 
 export default defineComponent({
-  components: {
-
-  },
+  components: {},
   inheritAttrs: false,
   props: {
     modelValue: {
       type: [String, Number],
-      default: ''
+      default: "",
     },
     type: {
       type: String,
-      default: 'text'
+      default: "text",
     },
     id: {
       type: String,
-      default: null
+      default: null,
     },
     name: {
       type: String,
-      default: null
+      default: null,
     },
     placeholder: {
       type: String,
-      default: null
+      default: null,
     },
     required: {
       type: Boolean,
-      default: false
+      default: false,
     },
     disabled: {
       type: Boolean,
-      default: false
+      default: false,
     },
     autofocus: {
       type: Boolean,
-      default: false
+      default: false,
     },
     autofocusDelay: {
       type: Number,
-      default: 100
+      default: 100,
     },
     icon: {
       type: String,
-      default: null
+      default: null,
     },
     loadingIcon: {
       type: String,
-      default: () => config.default.loadingIcon
+      default: () => config.default.loadingIcon,
     },
     leadingIcon: {
       type: String,
-      default: null
+      default: null,
     },
     trailingIcon: {
       type: String,
-      default: null
+      default: null,
     },
     trailing: {
       type: Boolean,
-      default: false
+      default: false,
     },
     leading: {
       type: Boolean,
-      default: false
+      default: false,
     },
     loading: {
       type: Boolean,
-      default: false
+      default: false,
     },
     padded: {
       type: Boolean,
-      default: true
+      default: true,
     },
     size: {
       type: String as PropType<InputSize>,
       default: null,
-      validator (value: string) {
-        return Object.keys(config.size).includes(value)
-      }
+      validator(value: string) {
+        return Object.keys(config.size).includes(value);
+      },
     },
     color: {
       type: String as PropType<InputColor>,
       default: () => config.default.color,
-      validator (value: string) {
-        return [...appConfig.meiUI.colors, ...Object.keys(config.color)].includes(value)
-      }
+      validator(value: string) {
+        return [
+          ...appConfig.meiUI.colors,
+          ...Object.keys(config.color),
+        ].includes(value);
+      },
     },
     variant: {
       type: String as PropType<InputVariant>,
       default: () => config.default.variant,
-      validator (value: string) {
+      validator(value: string) {
         return [
           ...Object.keys(config.variant),
-          ...Object.values(config.color).flatMap(value => Object.keys(value))
-        ].includes(value)
-      }
+          ...Object.values(config.color).flatMap((value) => Object.keys(value)),
+        ].includes(value);
+      },
     },
     inputClass: {
       type: String,
-      default: null
+      default: null,
     },
     class: {
       type: [String, Object, Array] as PropType<any>,
-      default: () => ''
+      default: () => "",
     },
     ui: {
-      type: Object as PropType<Partial<typeof config> & { strategy?: Strategy }>,
-      default: () => ({})
+      type: Object as PropType<
+        Partial<typeof config> & { strategy?: Strategy }
+      >,
+      default: () => ({}),
     },
     modelModifiers: {
-      type: Object as PropType<{ trim?: boolean, lazy?: boolean, number?: boolean }>,
-      default: () => ({})
-    }
+      type: Object as PropType<{
+        trim?: boolean;
+        lazy?: boolean;
+        number?: boolean;
+      }>,
+      default: () => ({}),
+    },
   },
-  emits: ['update:modelValue', 'blur', 'change'],
-  setup (props, { emit, slots }) {
-    const { ui, attrs } = useMeiUI('input', toRef(props, 'ui'), config, toRef(props, 'class'))
+  emits: ["update:modelValue", "blur", "change"],
+  setup(props, { emit, slots }) {
+    const { ui, attrs } = useMeiUI(
+      "input",
+      toRef(props, "ui"),
+      config,
+      toRef(props, "class")
+    );
 
-    const { size: sizeButtonGroup, rounded } = useInjectButtonGroup({ ui, props })
+    const { size: sizeButtonGroup, rounded } = useInjectButtonGroup({
+      ui,
+      props,
+    });
 
-    const { emitFormBlur, emitFormInput, size: sizeFormGroup, color, inputId, name } = useFormGroupInput(props, config)
+    const {
+      emitFormBlur,
+      emitFormInput,
+      size: sizeFormGroup,
+      color,
+      inputId,
+      name,
+    } = useFormGroupInput(props, config);
 
-    const size = computed(() => sizeButtonGroup.value || sizeFormGroup.value)
+    const size = computed(() => sizeButtonGroup.value || sizeFormGroup.value);
 
-    const modelModifiers = ref(defu({}, props.modelModifiers, { trim: false, lazy: false, number: false }))
+    const modelModifiers = ref(
+      defu({}, props.modelModifiers, {
+        trim: false,
+        lazy: false,
+        number: false,
+      })
+    );
 
-    const input = ref<HTMLInputElement | null>(null)
+    const input = ref<HTMLInputElement | null>(null);
 
     const autoFocus = () => {
       if (props.autofocus) {
-        input.value?.focus()
+        input.value?.focus();
       }
-    }
+    };
 
     // Custom function to handle the v-model properties
     const updateInput = (value: string) => {
-
       if (modelModifiers.value.trim) {
-        value = value.trim()
+        value = value.trim();
       }
 
-      if (modelModifiers.value.number || props.type === 'number') {
-        value = looseToNumber(value)
+      if (modelModifiers.value.number || props.type === "number") {
+        value = looseToNumber(value);
       }
 
-      emit('update:modelValue', value)
-      emitFormInput()
-    }
+      emit("update:modelValue", value);
+      emitFormInput();
+    };
 
     const onInput = (event: Event) => {
       if (!modelModifiers.value.lazy) {
-        updateInput((event.target as HTMLInputElement).value)
+        updateInput((event.target as HTMLInputElement).value);
       }
-    }
+    };
 
     const onChange = (event: Event) => {
-      if (props.type === 'file') {
-        const value = (event.target as HTMLInputElement).files
-        emit('change', value)
+      if (props.type === "file") {
+        const value = (event.target as HTMLInputElement).files;
+        emit("change", value);
       } else {
-        const value = (event.target as HTMLInputElement).value
-        emit('change', value)
+        const value = (event.target as HTMLInputElement).value;
+        emit("change", value);
         if (modelModifiers.value.lazy) {
-          updateInput(value)
+          updateInput(value);
         }
         // Update trimmed input so that it has same behavior as native input https://github.com/vuejs/core/blob/5ea8a8a4fab4e19a71e123e4d27d051f5e927172/packages/runtime-dom/src/directives/vModel.ts#L63
         if (modelModifiers.value.trim) {
-          (event.target as HTMLInputElement).value = value.trim()
+          (event.target as HTMLInputElement).value = value.trim();
         }
       }
-    }
+    };
 
     const onBlur = (event: FocusEvent) => {
-      emitFormBlur()
-      emit('blur', event)
-    }
+      emitFormBlur();
+      emit("blur", event);
+    };
 
     onMounted(() => {
       setTimeout(() => {
-        autoFocus()
-      }, props.autofocusDelay)
-    })
+        autoFocus();
+      }, props.autofocusDelay);
+    });
 
     const inputClass = computed(() => {
-      const variant = ui.value.color?.[color.value as string]?.[props.variant as string] || ui.value.variant[props.variant]
+      const variant =
+        ui.value.color?.[color.value as string]?.[props.variant as string] ||
+        ui.value.variant[props.variant];
 
-      return twMerge(twJoin(
-        ui.value.base,
-        ui.value.form,
-        rounded.value,
-        ui.value.placeholder,
-        props.type === 'file' && [ui.value.file.base, ui.value.file.padding[size.value]],
-        ui.value.size[size.value],
-        props.padded ? ui.value.padding[size.value] : 'p-0',
-        variant?.replaceAll('{color}', color.value),
-        (isLeading.value || slots.leading) && ui.value.leading.padding[size.value],
-        (isTrailing.value || slots.trailing) && ui.value.trailing.padding[size.value]
-      ), props.inputClass)
-    })
+      return twMerge(
+        twJoin(
+          ui.value.base,
+          ui.value.form,
+          rounded.value,
+          ui.value.placeholder,
+          props.type === "file" && [
+            ui.value.file.base,
+            ui.value.file.padding[size.value],
+          ],
+          ui.value.size[size.value],
+          props.padded ? ui.value.padding[size.value] : "p-0",
+          variant?.replaceAll("{color}", color.value),
+          (isLeading.value || slots.leading) &&
+            ui.value.leading.padding[size.value],
+          (isTrailing.value || slots.trailing) &&
+            ui.value.trailing.padding[size.value]
+        ),
+        props.inputClass
+      );
+    });
 
     const isLeading = computed(() => {
-      return (props.icon && props.leading) || (props.icon && !props.trailing) || (props.loading && !props.trailing) || props.leadingIcon
-    })
+      return (
+        (props.icon && props.leading) ||
+        (props.icon && !props.trailing) ||
+        (props.loading && !props.trailing) ||
+        props.leadingIcon
+      );
+    });
 
     const isTrailing = computed(() => {
-      return (props.icon && props.trailing) || (props.loading && props.trailing) || props.trailingIcon
-    })
+      return (
+        (props.icon && props.trailing) ||
+        (props.loading && props.trailing) ||
+        props.trailingIcon
+      );
+    });
 
     const leadingIconName = computed(() => {
       if (props.loading) {
-        return props.loadingIcon
+        return props.loadingIcon;
       }
 
-      return props.leadingIcon || props.icon
-    })
+      return props.leadingIcon || props.icon;
+    });
 
     const trailingIconName = computed(() => {
       if (props.loading && !isLeading.value) {
-        return props.loadingIcon
+        return props.loadingIcon;
       }
 
-      return props.trailingIcon || props.icon
-    })
+      return props.trailingIcon || props.icon;
+    });
 
     const leadingWrapperIconClass = computed(() => {
       return twJoin(
         ui.value.icon.leading.wrapper,
         ui.value.icon.leading.pointer,
         ui.value.icon.leading.padding[size.value]
-      )
-    })
+      );
+    });
 
     const leadingIconClass = computed(() => {
       return twJoin(
         ui.value.icon.base,
-        color.value && appConfig.ui.colors.includes(color.value) && ui.value.icon.color.replaceAll('{color}', color.value),
+        color.value &&
+          appConfig.meiUI.colors.includes(color.value) &&
+          ui.value.icon.color.replaceAll("{color}", color.value),
         ui.value.icon.size[size.value],
         props.loading && ui.value.icon.loading
-      )
-    })
+      );
+    });
 
     const trailingWrapperIconClass = computed(() => {
       return twJoin(
         ui.value.icon.trailing.wrapper,
         ui.value.icon.trailing.pointer,
         ui.value.icon.trailing.padding[size.value]
-      )
-    })
+      );
+    });
 
     const trailingIconClass = computed(() => {
       return twJoin(
         ui.value.icon.base,
-        color.value && appConfig.ui.colors.includes(color.value) && ui.value.icon.color.replaceAll('{color}', color.value),
+        color.value &&
+          appConfig.meiUI.colors.includes(color.value) &&
+          ui.value.icon.color.replaceAll("{color}", color.value),
         ui.value.icon.size[size.value],
         props.loading && !isLeading.value && ui.value.icon.loading
-      )
-    })
+      );
+    });
 
     return {
       // eslint-disable-next-line vue/no-dupe-keys
@@ -347,8 +406,8 @@ export default defineComponent({
       trailingWrapperIconClass,
       onInput,
       onChange,
-      onBlur
-    }
-  }
-})
+      onBlur,
+    };
+  },
+});
 </script>

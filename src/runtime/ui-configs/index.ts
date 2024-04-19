@@ -18,3 +18,6 @@ export { default as tabs } from "./tabs";
 export { default as badge } from "./badge";
 export { default as checkbox } from "./checkbox"
 export { default as progress } from "./progress"
+export { default as formGroup } from "./form-group"
+export { default as carousel } from "./carousel"
+export { default as accordion } from "./accordion"
