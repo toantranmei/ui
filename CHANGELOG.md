@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.11](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.1.10...v1.1.11) (2024-04-19)
+
+
+### Features
+
+* **components:** add accordion, carousel, form, form-group ([587e38c](https://github.com/toantranmei/mei-nuxt3-ui/commit/587e38c2dca62a587e8d2dcf37410d0a567ccc7e))
+
 ## [1.1.10](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.1.9...v1.1.10) (2024-04-14)
 
 
