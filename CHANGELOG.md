@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.12](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.1.11...v1.1.12) (2024-04-20)
+
+
+### Features
+
+* **components:** add chip atom component ([c876051](https://github.com/toantranmei/mei-nuxt3-ui/commit/c876051012a2476e8552b4232bbaefcbf1028978))
+* **components:** add skeleton atom component ([709e43c](https://github.com/toantranmei/mei-nuxt3-ui/commit/709e43cca4e0887485ad25e4274a741f3b7c2d28))
+* **components:** add slide over atom component ([e78566f](https://github.com/toantranmei/mei-nuxt3-ui/commit/e78566fb79f7f93e3470937a919de65304f2793b))
+
 ## [1.1.11](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.1.10...v1.1.11) (2024-04-19)
 
 
