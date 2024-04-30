@@ -67,7 +67,7 @@ import type { PropType } from "vue";
 import { defu } from "defu";
 
 import { useMeiUI } from "../../composables/use-mei-ui";
-import { useMeiPopper } from "../../composables/use-popper";
+import { usePopper } from "../../composables/use-popper";
 import { mergeConfig } from "../../utils";
 import type { PopperOptions, Strategy } from "../../types";
 // @ts-expect-error
@@ -77,7 +77,7 @@ import { tooltip } from "#mei-ui/ui-configs";
 const config = mergeConfig<typeof tooltip>(
   appConfig.meiUI.strategy,
   appConfig.meiUI.tooltip,
-  tooltip,
+  tooltip
 );
 
 export default defineComponent({
@@ -123,14 +123,14 @@ export default defineComponent({
       "tooltip",
       toRef(props, "ui"),
       config,
-      toRef(props, "class"),
+      toRef(props, "class")
     );
 
     const popper = computed<PopperOptions>(() =>
-      defu({}, props.popper, ui.value.popper as PopperOptions),
+      defu({}, props.popper, ui.value.popper as PopperOptions)
     );
 
-    const [trigger, container] = useMeiPopper(popper.value);
+    const [trigger, container] = usePopper(popper.value);
 
     const open = ref(false);
 

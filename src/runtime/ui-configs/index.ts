@@ -23,3 +23,13 @@ export { default as carousel } from "./carousel"
 export { default as accordion } from "./accordion"
 export { default as slideOver } from "./slide-over"
 export { default as chip } from "./chip"
+export { default as horizontalNavigation } from "./horizontal-navigation"
+export { default as verticalNavigation } from "./vertical-navigation"
+export { default as notification } from "./notification"
+export { default as notifications } from './notifications'
+export { default as popover } from './popover'
+export { default as inputMenu } from './input-menu'
+export { default as selectMenu } from './select-menu'
+export { default as select } from './select'
+export { default as table } from './table'
+export { default as textarea } from './textarea'

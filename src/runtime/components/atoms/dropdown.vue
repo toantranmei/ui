@@ -88,9 +88,9 @@
                           active || isActive
                             ? ui.item.active
                             : ui.item.inactive,
-                          itemDisabled && ui.item.disabled,
+                          itemDisabled && ui.item.disabled
                         ),
-                        item.class,
+                        item.class
                       )
                     "
                     @click="
@@ -115,9 +115,9 @@
                               ui.item.icon.base,
                               active || isActive
                                 ? ui.item.icon.active
-                                : ui.item.icon.inactive,
+                                : ui.item.icon.inactive
                             ),
-                            item.iconClass,
+                            item.iconClass
                           )
                         "
                       />
@@ -173,7 +173,7 @@ import {
 import { defu } from "defu";
 import { twMerge, twJoin } from "tailwind-merge";
 import { useMeiUI } from "../../composables/use-mei-ui";
-import { useMeiPopper } from "../../composables/use-popper";
+import { usePopper } from "../../composables/use-popper";
 import { mergeConfig, getNuxtLinkProps } from "../../utils";
 import type { DropdownItem, PopperOptions, Strategy } from "../../types";
 import MeiIcon from "./icon.vue";
@@ -185,7 +185,7 @@ import { useId } from "#imports";
 const config = mergeConfig<typeof dropdown>(
   appConfig.meiUI.strategy,
   appConfig.meiUI.dropdown,
-  dropdown,
+  dropdown
 );
 
 export default defineComponent({
@@ -244,18 +244,18 @@ export default defineComponent({
       "dropdown",
       toRef(props, "ui"),
       config,
-      toRef(props, "class"),
+      toRef(props, "class")
     );
 
     const popper = computed<PopperOptions>(() =>
       defu(
         props.mode === "hover" ? { offsetDistance: 0 } : {},
         props.popper,
-        ui.value.popper as PopperOptions,
-      ),
+        ui.value.popper as PopperOptions
+      )
     );
 
-    const [trigger, container] = useMeiPopper(popper.value);
+    const [trigger, container] = usePopper(popper.value);
 
     // https://github.com/tailwindlabs/headlessui/blob/f66f4926c489fc15289d528294c23a3dc2aee7b1/packages/%40headlessui-vue/src/components/menu/menu.ts#L131
     const menuApi = ref<any>(null);
@@ -379,7 +379,7 @@ export default defineComponent({
         isExternal: boolean;
         navigate: (e: Event) => void;
         close: () => void;
-      },
+      }
     ) {
       if (item.click) {
         item.click(e);
@@ -403,7 +403,7 @@ export default defineComponent({
         } else {
           menuApi.value.closeMenu();
         }
-      },
+      }
     );
 
     watch(
@@ -412,7 +412,7 @@ export default defineComponent({
         if (oldValue === undefined || newValue === oldValue) return;
 
         emit("update:open", newValue === 0);
-      },
+      }
     );
 
     const NuxtLink = resolveComponent("NuxtLink");

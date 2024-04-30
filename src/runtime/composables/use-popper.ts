@@ -28,7 +28,7 @@ export const createPopper = popperGenerator({
   ],
 });
 
-export function useMeiPopper(
+export function usePopper(
   {
     locked = false,
     overflowPadding = 8,
