@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.13](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.1.12...v1.1.13) (2024-04-30)
+
+
+### Features
+
+* **components:** add navigation, select, table ([5315aec](https://github.com/toantranmei/mei-nuxt3-ui/commit/5315aec8c128c1eed9df8f737e54c4f75d799f26))
+
 ## [1.1.12](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.1.11...v1.1.12) (2024-04-20)
 
 
