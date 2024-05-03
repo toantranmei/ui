@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.4](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.2.3...v1.2.4) (2024-05-03)
+
+
+### Features
+
+* add button group and avatar group ([875632f](https://github.com/toantranmei/mei-nuxt3-ui/commit/875632f3fd09636fb3747a75100e4eb8eeb9ffa8))
+
 ## [1.2.3](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.2.2...v1.2.3) (2024-05-03)
 
 
