@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.2.0...v1.2.1) (2024-05-03)
+
+
+### Features
+
+* **composables:** add use shortcuts ([88b534a](https://github.com/toantranmei/mei-nuxt3-ui/commit/88b534a566881a96a073643a538ba87d1393285b))
+
 ## [1.2.0](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.1.13...v1.2.0) (2024-05-03)
 
 
