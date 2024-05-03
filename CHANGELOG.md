@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.1.13...v1.2.0) (2024-05-03)
+
+
+### Features
+
+* **components:** add breadcrumb, command, notification ([1ab7a31](https://github.com/toantranmei/mei-nuxt3-ui/commit/1ab7a317b35858694a1943d7ecf6b7bee98d426a))
+
 ## [1.1.13](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.1.12...v1.1.13) (2024-04-30)
 
 
