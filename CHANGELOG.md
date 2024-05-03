@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.2](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.2.1...v1.2.2) (2024-05-03)
+
+
+### Bug Fixes
+
+* add custom types of link extend nuxt link props ([221d133](https://github.com/toantranmei/mei-nuxt3-ui/commit/221d13318630db54de46bcd83c153998baba1bfe))
+
 ## [1.2.1](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.2.0...v1.2.1) (2024-05-03)
 
 
