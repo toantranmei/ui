@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.3](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.2.2...v1.2.3) (2024-05-03)
+
+
+### Features
+
+* add define shortcut hooks for keyboard ([3224b49](https://github.com/toantranmei/mei-nuxt3-ui/commit/3224b49c9f2d870281ad6de5dd77dc4a4eeb33a8))
+
 ## [1.2.2](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.2.1...v1.2.2) (2024-05-03)
 
 
