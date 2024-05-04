@@ -9,9 +9,9 @@ import type { AvatarSize, Strategy } from '../../types'
 import appConfig from '#build/app.config'
 import { avatar, avatarGroup } from '#mei-ui/ui-configs'
 
-const avatarConfig = mergeConfig<typeof avatar>(appConfig.ui.strategy, appConfig.ui.avatar, avatar)
+const avatarConfig = mergeConfig<typeof avatar>(appConfig.meiUI.strategy, appConfig.meiUI.avatar, avatar)
 
-const avatarGroupConfig = mergeConfig<typeof avatarGroup>(appConfig.ui.strategy, appConfig.ui.avatarGroup, avatarGroup)
+const avatarGroupConfig = mergeConfig<typeof avatarGroup>(appConfig.meiUI.strategy, appConfig.meiUI.avatarGroup, avatarGroup)
 
 export default defineComponent({
   inheritAttrs: false,

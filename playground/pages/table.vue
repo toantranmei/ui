@@ -46,5 +46,5 @@ const people = [
 </script>
 
 <template>
-  <MeiDataTable :rows="people" />
+  <MeiTable :rows="people" />
 </template>

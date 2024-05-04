@@ -9,8 +9,8 @@ import type { ButtonSize, Strategy } from '../../types'
 import appConfig from '#build/app.config'
 import { button, buttonGroup } from '#mei-ui/ui-configs'
 
-const buttonConfig = mergeConfig<typeof button>(appConfig.ui.strategy, appConfig.ui.button, button)
-const buttonGroupConfig = mergeConfig<typeof buttonGroup>(appConfig.ui.strategy, appConfig.ui.buttonGroup, buttonGroup)
+const buttonConfig = mergeConfig<typeof button>(appConfig.meiUI.strategy, appConfig.meiUI.button, button)
+const buttonGroupConfig = mergeConfig<typeof buttonGroup>(appConfig.meiUI.strategy, appConfig.meiUI.buttonGroup, buttonGroup)
 
 export default defineComponent({
   name: 'ButtonGroup',
