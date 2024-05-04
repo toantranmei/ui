@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.6](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.2.5...v1.2.6) (2024-05-04)
+
+
+### Features
+
+* upgrade tailwind config and input file ([a556fdf](https://github.com/toantranmei/mei-nuxt3-ui/commit/a556fdf9b05b57ed31e71cf0ecf5c8c4a1c2e4bc))
+
 ## [1.2.5](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.2.4...v1.2.5) (2024-05-04)
 
 
