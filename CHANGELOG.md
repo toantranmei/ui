@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.5](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.2.4...v1.2.5) (2024-05-04)
+
+
+### Bug Fixes
+
+* rename from table to data-table ([a92296e](https://github.com/toantranmei/mei-nuxt3-ui/commit/a92296eb2277aebb328270b31ae52bda4f58aaf9))
+
 ## [1.2.4](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.2.3...v1.2.4) (2024-05-03)
 
 
