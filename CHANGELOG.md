@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.7](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.2.6...v1.2.7) (2024-05-04)
+
+
+### Bug Fixes
+
+* re-write basic testcase ([3962197](https://github.com/toantranmei/mei-nuxt3-ui/commit/39621976f68c2594fd2fe60c7da19d64a802dcbf))
+
 ## [1.2.6](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.2.5...v1.2.6) (2024-05-04)
 
 
