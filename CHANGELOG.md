@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.8](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.2.7...v1.2.8) (2024-05-05)
+
+
+### Bug Fixes
+
+* remove force types in command palette group ([00bb504](https://github.com/toantranmei/mei-nuxt3-ui/commit/00bb504ebf5a500a5cdf85471c4d45bc84b9bc7b))
+* remove force types in command palette group ([765a808](https://github.com/toantranmei/mei-nuxt3-ui/commit/765a808addc4c7c510d7e0f98d67e22d6d6c8267))
+
 ## [1.2.7](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.2.6...v1.2.7) (2024-05-04)
 
 
