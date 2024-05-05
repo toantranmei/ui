@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-v-html -->
 <template>
   <div :class="ui.group.wrapper">
     <h2
@@ -94,7 +95,7 @@
                   class="truncate"
                   :class="command.suffixClass || ui.group.command.suffix"
                   v-html="
-                    highlight(command[commandAttribute], command.matches[0] as any)
+                    highlight(command[commandAttribute], command.matches[0])
                   "
                 />
                 <span
