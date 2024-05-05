@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.9](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.2.8...v1.2.9) (2024-05-05)
+
+
+### Features
+
+* **components:** add context menu component ([dca526a](https://github.com/toantranmei/mei-nuxt3-ui/commit/dca526a10aead50bc280614a1c96efc8b1243111))
+
 ## [1.2.8](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.2.7...v1.2.8) (2024-05-05)
 
 
