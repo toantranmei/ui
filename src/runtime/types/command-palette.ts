@@ -13,7 +13,7 @@ export interface Command {
   shortcuts?: string[]
   group?: string
   score?: number
-  matches?: (FuseSortFunctionMatch | FuseSortFunctionMatchList)[]
+  matches?: (FuseSortFunctionMatch | FuseSortFunctionMatchList)[] | any[]
   [key: string]: any
 }
 
