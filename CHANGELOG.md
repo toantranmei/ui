@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.2.10](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.2.9...v1.2.10) (2024-05-11)
+
+
+### Features
+
+* **components:** add input menu atom component ([1401d57](https://github.com/toantranmei/mei-nuxt3-ui/commit/1401d57caf83164272138c5f4ffeacd2a5faca54))
+
+
+### Bug Fixes
+
+* **components:** fix icon name dynamic is not working in button ([68aaf46](https://github.com/toantranmei/mei-nuxt3-ui/commit/68aaf46c1e01d7b9b9069bd88e5770ea51aa0728))
+
 ## [1.2.9](https://github.com/toantranmei/mei-nuxt3-ui/compare/v1.2.8...v1.2.9) (2024-05-05)
 
 
