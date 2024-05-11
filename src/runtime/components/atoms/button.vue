@@ -15,6 +15,7 @@
         :name="leadingIconName"
         :class="leadingIconClass"
         aria-hidden="true"
+        dynamic
       />
     </slot>
 
@@ -37,6 +38,7 @@
         :name="trailingIconName"
         :class="trailingIconClass"
         aria-hidden="true"
+        dynamic
       />
     </slot>
   </MeiLink>
@@ -64,7 +66,7 @@ import { button } from "#mei-ui/ui-configs";
 const config = mergeConfig<typeof button>(
   appConfig.meiUI.strategy,
   appConfig.meiUI.button,
-  button,
+  button
 );
 
 export default defineComponent({
@@ -110,9 +112,10 @@ export default defineComponent({
       type: String as PropType<ButtonColor>,
       default: () => config.default.color,
       validator(value: string) {
-        return [...appConfig.meiUI.colors, ...Object.keys(config.color)].includes(
-          value,
-        );
+        return [
+          ...appConfig.meiUI.colors,
+          ...Object.keys(config.color),
+        ].includes(value);
       },
     },
     variant: {
@@ -191,7 +194,7 @@ export default defineComponent({
     });
 
     const isSquare = computed(
-      () => props.square || (!slots.default && !props.label),
+      () => props.square || (!slots.default && !props.label)
     );
 
     const buttonClass = computed(() => {
@@ -209,9 +212,9 @@ export default defineComponent({
           props.padded &&
             ui.value[isSquare.value ? "square" : "padding"][size.value],
           variant?.replaceAll("{color}", props.color),
-          props.block ? ui.value.block : ui.value.inline,
+          props.block ? ui.value.block : ui.value.inline
         ),
-        props.class,
+        props.class
       );
     });
 
@@ -235,7 +238,7 @@ export default defineComponent({
       return twJoin(
         ui.value.icon.base,
         ui.value.icon.size[size.value],
-        props.loading && ui.value.icon.loading,
+        props.loading && ui.value.icon.loading
       );
     });
 
@@ -243,7 +246,7 @@ export default defineComponent({
       return twJoin(
         ui.value.icon.base,
         ui.value.icon.size[size.value],
-        props.loading && !isLeading.value && ui.value.icon.loading,
+        props.loading && !isLeading.value && ui.value.icon.loading
       );
     });
 
