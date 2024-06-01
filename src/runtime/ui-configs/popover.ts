@@ -17,7 +17,7 @@ export default {
     enterToClass: 'opacity-100 translate-y-0',
     leaveActiveClass: 'transition ease-in duration-150',
     leaveFromClass: 'opacity-100 translate-y-0',
-    leaveToClass: 'opacity-0 translate-y-1'
+    leaveToClass: 'opacity-0 translate-y-1',
   },
   overlay: {
     base: 'fixed inset-0 transition-opacity z-50',
@@ -28,15 +28,15 @@ export default {
       enterToClass: 'opacity-100',
       leaveActiveClass: 'ease-in duration-150',
       leaveFromClass: 'opacity-100',
-      leaveToClass: 'opacity-0'
-    }
+      leaveToClass: 'opacity-0',
+    },
   },
   popper: {
-    strategy: 'fixed'
+    strategy: 'fixed',
   },
   default: {
     openDelay: 0,
-    closeDelay: 0
+    closeDelay: 0,
   },
-  arrow
+  arrow,
 }

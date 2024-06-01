@@ -1,29 +1,20 @@
-<template>
-  <kbd
-    :class="kbdClass"
-    v-bind="attrs"
-  >
-    <slot>{{ value }}</slot>
-  </kbd>
-</template>
-
 <script lang="ts">
-import { toRef, defineComponent, computed } from "vue";
-import type { PropType } from "vue";
-import { twMerge, twJoin } from "tailwind-merge";
-import { useMeiUI } from "../../composables/use-mei-ui";
+import { computed, defineComponent, toRef } from 'vue'
+import type { PropType } from 'vue'
+import { twJoin, twMerge } from 'tailwind-merge'
+import { useMeiUI } from '../../composables/use-mei-ui'
 
-import { mergeConfig } from "../../utils";
-import type { KbdSize, Strategy } from "../../types";
-// @ts-expect-error
-import appConfig from "#build/app.config";
-import { kbd } from "#mei-ui/ui-configs";
+import { mergeConfig } from '../../utils'
+import type { KbdSize, Strategy } from '../../types'
+// @ts-expect-error - no types available
+import appConfig from '#build/app.config'
+import { kbd } from '#mei-ui/ui-configs'
 
 const config = mergeConfig<typeof kbd>(
   appConfig.meiUI.strategy,
   appConfig.meiUI.kbd,
   kbd,
-);
+)
 
 export default defineComponent({
   inheritAttrs: false,
@@ -36,12 +27,12 @@ export default defineComponent({
       type: String as PropType<KbdSize>,
       default: () => config.default.size,
       validator(value: string) {
-        return Object.keys(config.size).includes(value);
+        return Object.keys(config.size).includes(value)
       },
     },
     class: {
       type: [String, Object, Array] as PropType<any>,
-      default: () => "",
+      default: () => '',
     },
     ui: {
       type: Object as PropType<
@@ -51,7 +42,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const { ui, attrs } = useMeiUI("kbd", toRef(props, "ui"), config);
+    const { ui, attrs } = useMeiUI('kbd', toRef(props, 'ui'), config)
 
     const kbdClass = computed(() => {
       return twMerge(
@@ -65,15 +56,24 @@ export default defineComponent({
           ui.value.ring,
         ),
         props.class,
-      );
-    });
+      )
+    })
 
     return {
-      // eslint-disable-next-line vue/no-dupe-keys
+
       ui,
       attrs,
       kbdClass,
-    };
+    }
   },
-});
+})
 </script>
+
+<template>
+  <kbd
+    :class="kbdClass"
+    v-bind="attrs"
+  >
+    <slot>{{ value }}</slot>
+  </kbd>
+</template>

@@ -1,6 +1,6 @@
-import MyModule from "../../../src/module";
+import MyModule from '../../../src/module'
 
-// @ts-ignore
 export default defineNuxtConfig({
+  // @ts-expect-error - Typings not available
   modules: [MyModule],
-});
+})

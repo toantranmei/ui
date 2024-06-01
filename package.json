@@ -1,24 +1,25 @@
 {
-  "name": "@toantranmei/mei-nuxt3-ui",
-  "version": "1.2.10",
+  "name": "@toantranmei/ui",
+  "type": "module",
+  "version": "1.2.0",
   "description": "A UI Library for Modern Web Apps, powered by Vue & Tailwind CSS.",
+  "author": "Toan Tran <Mei>",
+  "license": "MIT",
+  "homepage": "https://github.com/toantranmei/ui#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/toantranmei/mei-nuxt3-ui.git"
+    "url": "git+https://github.com/toantranmei/ui.git"
   },
   "bugs": {
-    "url": "https://github.com/toantranmei/mei-nuxt3-ui/issues"
+    "url": "https://github.com/toantranmei/ui/issues"
   },
-  "homepage": "https://github.com/toantranmei/mei-nuxt3-ui#readme",
   "keywords": [
+    "toantranmei",
     "mei",
     "nuxt3",
     "mei-nuxt3-ui",
     "nuxt-ui"
   ],
-  "author": "Toan Tran <Mei>",
-  "license": "MIT",
-  "type": "module",
   "exports": {
     ".": {
       "types": "./dist/types.d.ts",
@@ -79,9 +80,9 @@
     "zod": "^3.22.5"
   },
   "devDependencies": {
+    "@antfu/eslint-config": "^2.19.1",
     "@commitlint/cli": "^19.2.1",
     "@nuxt/devtools": "latest",
-    "@nuxt/eslint-config": "^0.2.0",
     "@nuxt/module-builder": "^0.5.5",
     "@nuxt/schema": "^3.11.1",
     "@nuxt/test-utils": "^3.12.0",

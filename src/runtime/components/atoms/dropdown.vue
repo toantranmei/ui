@@ -1,4 +1,300 @@
 <!-- eslint-disable vue/no-template-shadow -->
+<script lang="ts">
+import {
+  computed,
+  defineComponent,
+  onMounted,
+  ref,
+  resolveComponent,
+  toRef,
+  watch,
+} from 'vue'
+import type { PropType } from 'vue'
+import {
+  Menu as HMenu,
+  MenuButton as HMenuButton,
+  MenuItem as HMenuItem,
+  MenuItems as HMenuItems,
+  provideUseId,
+} from '@headlessui/vue'
+import { defu } from 'defu'
+import { twJoin, twMerge } from 'tailwind-merge'
+import { useMeiUI } from '../../composables/use-mei-ui'
+import { usePopper } from '../../composables/use-popper'
+import { getNuxtLinkProps, mergeConfig } from '../../utils'
+import type { DropdownItem, PopperOptions, Strategy } from '../../types'
+import MeiIcon from './icon.vue'
+// @ts-expect-error - no types available
+import appConfig from '#build/app.config'
+import { dropdown } from '#mei-ui/ui-configs'
+import { useId } from '#imports'
+
+const config = mergeConfig<typeof dropdown>(
+  appConfig.meiUI.strategy,
+  appConfig.meiUI.dropdown,
+  dropdown,
+)
+
+export default defineComponent({
+  components: {
+    HMenu,
+    HMenuButton,
+    HMenuItems,
+    HMenuItem,
+    MeiIcon,
+  },
+  inheritAttrs: false,
+  props: {
+    items: {
+      type: Array as PropType<DropdownItem[][]>,
+      default: () => [],
+    },
+    mode: {
+      type: String as PropType<'click' | 'hover'>,
+      default: 'click',
+      validator: (value: string) => ['click', 'hover'].includes(value),
+    },
+    open: {
+      type: Boolean,
+      default: undefined,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+    popper: {
+      type: Object as PropType<PopperOptions>,
+      default: () => ({}),
+    },
+    openDelay: {
+      type: Number,
+      default: () => config.default.openDelay,
+    },
+    closeDelay: {
+      type: Number,
+      default: () => config.default.closeDelay,
+    },
+    class: {
+      type: [String, Object, Array] as PropType<any>,
+      default: () => '',
+    },
+    ui: {
+      type: Object as PropType<
+        Partial<typeof config> & { strategy?: Strategy }
+      >,
+      default: () => ({}),
+    },
+  },
+  emits: ['update:open'],
+  setup(props, { emit }) {
+    const { ui, attrs } = useMeiUI(
+      'dropdown',
+      toRef(props, 'ui'),
+      config,
+      toRef(props, 'class'),
+    )
+
+    const popper = computed<PopperOptions>(() =>
+      defu(
+        props.mode === 'hover' ? { offsetDistance: 0 } : {},
+        props.popper,
+        ui.value.popper as PopperOptions,
+      ),
+    )
+
+    const [trigger, container] = usePopper(popper.value)
+
+    // https://github.com/tailwindlabs/headlessui/blob/f66f4926c489fc15289d528294c23a3dc2aee7b1/packages/%40headlessui-vue/src/components/menu/menu.ts#L131
+    const menuApi = ref<any>(null)
+
+    let openTimeout: NodeJS.Timeout | null = null
+    let closeTimeout: NodeJS.Timeout | null = null
+
+    onMounted(() => {
+      // @ts-expect-error internals
+      const menuProvides = trigger.value?.$.provides
+      if (!menuProvides) {
+        return
+      }
+      const menuProvidesSymbols = Object.getOwnPropertySymbols(menuProvides)
+      menuApi.value
+        = menuProvidesSymbols.length && menuProvides[menuProvidesSymbols[0]]
+
+      if (props.open) {
+        menuApi.value?.openMenu()
+      }
+    })
+
+    const containerStyle = computed(() => {
+      if (props.mode !== 'hover') {
+        return {}
+      }
+
+      const offsetDistance
+        = (props.popper as PopperOptions)?.offsetDistance
+        || (ui.value.popper as PopperOptions)?.offsetDistance
+        || 8
+      const placement = popper.value.placement?.split('-')[0]
+      const padding = `${offsetDistance}px`
+
+      if (placement === 'top' || placement === 'bottom') {
+        return {
+          paddingTop: padding,
+          paddingBottom: padding,
+        }
+      }
+      else if (placement === 'left' || placement === 'right') {
+        return {
+          paddingLeft: padding,
+          paddingRight: padding,
+        }
+      }
+      else {
+        return {
+          paddingTop: padding,
+          paddingBottom: padding,
+          paddingLeft: padding,
+          paddingRight: padding,
+        }
+      }
+    })
+
+    function onTouchStart(event: TouchEvent) {
+      if (!event.cancelable || !menuApi.value) {
+        return
+      }
+
+      if (menuApi.value.menuState === 0) {
+        menuApi.value.closeMenu()
+      }
+      else {
+        menuApi.value.openMenu()
+      }
+    }
+
+    function onMouseEnter() {
+      if (props.mode !== 'hover' || !menuApi.value) {
+        return
+      }
+
+      // cancel programmed closing
+      if (closeTimeout) {
+        clearTimeout(closeTimeout)
+        closeTimeout = null
+      }
+      // dropdown already open
+      if (menuApi.value.menuState === 0) {
+        return
+      }
+      openTimeout
+        = openTimeout
+        || setTimeout(() => {
+          menuApi.value.openMenu && menuApi.value.openMenu()
+          openTimeout = null
+        }, props.openDelay)
+    }
+
+    function onMouseLeave() {
+      if (props.mode !== 'hover' || !menuApi.value) {
+        return
+      }
+
+      // cancel programmed opening
+      if (openTimeout) {
+        clearTimeout(openTimeout)
+        openTimeout = null
+      }
+      // dropdown already closed
+      if (menuApi.value.menuState === 1) {
+        return
+      }
+      closeTimeout
+        = closeTimeout
+        || setTimeout(() => {
+          menuApi.value.closeMenu && menuApi.value.closeMenu()
+          closeTimeout = null
+        }, props.closeDelay)
+    }
+
+    function onClick(
+      e: Event,
+      item: DropdownItem,
+      {
+        href,
+        navigate,
+        close,
+        isExternal,
+      }: {
+        href: string
+        isExternal: boolean
+        navigate: (e: Event) => void
+        close: () => void
+      },
+    ) {
+      if (item.click) {
+        item.click(e)
+      }
+
+      if (href && !isExternal) {
+        navigate(e)
+
+        close()
+      }
+    }
+
+    watch(
+      () => props.open,
+      (newValue?: boolean, oldValue?: boolean) => {
+        if (!menuApi.value)
+          return
+        if (oldValue === undefined || newValue === oldValue)
+          return
+
+        if (newValue) {
+          menuApi.value.openMenu()
+        }
+        else {
+          menuApi.value.closeMenu()
+        }
+      },
+    )
+
+    watch(
+      () => menuApi.value?.menuState,
+      (newValue: number, oldValue: number) => {
+        if (oldValue === undefined || newValue === oldValue)
+          return
+
+        emit('update:open', newValue === 0)
+      },
+    )
+
+    const NuxtLink = resolveComponent('NuxtLink')
+
+    provideUseId(() => useId())
+
+    return {
+
+      ui,
+      attrs,
+
+      popper,
+      trigger,
+      container,
+      containerStyle,
+      onTouchStart,
+      onMouseEnter,
+      onMouseLeave,
+      onClick,
+      getNuxtLinkProps,
+      twMerge,
+      twJoin,
+      NuxtLink,
+    }
+  },
+})
+</script>
+
 <template>
   <!-- eslint-disable-next-line vue/no-template-shadow -->
   <HMenu
@@ -88,9 +384,9 @@
                           active || isActive
                             ? ui.item.active
                             : ui.item.inactive,
-                          itemDisabled && ui.item.disabled
+                          itemDisabled && ui.item.disabled,
                         ),
-                        item.class
+                        item.class,
                       )
                     "
                     @click="
@@ -115,13 +411,13 @@
                               ui.item.icon.base,
                               active || isActive
                                 ? ui.item.icon.active
-                                : ui.item.icon.inactive
+                                : ui.item.icon.inactive,
                             ),
-                            item.iconClass
+                            item.iconClass,
                           )
                         "
                       />
-                      <mei-avatar
+                      <MeiAvatar
                         v-else-if="item.avatar"
                         v-bind="{ size: ui.item.avatar.size, ...item.avatar }"
                         :class="ui.item.avatar.base"
@@ -135,10 +431,10 @@
                         v-if="item.shortcuts?.length"
                         :class="ui.item.shortcuts"
                       >
-                        <mei-kbd
+                        <MeiKbd
                           v-for="shortcut of item.shortcuts"
                           :key="shortcut"
-                        >{{ shortcut }}</mei-kbd>
+                        >{{ shortcut }}</MeiKbd>
                       </span>
                     </slot>
                   </component>
@@ -151,292 +447,3 @@
     </div>
   </HMenu>
 </template>
-
-<script lang="ts">
-import {
-  defineComponent,
-  ref,
-  computed,
-  watch,
-  toRef,
-  onMounted,
-  resolveComponent,
-} from "vue";
-import type { PropType } from "vue";
-import {
-  Menu as HMenu,
-  MenuButton as HMenuButton,
-  MenuItems as HMenuItems,
-  MenuItem as HMenuItem,
-  provideUseId,
-} from "@headlessui/vue";
-import { defu } from "defu";
-import { twMerge, twJoin } from "tailwind-merge";
-import { useMeiUI } from "../../composables/use-mei-ui";
-import { usePopper } from "../../composables/use-popper";
-import { mergeConfig, getNuxtLinkProps } from "../../utils";
-import type { DropdownItem, PopperOptions, Strategy } from "../../types";
-import MeiIcon from "./icon.vue";
-// @ts-expect-error
-import appConfig from "#build/app.config";
-import { dropdown } from "#mei-ui/ui-configs";
-import { useId } from "#imports";
-
-const config = mergeConfig<typeof dropdown>(
-  appConfig.meiUI.strategy,
-  appConfig.meiUI.dropdown,
-  dropdown
-);
-
-export default defineComponent({
-  components: {
-    HMenu,
-    HMenuButton,
-    HMenuItems,
-    HMenuItem,
-    MeiIcon,
-  },
-  inheritAttrs: false,
-  props: {
-    items: {
-      type: Array as PropType<DropdownItem[][]>,
-      default: () => [],
-    },
-    mode: {
-      type: String as PropType<"click" | "hover">,
-      default: "click",
-      validator: (value: string) => ["click", "hover"].includes(value),
-    },
-    open: {
-      type: Boolean,
-      default: undefined,
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-    popper: {
-      type: Object as PropType<PopperOptions>,
-      default: () => ({}),
-    },
-    openDelay: {
-      type: Number,
-      default: () => config.default.openDelay,
-    },
-    closeDelay: {
-      type: Number,
-      default: () => config.default.closeDelay,
-    },
-    class: {
-      type: [String, Object, Array] as PropType<any>,
-      default: () => "",
-    },
-    ui: {
-      type: Object as PropType<
-        Partial<typeof config> & { strategy?: Strategy }
-      >,
-      default: () => ({}),
-    },
-  },
-  emits: ["update:open"],
-  setup(props, { emit }) {
-    const { ui, attrs } = useMeiUI(
-      "dropdown",
-      toRef(props, "ui"),
-      config,
-      toRef(props, "class")
-    );
-
-    const popper = computed<PopperOptions>(() =>
-      defu(
-        props.mode === "hover" ? { offsetDistance: 0 } : {},
-        props.popper,
-        ui.value.popper as PopperOptions
-      )
-    );
-
-    const [trigger, container] = usePopper(popper.value);
-
-    // https://github.com/tailwindlabs/headlessui/blob/f66f4926c489fc15289d528294c23a3dc2aee7b1/packages/%40headlessui-vue/src/components/menu/menu.ts#L131
-    const menuApi = ref<any>(null);
-
-    let openTimeout: NodeJS.Timeout | null = null;
-    let closeTimeout: NodeJS.Timeout | null = null;
-
-    onMounted(() => {
-      // @ts-expect-error internals
-      const menuProvides = trigger.value?.$.provides;
-      if (!menuProvides) {
-        return;
-      }
-      const menuProvidesSymbols = Object.getOwnPropertySymbols(menuProvides);
-      menuApi.value =
-        menuProvidesSymbols.length && menuProvides[menuProvidesSymbols[0]];
-
-      if (props.open) {
-        menuApi.value?.openMenu();
-      }
-    });
-
-    const containerStyle = computed(() => {
-      if (props.mode !== "hover") {
-        return {};
-      }
-
-      const offsetDistance =
-        (props.popper as PopperOptions)?.offsetDistance ||
-        (ui.value.popper as PopperOptions)?.offsetDistance ||
-        8;
-      const placement = popper.value.placement?.split("-")[0];
-      const padding = `${offsetDistance}px`;
-
-      if (placement === "top" || placement === "bottom") {
-        return {
-          paddingTop: padding,
-          paddingBottom: padding,
-        };
-      } else if (placement === "left" || placement === "right") {
-        return {
-          paddingLeft: padding,
-          paddingRight: padding,
-        };
-      } else {
-        return {
-          paddingTop: padding,
-          paddingBottom: padding,
-          paddingLeft: padding,
-          paddingRight: padding,
-        };
-      }
-    });
-
-    function onTouchStart(event: TouchEvent) {
-      if (!event.cancelable || !menuApi.value) {
-        return;
-      }
-
-      if (menuApi.value.menuState === 0) {
-        menuApi.value.closeMenu();
-      } else {
-        menuApi.value.openMenu();
-      }
-    }
-
-    function onMouseEnter() {
-      if (props.mode !== "hover" || !menuApi.value) {
-        return;
-      }
-
-      // cancel programmed closing
-      if (closeTimeout) {
-        clearTimeout(closeTimeout);
-        closeTimeout = null;
-      }
-      // dropdown already open
-      if (menuApi.value.menuState === 0) {
-        return;
-      }
-      openTimeout =
-        openTimeout ||
-        setTimeout(() => {
-          menuApi.value.openMenu && menuApi.value.openMenu();
-          openTimeout = null;
-        }, props.openDelay);
-    }
-
-    function onMouseLeave() {
-      if (props.mode !== "hover" || !menuApi.value) {
-        return;
-      }
-
-      // cancel programmed opening
-      if (openTimeout) {
-        clearTimeout(openTimeout);
-        openTimeout = null;
-      }
-      // dropdown already closed
-      if (menuApi.value.menuState === 1) {
-        return;
-      }
-      closeTimeout =
-        closeTimeout ||
-        setTimeout(() => {
-          menuApi.value.closeMenu && menuApi.value.closeMenu();
-          closeTimeout = null;
-        }, props.closeDelay);
-    }
-
-    function onClick(
-      e: Event,
-      item: DropdownItem,
-      {
-        href,
-        navigate,
-        close,
-        isExternal,
-      }: {
-        href: string;
-        isExternal: boolean;
-        navigate: (e: Event) => void;
-        close: () => void;
-      }
-    ) {
-      if (item.click) {
-        item.click(e);
-      }
-
-      if (href && !isExternal) {
-        navigate(e);
-
-        close();
-      }
-    }
-
-    watch(
-      () => props.open,
-      (newValue?: boolean, oldValue?: boolean) => {
-        if (!menuApi.value) return;
-        if (oldValue === undefined || newValue === oldValue) return;
-
-        if (newValue) {
-          menuApi.value.openMenu();
-        } else {
-          menuApi.value.closeMenu();
-        }
-      }
-    );
-
-    watch(
-      () => menuApi.value?.menuState,
-      (newValue: number, oldValue: number) => {
-        if (oldValue === undefined || newValue === oldValue) return;
-
-        emit("update:open", newValue === 0);
-      }
-    );
-
-    const NuxtLink = resolveComponent("NuxtLink");
-
-    provideUseId(() => useId());
-
-    return {
-      // eslint-disable-next-line vue/no-dupe-keys
-      ui,
-      attrs,
-      // eslint-disable-next-line vue/no-dupe-keys
-      popper,
-      trigger,
-      container,
-      containerStyle,
-      onTouchStart,
-      onMouseEnter,
-      onMouseLeave,
-      onClick,
-      getNuxtLinkProps,
-      twMerge,
-      twJoin,
-      NuxtLink,
-    };
-  },
-});
-</script>

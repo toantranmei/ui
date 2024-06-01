@@ -4,17 +4,16 @@ const isOpen = ref(false)
 
 <template>
   <div>
-    <mei-button
+    <MeiButton
       label="Open"
       @click="isOpen = true"
     />
 
-    <mei-modal
+    <MeiModal
       v-model="isOpen"
       fullscreen
     >
       aasas
-    </mei-modal>
+    </MeiModal>
   </div>
 </template>
-

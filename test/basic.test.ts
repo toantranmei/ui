@@ -1,13 +1,15 @@
+// @ts-expect-error - Typings not available
 import { describe, expect, it } from 'vitest'
 import { defu } from 'defu'
 import { join } from 'pathe'
 import { loadNuxt } from '@nuxt/kit'
 import type { NuxtConfig } from '@nuxt/schema'
 import type * as tailwindcss from 'tailwindcss'
-type TWConfig = tailwindcss.Config;
 import type resolveConfig from 'tailwindcss/resolveConfig'
 
-async function getTailwindCSSConfig (overrides: Partial<NuxtConfig> = {}) {
+type TWConfig = tailwindcss.Config
+
+async function getTailwindCSSConfig(overrides: Partial<NuxtConfig> = {}) {
   let tailwindConfig: ReturnType<typeof resolveConfig<TWConfig>>
   const nuxt = await loadNuxt({
     ready: true,
@@ -17,23 +19,23 @@ async function getTailwindCSSConfig (overrides: Partial<NuxtConfig> = {}) {
       ssr: false,
       modules: ['../../src/module'],
       hooks: {
-        // @ts-ignore
-        'tailwindcss:resolvedConfig' (config) {
+        // @ts-expect-error - Typings not available
+        'tailwindcss:resolvedConfig': function (config) {
           tailwindConfig = config
-        }
-      }
-    } satisfies NuxtConfig) as NuxtConfig
+        },
+      },
+    } satisfies NuxtConfig) as NuxtConfig,
   })
   const nuxtOptions = structuredClone({
     plugins: nuxt.options.plugins.map(p => typeof p !== 'string' && ({ src: p.src, mode: p.mode })),
     _requiredModules: nuxt.options._requiredModules,
-    appConfig: nuxt.options.appConfig
+    appConfig: nuxt.options.appConfig,
   })
   await nuxt.close()
 
   return {
     nuxtOptions,
-    tailwindConfig
+    tailwindConfig,
   }
 }
 
@@ -43,17 +45,17 @@ describe('nuxt', () => {
     expect(nuxtOptions.plugins).toContainEqual(
       expect.objectContaining({
         src: expect.stringContaining('plugins/colors'),
-        mode: 'all'
-      })
+        mode: 'all',
+      }),
     )
     expect(nuxtOptions._requiredModules).toMatchObject({
       '@nuxtjs/color-mode': true,
-      '@nuxtjs/tailwindcss': true
+      '@nuxtjs/tailwindcss': true,
     })
     // default values in appConfig
     expect(nuxtOptions.appConfig.meiUI).toMatchObject({
       primary: 'purple',
-      gray: 'cool'
+      gray: 'cool',
     })
   })
 })

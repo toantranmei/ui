@@ -1,69 +1,25 @@
-<template>
-  <HSwitch
-    :id="inputId"
-    v-model="active"
-    :name="name"
-    :disabled="disabled || loading"
-    :class="switchClass"
-    v-bind="attrs"
-  >
-    <span :class="containerClass">
-      <span
-        v-if="loading"
-        :class="[ui.icon.active, ui.icon.base]"
-        aria-hidden="true"
-      >
-        <MeiIcon
-          :name="loadingIcon"
-          :class="loadingIconClass"
-        />
-      </span>
-      <span
-        v-if="!loading && onIcon"
-        :class="[active ? ui.icon.active : ui.icon.inactive, ui.icon.base]"
-        aria-hidden="true"
-      >
-        <MeiIcon
-          :name="onIcon"
-          :class="onIconClass"
-        />
-      </span>
-      <span
-        v-if="!loading && offIcon"
-        :class="[active ? ui.icon.inactive : ui.icon.active, ui.icon.base]"
-        aria-hidden="true"
-      >
-        <MeiIcon
-          :name="offIcon"
-          :class="offIconClass"
-        />
-      </span>
-    </span>
-  </HSwitch>
-</template>
-
 <script lang="ts">
-import { computed, toRef, defineComponent } from "vue";
-import type { PropType } from "vue";
-import { Switch as HSwitch, provideUseId } from "@headlessui/vue";
-import { twMerge, twJoin } from "tailwind-merge";
-import { useMeiUI } from "../../composables/use-mei-ui";
+import { computed, defineComponent, toRef } from 'vue'
+import type { PropType } from 'vue'
+import { Switch as HSwitch, provideUseId } from '@headlessui/vue'
+import { twJoin, twMerge } from 'tailwind-merge'
+import { useMeiUI } from '../../composables/use-mei-ui'
 
-import { useFormGroup } from "../../composables/use-form-group";
-import { mergeConfig } from "../../utils";
-import type { ToggleSize, ToggleColor, Strategy } from "../../types";
-import MeiIcon from "./icon.vue";
-// @ts-expect-error
-import appConfig from "#build/app.config";
+import { useFormGroup } from '../../composables/use-form-group'
+import { mergeConfig } from '../../utils'
+import type { Strategy, ToggleColor, ToggleSize } from '../../types'
+import MeiIcon from './icon.vue'
+// @ts-expect-error - no types available
+import appConfig from '#build/app.config'
 
-import { toggle } from "#mei-ui/ui-configs";
-import { useId } from "#imports";
+import { toggle } from '#mei-ui/ui-configs'
+import { useId } from '#imports'
 
 const config = mergeConfig<typeof toggle>(
   appConfig.meiUI.strategy,
   appConfig.meiUI.toggle,
   toggle,
-);
+)
 
 export default defineComponent({
   components: {
@@ -108,19 +64,19 @@ export default defineComponent({
       type: String as PropType<ToggleColor>,
       default: () => config.default.color,
       validator(value: string) {
-        return appConfig.meiUI.colors.includes(value);
+        return appConfig.meiUI.colors.includes(value)
       },
     },
     size: {
       type: String as PropType<ToggleSize>,
       default: () => config.default.size,
       validator(value: string) {
-        return Object.keys(config.size).includes(value);
+        return Object.keys(config.size).includes(value)
       },
     },
     class: {
       type: [String, Object, Array] as PropType<any>,
-      default: () => "",
+      default: () => '',
     },
     ui: {
       type: Object as PropType<
@@ -129,23 +85,23 @@ export default defineComponent({
       default: () => ({}),
     },
   },
-  emits: ["update:modelValue", "change"],
+  emits: ['update:modelValue', 'change'],
   setup(props, { emit }) {
-    const { ui, attrs } = useMeiUI("toggle", toRef(props, "ui"), config);
+    const { ui, attrs } = useMeiUI('toggle', toRef(props, 'ui'), config)
 
-    const { emitFormChange, color, inputId, name } = useFormGroup(props);
+    const { emitFormChange, color, inputId, name } = useFormGroup(props)
 
     const active = computed({
       get() {
-        return props.modelValue;
+        return props.modelValue
       },
       set(value) {
-        emit("update:modelValue", value);
-        emit("change", value);
+        emit('update:modelValue', value)
+        emit('change', value)
 
-        emitFormChange();
+        emitFormChange()
       },
-    });
+    })
 
     const switchClass = computed(() => {
       return twMerge(
@@ -153,16 +109,16 @@ export default defineComponent({
           ui.value.base,
           ui.value.size[props.size],
           ui.value.rounded,
-          color.value && ui.value.ring.replaceAll("{color}", color.value),
-          color.value &&
-            (active.value ? ui.value.active : ui.value.inactive).replaceAll(
-              "{color}",
-              color.value,
-            ),
+          color.value && ui.value.ring.replaceAll('{color}', color.value),
+          color.value
+          && (active.value ? ui.value.active : ui.value.inactive).replaceAll(
+            '{color}',
+            color.value,
+          ),
         ),
         props.class,
-      );
-    });
+      )
+    })
 
     const containerClass = computed(() => {
       return twJoin(
@@ -171,37 +127,37 @@ export default defineComponent({
         active.value
           ? ui.value.container.active[props.size]
           : ui.value.container.inactive,
-      );
-    });
+      )
+    })
 
     const onIconClass = computed(() => {
       return twJoin(
         ui.value.icon.size[props.size],
-        color.value && ui.value.icon.on.replaceAll("{color}", color.value),
-      );
-    });
+        color.value && ui.value.icon.on.replaceAll('{color}', color.value),
+      )
+    })
 
     const offIconClass = computed(() => {
       return twJoin(
         ui.value.icon.size[props.size],
-        color.value && ui.value.icon.off.replaceAll("{color}", color.value),
-      );
-    });
+        color.value && ui.value.icon.off.replaceAll('{color}', color.value),
+      )
+    })
 
     const loadingIconClass = computed(() => {
       return twJoin(
         ui.value.icon.size[props.size],
-        color.value && ui.value.icon.loading.replaceAll("{color}", color.value),
-      );
-    });
+        color.value && ui.value.icon.loading.replaceAll('{color}', color.value),
+      )
+    })
 
-    provideUseId(() => useId());
+    provideUseId(() => useId())
 
     return {
-      // eslint-disable-next-line vue/no-dupe-keys
+
       ui,
       attrs,
-      // eslint-disable-next-line vue/no-dupe-keys
+
       name,
       inputId,
       active,
@@ -210,7 +166,51 @@ export default defineComponent({
       onIconClass,
       offIconClass,
       loadingIconClass,
-    };
+    }
   },
-});
+})
 </script>
+
+<template>
+  <HSwitch
+    :id="inputId"
+    v-model="active"
+    :name="name"
+    :disabled="disabled || loading"
+    :class="switchClass"
+    v-bind="attrs"
+  >
+    <span :class="containerClass">
+      <span
+        v-if="loading"
+        :class="[ui.icon.active, ui.icon.base]"
+        aria-hidden="true"
+      >
+        <MeiIcon
+          :name="loadingIcon"
+          :class="loadingIconClass"
+        />
+      </span>
+      <span
+        v-if="!loading && onIcon"
+        :class="[active ? ui.icon.active : ui.icon.inactive, ui.icon.base]"
+        aria-hidden="true"
+      >
+        <MeiIcon
+          :name="onIcon"
+          :class="onIconClass"
+        />
+      </span>
+      <span
+        v-if="!loading && offIcon"
+        :class="[active ? ui.icon.inactive : ui.icon.active, ui.icon.base]"
+        aria-hidden="true"
+      >
+        <MeiIcon
+          :name="offIcon"
+          :class="offIconClass"
+        />
+      </span>
+    </span>
+  </HSwitch>
+</template>

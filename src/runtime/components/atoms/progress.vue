@@ -1,3 +1,214 @@
+<script lang="ts">
+import { computed, defineComponent, toRef } from 'vue'
+import type { PropType } from 'vue'
+import { twJoin } from 'tailwind-merge'
+import { useMeiUI } from '../../composables/use-mei-ui'
+import { mergeConfig } from '../../utils'
+import type {
+  ProgressAnimation,
+  ProgressColor,
+  ProgressSize,
+  Strategy,
+} from '../../types'
+// @ts-expect-error - no types available
+import appConfig from '#build/app.config'
+import { progress } from '#mei-ui/ui-configs'
+
+const config = mergeConfig<typeof progress>(
+  appConfig.meiUI.strategy,
+  appConfig.meiUI.progress,
+  progress,
+)
+
+export default defineComponent({
+  inheritAttrs: false,
+  props: {
+    value: {
+      type: Number,
+      default: null,
+    },
+    max: {
+      type: [Number, Array<any>],
+      default: 100,
+    },
+    indicator: {
+      type: Boolean,
+      default: false,
+    },
+    animation: {
+      type: String as PropType<ProgressAnimation>,
+      default: () => config.default.animation,
+      validator(value: string) {
+        return Object.keys(config.animation).includes(value)
+      },
+    },
+    size: {
+      type: String as PropType<ProgressSize>,
+      default: () => config.default.size,
+      validator(value: string) {
+        return Object.keys(config.progress.size).includes(value)
+      },
+    },
+    color: {
+      type: String as PropType<ProgressColor>,
+      default: () => config.default.color,
+      validator(value: string) {
+        return appConfig.meiUI.colors.includes(value)
+      },
+    },
+    class: {
+      type: [String, Object, Array] as PropType<any>,
+      default: () => '',
+    },
+    ui: {
+      type: Object as PropType<
+        Partial<typeof config> & { strategy?: Strategy }
+      >,
+      default: () => ({}),
+    },
+  },
+  setup(props) {
+    const { ui, attrs } = useMeiUI(
+      'progress',
+      toRef(props, 'ui'),
+      config,
+      toRef(props, 'class'),
+    )
+
+    const indicatorContainerClass = computed(() => {
+      return twJoin(
+        ui.value.indicator.container.base,
+        ui.value.indicator.container.width,
+        ui.value.indicator.container.transition,
+      )
+    })
+
+    const isIndeterminate = computed(
+      () => props.value === undefined || props.value === null,
+    )
+
+    const indicatorClass = computed(() => {
+      return twJoin(
+        ui.value.indicator.align,
+        ui.value.indicator.width,
+        ui.value.indicator.color,
+        ui.value.indicator.size[props.size],
+      )
+    })
+
+    const progressClass = computed(() => {
+      const classes = [
+        ui.value.progress.base,
+        ui.value.progress.width,
+        ui.value.progress.size[props.size],
+        ui.value.progress.rounded,
+        ui.value.progress.track,
+        ui.value.progress.bar,
+        // Intermediate class to allow thumb ring or background color (set to `current`) as it's impossible to safelist with arbitrary values
+        ui.value.progress.color?.replaceAll('{color}', props.color),
+        ui.value.progress.background,
+        ui.value.progress.indeterminate.base,
+        ui.value.progress.indeterminate.rounded,
+      ]
+
+      if (isIndeterminate.value) {
+        classes.push(ui.value.animation[props.animation])
+      }
+
+      return twJoin(...classes)
+    })
+
+    const stepsClass = computed(() => {
+      return twJoin(
+        ui.value.steps.base,
+        ui.value.steps.color?.replaceAll('{color}', props.color),
+        ui.value.steps.size[props.size],
+      )
+    })
+
+    const stepClass = computed(() => {
+      return twJoin(ui.value.step.base, ui.value.step.align)
+    })
+
+    const stepActiveClass = computed(() => {
+      return twJoin(ui.value.step.active)
+    })
+
+    const stepFirstClass = computed(() => {
+      return twJoin(ui.value.step.first)
+    })
+
+    function isActive(index: number) {
+      return index === Number(props.value)
+    }
+
+    function isFirst(index: number) {
+      return index === 0
+    }
+
+    function stepClasses(index: string | number) {
+      index = Number(index)
+
+      const classes = [stepClass.value]
+
+      if (isFirst(index)) {
+        classes.push(stepFirstClass.value)
+      }
+
+      if (isActive(index)) {
+        classes.push(stepActiveClass.value)
+      }
+
+      return classes.join(' ')
+    }
+
+    const isSteps = computed(() => Array.isArray(props.max))
+
+    const realMax = computed(() => {
+      if (isIndeterminate.value) {
+        return null
+      }
+
+      if (Array.isArray(props.max)) {
+        return props.max.length - 1
+      }
+
+      return Number(props.max)
+    })
+
+    const percent = computed(() => {
+      if (isIndeterminate.value) {
+        return undefined
+      }
+
+      switch (true) {
+        case props.value < 0:
+          return 0
+        case props.value > (realMax.value as number):
+          return 100
+        default:
+          return (props.value / (realMax.value as number)) * 100
+      }
+    })
+
+    return {
+
+      ui,
+      attrs,
+      indicatorContainerClass,
+      indicatorClass,
+      progressClass,
+      stepsClass,
+      stepClasses,
+      isIndeterminate,
+      isSteps,
+      realMax,
+      percent,
+    }
+  },
+})
+</script>
+
 <template>
   <div
     :class="ui.wrapper"
@@ -14,14 +225,14 @@
         :style="{ width: `${percent}%` }"
       >
         <div :class="indicatorClass">
-          {{ Math.round(percent) }}%
+          {{ Math.round(percent!) }}%
         </div>
       </div>
     </slot>
 
     <progress
       :class="progressClass"
-      v-bind="{ value, max: realMax }"
+      v-bind="{ value, max: realMax! }"
     >
       {{ percent !== undefined ? `${Math.round(percent)}%` : undefined }}
     </progress>
@@ -45,216 +256,6 @@
     </div>
   </div>
 </template>
-
-<script lang="ts">
-import { computed, defineComponent, toRef } from "vue";
-import type { PropType } from "vue";
-import { twJoin } from "tailwind-merge";
-import { useMeiUI } from "../../composables/use-mei-ui";
-import { mergeConfig } from "../../utils";
-import type {
-  Strategy,
-  ProgressSize,
-  ProgressAnimation,
-  ProgressColor,
-} from "../../types";
-// @ts-expect-error
-import appConfig from "#build/app.config";
-import { progress } from "#mei-ui/ui-configs";
-
-const config = mergeConfig<typeof progress>(
-  appConfig.meiUI.strategy,
-  appConfig.meiUI.progress,
-  progress
-);
-
-export default defineComponent({
-  inheritAttrs: false,
-  props: {
-    value: {
-      type: Number,
-      default: null,
-    },
-    max: {
-      type: [Number, Array<any>],
-      default: 100,
-    },
-    indicator: {
-      type: Boolean,
-      default: false,
-    },
-    animation: {
-      type: String as PropType<ProgressAnimation>,
-      default: () => config.default.animation,
-      validator(value: string) {
-        return Object.keys(config.animation).includes(value);
-      },
-    },
-    size: {
-      type: String as PropType<ProgressSize>,
-      default: () => config.default.size,
-      validator(value: string) {
-        return Object.keys(config.progress.size).includes(value);
-      },
-    },
-    color: {
-      type: String as PropType<ProgressColor>,
-      default: () => config.default.color,
-      validator(value: string) {
-        return appConfig.meiUI.colors.includes(value);
-      },
-    },
-    class: {
-      type: [String, Object, Array] as PropType<any>,
-      default: () => "",
-    },
-    ui: {
-      type: Object as PropType<
-        Partial<typeof config> & { strategy?: Strategy }
-      >,
-      default: () => ({}),
-    },
-  },
-  setup(props) {
-    const { ui, attrs } = useMeiUI(
-      "progress",
-      toRef(props, "ui"),
-      config,
-      toRef(props, "class")
-    );
-
-    const indicatorContainerClass = computed(() => {
-      return twJoin(
-        ui.value.indicator.container.base,
-        ui.value.indicator.container.width,
-        ui.value.indicator.container.transition
-      );
-    });
-
-    const indicatorClass = computed(() => {
-      return twJoin(
-        ui.value.indicator.align,
-        ui.value.indicator.width,
-        ui.value.indicator.color,
-        ui.value.indicator.size[props.size]
-      );
-    });
-
-    const progressClass = computed(() => {
-      const classes = [
-        ui.value.progress.base,
-        ui.value.progress.width,
-        ui.value.progress.size[props.size],
-        ui.value.progress.rounded,
-        ui.value.progress.track,
-        ui.value.progress.bar,
-        // Intermediate class to allow thumb ring or background color (set to `current`) as it's impossible to safelist with arbitrary values
-        ui.value.progress.color?.replaceAll("{color}", props.color),
-        ui.value.progress.background,
-        ui.value.progress.indeterminate.base,
-        ui.value.progress.indeterminate.rounded,
-      ];
-
-      if (isIndeterminate.value) {
-        classes.push(ui.value.animation[props.animation]);
-      }
-
-      return twJoin(...classes);
-    });
-
-    const stepsClass = computed(() => {
-      return twJoin(
-        ui.value.steps.base,
-        ui.value.steps.color?.replaceAll("{color}", props.color),
-        ui.value.steps.size[props.size]
-      );
-    });
-
-    const stepClass = computed(() => {
-      return twJoin(ui.value.step.base, ui.value.step.align);
-    });
-
-    const stepActiveClass = computed(() => {
-      return twJoin(ui.value.step.active);
-    });
-
-    const stepFirstClass = computed(() => {
-      return twJoin(ui.value.step.first);
-    });
-
-    function isActive(index: number) {
-      return index === Number(props.value);
-    }
-
-    function isFirst(index: number) {
-      return index === 0;
-    }
-
-    function stepClasses(index: string | number) {
-      index = Number(index);
-
-      const classes = [stepClass.value];
-
-      if (isFirst(index)) {
-        classes.push(stepFirstClass.value);
-      }
-
-      if (isActive(index)) {
-        classes.push(stepActiveClass.value);
-      }
-
-      return classes.join(" ");
-    }
-
-    const isIndeterminate = computed(
-      () => props.value === undefined || props.value === null
-    );
-    const isSteps = computed(() => Array.isArray(props.max));
-
-    const realMax = computed(() => {
-      if (isIndeterminate.value) {
-        return null;
-      }
-
-      if (Array.isArray(props.max)) {
-        return props.max.length - 1;
-      }
-
-      return Number(props.max);
-    });
-
-    const percent = computed(() => {
-      if (isIndeterminate.value) {
-        return undefined;
-      }
-
-      switch (true) {
-        case props.value < 0:
-          return 0;
-        case props.value > (realMax.value as number):
-          return 100;
-        default:
-          return (props.value / (realMax.value as number)) * 100;
-      }
-    });
-
-    return {
-      // eslint-disable-next-line vue/no-dupe-keys
-      ui,
-      attrs,
-      indicatorContainerClass,
-      indicatorClass,
-      progressClass,
-      stepsClass,
-      stepClasses,
-      isIndeterminate,
-      isSteps,
-      realMax,
-      percent,
-    };
-  },
-});
-</script>
 
 <style scoped>
 /** These styles are required to animate the bar */

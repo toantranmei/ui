@@ -10,8 +10,8 @@ export default {
       enterTo: 'opacity-100',
       leave: 'ease-in-out duration-500',
       leaveFrom: 'opacity-100',
-      leaveTo: 'opacity-0'
-    }
+      leaveTo: 'opacity-0',
+    },
   },
   base: 'relative flex-1 flex flex-col w-full focus:outline-none',
   background: 'bg-white dark:bg-gray-900',
@@ -26,11 +26,11 @@ export default {
     left: '-translate-x-full rtl:translate-x-full',
     right: 'translate-x-full rtl:-translate-x-full',
     top: '-translate-y-full rtl:translate-y-full',
-    bottom: 'translate-y-full rtl:-translate-y-full'
+    bottom: 'translate-y-full rtl:-translate-y-full',
   },
   // Syntax for `<TransitionRoot>` component https://headlessui.com/vue/transition#basic-example
   transition: {
     enter: 'transform transition ease-in-out duration-300',
-    leave: 'transform transition ease-in-out duration-200'
-  }
+    leave: 'transform transition ease-in-out duration-200',
+  },
 }

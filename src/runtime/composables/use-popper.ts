@@ -1,6 +1,6 @@
-import { ref, onMounted, watchEffect } from 'vue'
+import { onMounted, ref, watchEffect } from 'vue'
 import type { Ref } from 'vue'
-import { popperGenerator, defaultModifiers } from '@popperjs/core/lib/popper-lite'
+import { defaultModifiers, popperGenerator } from '@popperjs/core/lib/popper-lite'
 import type { VirtualElement } from '@popperjs/core/lib/popper-lite'
 import type { Instance } from '@popperjs/core'
 import flip from '@popperjs/core/lib/modifiers/flip'
@@ -14,10 +14,10 @@ import type { MaybeElement } from '@vueuse/core'
 import type { PopperOptions } from '../types/popper'
 
 export const createPopper = popperGenerator({
-  defaultModifiers: [...defaultModifiers, offset, flip, preventOverflow, computeStyles, eventListeners, arrowModifier]
+  defaultModifiers: [...defaultModifiers, offset, flip, preventOverflow, computeStyles, eventListeners, arrowModifier],
 })
 
-export function usePopper ({
+export function usePopper({
   locked = false,
   overflowPadding = 8,
   offsetDistance = 8,
@@ -28,7 +28,7 @@ export function usePopper ({
   resize = true,
   arrow = false,
   placement,
-  strategy
+  strategy,
 }: PopperOptions, virtualReference?: Ref<Element | VirtualElement>) {
   const reference = ref<MaybeElement>(null)
   const popper = ref<MaybeElement>(null)
@@ -50,39 +50,39 @@ export function usePopper ({
         modifiers: [
           {
             name: 'flip',
-            enabled: !locked
+            enabled: !locked,
           },
           {
             name: 'preventOverflow',
             options: {
-              padding: overflowPadding
-            }
+              padding: overflowPadding,
+            },
           },
           {
             name: 'offset',
             options: {
-              offset: [offsetSkid, offsetDistance]
-            }
+              offset: [offsetSkid, offsetDistance],
+            },
           },
           {
             name: 'computeStyles',
             options: {
               adaptive,
-              gpuAcceleration
-            }
+              gpuAcceleration,
+            },
           },
           {
             name: 'eventListeners',
             options: {
               scroll,
-              resize
-            }
+              resize,
+            },
           },
           {
             name: 'arrow',
-            enabled: arrow
-          }
-        ]
+            enabled: arrow,
+          },
+        ],
       }
 
       if (placement) {

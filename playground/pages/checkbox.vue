@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const selected = ref(true);
+const selected = ref(true)
 </script>
 
 <template>

@@ -1,8 +1,8 @@
 import { createSharedComposable, useActiveElement } from '@vueuse/core'
-import { ref, computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import type {} from '@vueuse/shared'
 
-export const _useShortcuts = () => {
+export function _useShortcuts() {
   const macOS = computed(() => import.meta.client && navigator && navigator.userAgent && navigator.userAgent.match(/Macintosh;/))
 
   const metaSymbol = ref(' ')
@@ -29,7 +29,7 @@ export const _useShortcuts = () => {
     macOS,
     metaSymbol,
     activeElement,
-    usingInput
+    usingInput,
   }
 }
 

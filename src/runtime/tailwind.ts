@@ -2,32 +2,31 @@ import { join } from 'pathe'
 import { defu } from 'defu'
 import { addTemplate, createResolver, installModule, useNuxt } from '@nuxt/kit'
 
-import { setGlobalColors } from './utils/colors'
 import type { ModuleOptions } from '../module'
+import { setGlobalColors } from './utils/colors'
 
-export default async function installTailwind (
+export default async function installTailwind(
   moduleOptions: ModuleOptions,
   nuxt = useNuxt(),
-  resolve = createResolver(import.meta.url).resolve
+  resolve = createResolver(import.meta.url).resolve,
 ) {
   const runtimeDir = resolve('./runtime')
 
   // 1. register hook
-  // @ts-ignore
-  nuxt.hook('tailwindcss:config', function (tailwindConfig) {
+  // @ts-expect-error - upper hook
+  nuxt.hook('tailwindcss:config', (tailwindConfig) => {
     tailwindConfig.theme = tailwindConfig.theme || {}
     tailwindConfig.theme.extend = tailwindConfig.theme.extend || {}
-    tailwindConfig.theme.extend.colors =
-      tailwindConfig.theme.extend.colors || {}
+    tailwindConfig.theme.extend.colors
+      = tailwindConfig.theme.extend.colors || {}
 
     const colors = setGlobalColors(tailwindConfig.theme)
 
-    // @ts-ignore
     nuxt.options.appConfig.meiUI = {
       primary: 'purple',
       gray: 'cool',
       colors,
-      strategy: 'merge'
+      strategy: 'merge',
     }
   })
 
@@ -72,7 +71,7 @@ export default async function installTailwind (
         },
         safelist: generateSafelist(${JSON.stringify(moduleOptions.safelistColors || [])}, ${JSON.stringify(nuxt.options.appConfig.meiUI.colors)}),
       }
-    `
+    `,
   })
 
   // 3. install module
@@ -81,8 +80,8 @@ export default async function installTailwind (
     config: { darkMode: 'class' },
     configPath: [
       configTemplate.dst,
-      join(nuxt.options.rootDir, 'tailwind.config')
-    ]
-    // @ts-ignore
+      join(nuxt.options.rootDir, 'tailwind.config'),
+    ],
+    // @ts-expect-error - Typings not available
   }, nuxt.options.tailwindcss))
 }

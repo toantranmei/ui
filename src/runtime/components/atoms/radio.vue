@@ -1,3 +1,142 @@
+<script lang="ts">
+import { computed, defineComponent, inject, toRef } from 'vue'
+import type { PropType } from 'vue'
+import { twJoin, twMerge } from 'tailwind-merge'
+import { useMeiUI } from '../../composables/use-mei-ui'
+
+import { useFormGroup } from '../../composables/use-form-group'
+import { mergeConfig } from '../../utils'
+import type { Strategy } from '../../types'
+// @ts-expect-error - no types available
+import appConfig from '#build/app.config'
+import { radio } from '#mei-ui/ui-configs'
+import type colors from '#mei-ui-colors'
+import { useId } from '#imports'
+
+const config = mergeConfig<typeof radio>(
+  appConfig.meiUI.strategy,
+  appConfig.meiUI.radio,
+  radio,
+)
+
+export default defineComponent({
+  inheritAttrs: false,
+  props: {
+    id: {
+      type: String,
+      default: null,
+    },
+    value: {
+      type: [String, Number, Boolean],
+      default: null,
+    },
+    modelValue: {
+      type: [String, Number, Boolean, Object],
+      default: null,
+    },
+    name: {
+      type: String,
+      default: null,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+    help: {
+      type: String,
+      default: null,
+    },
+    label: {
+      type: String,
+      default: null,
+    },
+    required: {
+      type: Boolean,
+      default: false,
+    },
+    color: {
+      type: String as PropType<(typeof colors)[number]>,
+      default: () => config.default.color,
+      validator(value: string) {
+        return appConfig.meiUI.colors.includes(value)
+      },
+    },
+    inputClass: {
+      type: String,
+      default: null,
+    },
+    class: {
+      type: [String, Object, Array] as PropType<any>,
+      default: () => '',
+    },
+    ui: {
+      type: Object as PropType<
+        Partial<typeof config> & { strategy?: Strategy }
+      >,
+      default: () => ({}),
+    },
+  },
+  emits: ['update:modelValue', 'change'],
+  setup(props, { emit }) {
+    const { ui, attrs } = useMeiUI(
+      'radio',
+      toRef(props, 'ui'),
+      config,
+      toRef(props, 'class'),
+    )
+
+    const inputId = props.id ?? useId()
+
+    const radioGroup = inject('radio-group', null)
+    const { emitFormChange, color, name }
+      = radioGroup ?? useFormGroup(props, config)
+
+    const pick = computed({
+      get() {
+        return props.modelValue
+      },
+      set(value) {
+        emit('update:modelValue', value)
+        if (!radioGroup) {
+          emitFormChange()
+        }
+      },
+    })
+
+    function onChange(event: Event) {
+      emit('change', (event.target as HTMLInputElement).value)
+    }
+
+    const inputClass = computed(() => {
+      return twMerge(
+        twJoin(
+          ui.value.base,
+          ui.value.form,
+          ui.value.background,
+          ui.value.border,
+          color.value && ui.value.ring.replaceAll('{color}', color.value),
+          color.value && ui.value.color.replaceAll('{color}', color.value),
+        ),
+        props.inputClass,
+      )
+    })
+
+    return {
+      inputId,
+
+      ui,
+      attrs,
+      pick,
+
+      name,
+
+      inputClass,
+      onChange,
+    }
+  },
+})
+</script>
+
 <template>
   <div
     :class="ui.wrapper"
@@ -40,142 +179,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts">
-import { computed, defineComponent, inject, toRef } from "vue";
-import type { PropType } from "vue";
-import { twMerge, twJoin } from "tailwind-merge";
-import { useMeiUI } from "../../composables/use-mei-ui";
-
-import { useFormGroup } from "../../composables/use-form-group";
-import { mergeConfig } from "../../utils";
-import type { Strategy } from "../../types";
-// @ts-expect-error
-import appConfig from "#build/app.config";
-import { radio } from "#mei-ui/ui-configs";
-import colors from "#mei-ui-colors";
-import { useId } from "#imports";
-
-const config = mergeConfig<typeof radio>(
-  appConfig.meiUI.strategy,
-  appConfig.meiUI.radio,
-  radio,
-);
-
-export default defineComponent({
-  inheritAttrs: false,
-  props: {
-    id: {
-      type: String,
-      default: null,
-    },
-    value: {
-      type: [String, Number, Boolean],
-      default: null,
-    },
-    modelValue: {
-      type: [String, Number, Boolean, Object],
-      default: null,
-    },
-    name: {
-      type: String,
-      default: null,
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-    help: {
-      type: String,
-      default: null,
-    },
-    label: {
-      type: String,
-      default: null,
-    },
-    required: {
-      type: Boolean,
-      default: false,
-    },
-    color: {
-      type: String as PropType<(typeof colors)[number]>,
-      default: () => config.default.color,
-      validator(value: string) {
-        return appConfig.meiUI.colors.includes(value);
-      },
-    },
-    inputClass: {
-      type: String,
-      default: null,
-    },
-    class: {
-      type: [String, Object, Array] as PropType<any>,
-      default: () => "",
-    },
-    ui: {
-      type: Object as PropType<
-        Partial<typeof config> & { strategy?: Strategy }
-      >,
-      default: () => ({}),
-    },
-  },
-  emits: ["update:modelValue", "change"],
-  setup(props, { emit }) {
-    const { ui, attrs } = useMeiUI(
-      "radio",
-      toRef(props, "ui"),
-      config,
-      toRef(props, "class"),
-    );
-
-    const inputId = props.id ?? useId();
-
-    const radioGroup = inject("radio-group", null);
-    const { emitFormChange, color, name } =
-      radioGroup ?? useFormGroup(props, config);
-
-    const pick = computed({
-      get() {
-        return props.modelValue;
-      },
-      set(value) {
-        emit("update:modelValue", value);
-        if (!radioGroup) {
-          emitFormChange();
-        }
-      },
-    });
-
-    function onChange(event: Event) {
-      emit("change", (event.target as HTMLInputElement).value);
-    }
-
-    const inputClass = computed(() => {
-      return twMerge(
-        twJoin(
-          ui.value.base,
-          ui.value.form,
-          ui.value.background,
-          ui.value.border,
-          color.value && ui.value.ring.replaceAll("{color}", color.value),
-          color.value && ui.value.color.replaceAll("{color}", color.value),
-        ),
-        props.inputClass,
-      );
-    });
-
-    return {
-      inputId,
-      // eslint-disable-next-line vue/no-dupe-keys
-      ui,
-      attrs,
-      pick,
-      // eslint-disable-next-line vue/no-dupe-keys
-      name,
-      // eslint-disable-next-line vue/no-dupe-keys
-      inputClass,
-      onChange,
-    };
-  },
-});
-</script>

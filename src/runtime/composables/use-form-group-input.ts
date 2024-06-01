@@ -1,8 +1,8 @@
-import { inject, ref, computed } from 'vue'
+import { computed, inject, ref } from 'vue'
 import { type UseEventBusReturn, useDebounceFn } from '@vueuse/core'
 import type { FormEvent, FormEventType, InjectedFormGroupValue } from '../types/form'
 
-type InputProps = {
+interface InputProps {
   id?: string
   size?: string | number | symbol
   color?: string
@@ -11,7 +11,7 @@ type InputProps = {
   legend?: string | null
 }
 
-export const useFormGroupInput = (inputProps?: InputProps, config?: any) => {
+export function useFormGroupInput(inputProps?: InputProps, config?: any) {
   const formBus = inject<UseEventBusReturn<FormEvent, string> | undefined>('form-events', undefined)
   const formGroup = inject<InjectedFormGroupValue | undefined>('form-group', undefined)
   const formInputs = inject<any>('form-inputs', undefined)
@@ -29,18 +29,18 @@ export const useFormGroupInput = (inputProps?: InputProps, config?: any) => {
 
   const blurred = ref(false)
 
-  function emitFormEvent (type: FormEventType, path: string) {
+  function emitFormEvent(type: FormEventType, path: string) {
     if (formBus) {
       formBus.emit({ type, path })
     }
   }
 
-  function emitFormBlur () {
+  function emitFormBlur() {
     emitFormEvent('blur', formGroup?.name.value as string)
     blurred.value = true
   }
 
-  function emitFormChange () {
+  function emitFormChange() {
     emitFormEvent('change', formGroup?.name.value as string)
   }
 
@@ -60,6 +60,6 @@ export const useFormGroupInput = (inputProps?: InputProps, config?: any) => {
     color: computed(() => formGroup?.error?.value ? 'red' : inputProps?.color),
     emitFormBlur,
     emitFormInput,
-    emitFormChange
+    emitFormChange,
   }
 }

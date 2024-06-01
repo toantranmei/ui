@@ -1,23 +1,17 @@
-import { computed, toValue, useAttrs } from "vue";
-import type { Ref } from "vue";
-import { mergeConfig, omit, get } from "../utils";
-import type { Strategy } from "../types";
-import { useAppConfig } from "#imports";
+import { computed, toValue, useAttrs } from 'vue'
+import type { Ref } from 'vue'
+import { get, mergeConfig, omit } from '../utils'
+import type { Strategy } from '../types'
+import { useAppConfig } from '#imports'
 
-export const useMeiUI = <T>(
-  key: string | (string | number)[],
-  $ui?: Ref<(Partial<T> & { strategy?: Strategy }) | undefined>,
-  $config?: Ref<T> | T,
-  $wrapperClass?: Ref<string>,
-  withAppConfig: boolean = false,
-) => {
-  const $attrs = useAttrs();
-  const appConfig = useAppConfig();
+export function useMeiUI<T>(key: string | (string | number)[], $ui?: Ref<(Partial<T> & { strategy?: Strategy }) | undefined>, $config?: Ref<T> | T, $wrapperClass?: Ref<string>, withAppConfig: boolean = false) {
+  const $attrs = useAttrs()
+  const appConfig = useAppConfig()
 
   const ui = computed(() => {
-    const _ui = toValue($ui);
-    const _config = toValue($config);
-    const _wrapperClass = toValue($wrapperClass);
+    const _ui = toValue($ui)
+    const _config = toValue($config)
+    const _wrapperClass = toValue($wrapperClass)
 
     return mergeConfig<T>(
       _ui?.strategy || (appConfig.meiUI?.strategy as Strategy),
@@ -27,13 +21,13 @@ export const useMeiUI = <T>(
         ? get(appConfig.meiUI as Record<string, any>, key, {})
         : {},
       _config || {},
-    );
-  });
+    )
+  })
 
-  const attrs = computed(() => omit($attrs, ["class"]));
+  const attrs = computed(() => omit($attrs, ['class']))
 
   return {
     ui,
     attrs,
-  };
-};
+  }
+}

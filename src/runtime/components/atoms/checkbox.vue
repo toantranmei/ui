@@ -1,66 +1,22 @@
-<template>
-  <div
-    :class="ui.wrapper"
-    :data-n-ids="attrs['data-n-ids']"
-  >
-    <div :class="ui.container">
-      <input
-        :id="inputId"
-        v-model="toggle"
-        :name="name"
-        :required="required"
-        :value="value"
-        :disabled="disabled"
-        :indeterminate="indeterminate"
-        type="checkbox"
-        :class="inputClass"
-        v-bind="attrs"
-        @change="onChange"
-      >
-    </div>
-    <div
-      v-if="label || $slots.label"
-      :class="ui.inner"
-    >
-      <label
-        :for="inputId"
-        :class="ui.label"
-      >
-        <slot name="label">{{ label }}</slot>
-        <span
-          v-if="required"
-          :class="ui.required"
-        >*</span>
-      </label>
-      <p
-        v-if="help"
-        :class="ui.help"
-      >
-        {{ help }}
-      </p>
-    </div>
-  </div>
-</template>
-
 <script lang="ts">
-import { computed, toRef, defineComponent } from "vue";
-import type { PropType } from "vue";
-import { twMerge, twJoin } from "tailwind-merge";
-import { useMeiUI } from "../../composables/use-mei-ui";
-import { useFormGroup } from "../../composables/use-form-group";
-import { mergeConfig } from "../../utils";
-import type { Strategy } from "../../types";
-// @ts-expect-error
-import appConfig from "#build/app.config";
-import { checkbox } from "#mei-ui/ui-configs";
-import colors from "#mei-ui-colors";
-import { useId } from "#app";
+import { computed, defineComponent, toRef } from 'vue'
+import type { PropType } from 'vue'
+import { twJoin, twMerge } from 'tailwind-merge'
+import { useMeiUI } from '../../composables/use-mei-ui'
+import { useFormGroup } from '../../composables/use-form-group'
+import { mergeConfig } from '../../utils'
+import type { Strategy } from '../../types'
+// @ts-expect-error - no types available
+import appConfig from '#build/app.config'
+import { checkbox } from '#mei-ui/ui-configs'
+import type colors from '#mei-ui-colors'
+import { useId } from '#app'
 
 const config = mergeConfig<typeof checkbox>(
   appConfig.meiUI.strategy,
   appConfig.meiUI.checkbox,
-  checkbox
-);
+  checkbox,
+)
 
 export default defineComponent({
   inheritAttrs: false,
@@ -105,16 +61,16 @@ export default defineComponent({
       type: String as PropType<(typeof colors)[number]>,
       default: () => config.default.color,
       validator(value: string) {
-        return appConfig.meiUI.colors.includes(value);
+        return appConfig.meiUI.colors.includes(value)
       },
     },
     inputClass: {
       type: String,
-      default: "",
+      default: '',
     },
     class: {
       type: [String, Object, Array] as PropType<any>,
-      default: () => "",
+      default: () => '',
     },
     ui: {
       type: Object as PropType<
@@ -123,36 +79,36 @@ export default defineComponent({
       default: () => ({}),
     },
   },
-  emits: ["update:modelValue", "change"],
+  emits: ['update:modelValue', 'change'],
   setup(props, { emit }) {
     const { ui, attrs } = useMeiUI(
-      "checkbox",
-      toRef(props, "ui"),
+      'checkbox',
+      toRef(props, 'ui'),
       config,
-      toRef(props, "class")
-    );
+      toRef(props, 'class'),
+    )
 
     const {
       emitFormChange,
       color,
       name,
       inputId: _inputId,
-    } = useFormGroup(props);
-    const inputId = _inputId.value ?? useId();
+    } = useFormGroup(props)
+    const inputId = _inputId.value ?? useId()
 
     const toggle = computed({
       get() {
-        return props.modelValue;
+        return props.modelValue
       },
       set(value) {
-        emit("update:modelValue", value);
+        emit('update:modelValue', value)
       },
-    });
+    })
 
     const onChange = (event: Event) => {
-      emit("change", (event.target as HTMLInputElement).checked);
-      emitFormChange();
-    };
+      emit('change', (event.target as HTMLInputElement).checked)
+      emitFormChange()
+    }
 
     const inputClass = computed(() => {
       return twMerge(
@@ -162,25 +118,69 @@ export default defineComponent({
           ui.value.rounded,
           ui.value.background,
           ui.value.border,
-          color.value && ui.value.ring.replaceAll("{color}", color.value),
-          color.value && ui.value.color.replaceAll("{color}", color.value)
+          color.value && ui.value.ring.replaceAll('{color}', color.value),
+          color.value && ui.value.color.replaceAll('{color}', color.value),
         ),
-        props.inputClass
-      );
-    });
+        props.inputClass,
+      )
+    })
 
     return {
-      // eslint-disable-next-line vue/no-dupe-keys
+
       ui,
       attrs,
       toggle,
       inputId,
-      // eslint-disable-next-line vue/no-dupe-keys
+
       name,
-      // eslint-disable-next-line vue/no-dupe-keys
+
       inputClass,
       onChange,
-    };
+    }
   },
-});
+})
 </script>
+
+<template>
+  <div
+    :class="ui.wrapper"
+    :data-n-ids="attrs['data-n-ids']"
+  >
+    <div :class="ui.container">
+      <input
+        :id="inputId"
+        v-model="toggle"
+        :name="name"
+        :required="required"
+        :value="value"
+        :disabled="disabled"
+        :indeterminate="indeterminate"
+        type="checkbox"
+        :class="inputClass"
+        v-bind="attrs"
+        @change="onChange"
+      >
+    </div>
+    <div
+      v-if="label || $slots.label"
+      :class="ui.inner"
+    >
+      <label
+        :for="inputId"
+        :class="ui.label"
+      >
+        <slot name="label">{{ label }}</slot>
+        <span
+          v-if="required"
+          :class="ui.required"
+        >*</span>
+      </label>
+      <p
+        v-if="help"
+        :class="ui.help"
+      >
+        {{ help }}
+      </p>
+    </div>
+  </div>
+</template>

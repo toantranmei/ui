@@ -1,4 +1,105 @@
 <!-- eslint-disable vue/no-v-html -->
+<script lang="ts">
+import { computed, defineComponent } from 'vue'
+import type { PropType } from 'vue'
+import {
+  ComboboxOption as HComboboxOption,
+  provideUseId,
+} from '@headlessui/vue'
+import type { Group } from '../../types'
+import MeiIcon from './icon.vue'
+import MeiAvatar from './avatar.vue'
+import MeiKbd from './kbd.vue'
+import type { commandPalette } from '#mei-ui/ui-configs'
+import { useId } from '#imports'
+
+export default defineComponent({
+  components: {
+    HComboboxOption,
+    MeiIcon,
+    MeiAvatar,
+    MeiKbd,
+  },
+  props: {
+    group: {
+      type: Object as PropType<Group>,
+      required: true,
+    },
+    query: {
+      type: String,
+      default: '',
+    },
+    groupAttribute: {
+      type: String,
+      required: true,
+    },
+    commandAttribute: {
+      type: String,
+      required: true,
+    },
+    selectedIcon: {
+      type: String,
+      required: true,
+    },
+    ui: {
+      type: Object as PropType<typeof commandPalette>,
+      required: true,
+    },
+  },
+  setup(props) {
+    const label = computed(() => {
+      const label = props.group[props.groupAttribute]
+
+      return typeof label === 'function' ? label(props.query) : label
+    })
+
+    function highlight(
+      text: string,
+      { indices, value }: { indices: number[][], value: string },
+    ): string {
+      if (text === value) {
+        return ''
+      }
+
+      let content = ''
+      let nextUnhighlightedIndiceStartingIndex = 0
+
+      indices.forEach((indice) => {
+        const lastIndiceNextIndex = indice[1] + 1
+        const isMatched = lastIndiceNextIndex - indice[0] >= props.query.length
+
+        content += [
+          value.substring(nextUnhighlightedIndiceStartingIndex, indice[0]),
+          isMatched && '<mark>',
+          value.substring(indice[0], lastIndiceNextIndex),
+          isMatched && '</mark>',
+        ]
+          .filter(Boolean)
+          .join('')
+
+        nextUnhighlightedIndiceStartingIndex = lastIndiceNextIndex
+      })
+
+      content += value.substring(nextUnhighlightedIndiceStartingIndex)
+
+      const index = content.indexOf('<mark>')
+      if (index > 60) {
+        content = `...${content.substring(index - 60)}`
+      }
+
+      return content
+    }
+
+    provideUseId(() => useId())
+
+    return {
+      label,
+      highlight,
+    }
+  },
+})
+</script>
+
 <template>
   <div :class="ui.group.wrapper">
     <h2
@@ -159,107 +260,6 @@
     </div>
   </div>
 </template>
-
-<script lang="ts">
-import { computed, defineComponent } from "vue";
-import type { PropType } from "vue";
-import {
-  ComboboxOption as HComboboxOption,
-  provideUseId,
-} from "@headlessui/vue";
-import MeiIcon from "./icon.vue";
-import MeiAvatar from "./avatar.vue";
-import MeiKbd from "./kbd.vue";
-import type { Group } from "../../types";
-import { commandPalette } from "#mei-ui/ui-configs";
-import { useId } from "#imports";
-
-export default defineComponent({
-  components: {
-    HComboboxOption,
-    MeiIcon,
-    MeiAvatar,
-    MeiKbd,
-  },
-  props: {
-    group: {
-      type: Object as PropType<Group>,
-      required: true,
-    },
-    query: {
-      type: String,
-      default: "",
-    },
-    groupAttribute: {
-      type: String,
-      required: true,
-    },
-    commandAttribute: {
-      type: String,
-      required: true,
-    },
-    selectedIcon: {
-      type: String,
-      required: true,
-    },
-    ui: {
-      type: Object as PropType<typeof commandPalette>,
-      required: true,
-    },
-  },
-  setup(props) {
-    const label = computed(() => {
-      const label = props.group[props.groupAttribute];
-
-      return typeof label === "function" ? label(props.query) : label;
-    });
-
-    function highlight(
-      text: string,
-      { indices, value }: { indices: number[][]; value: string }
-    ): string {
-      if (text === value) {
-        return "";
-      }
-
-      let content = "";
-      let nextUnhighlightedIndiceStartingIndex = 0;
-
-      indices.forEach((indice) => {
-        const lastIndiceNextIndex = indice[1] + 1;
-        const isMatched = lastIndiceNextIndex - indice[0] >= props.query.length;
-
-        content += [
-          value.substring(nextUnhighlightedIndiceStartingIndex, indice[0]),
-          isMatched && "<mark>",
-          value.substring(indice[0], lastIndiceNextIndex),
-          isMatched && "</mark>",
-        ]
-          .filter(Boolean)
-          .join("");
-
-        nextUnhighlightedIndiceStartingIndex = lastIndiceNextIndex;
-      });
-
-      content += value.substring(nextUnhighlightedIndiceStartingIndex);
-
-      const index = content.indexOf("<mark>");
-      if (index > 60) {
-        content = `...${content.substring(index - 60)}`;
-      }
-
-      return content;
-    }
-
-    provideUseId(() => useId());
-
-    return {
-      label,
-      highlight,
-    };
-  },
-});
-</script>
 
 <style>
 mark {

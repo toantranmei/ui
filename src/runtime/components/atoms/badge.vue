@@ -1,34 +1,25 @@
-<template>
-  <span
-    :class="badgeClass"
-    v-bind="attrs"
-  >
-    <slot>{{ label }}</slot>
-  </span>
-</template>
-
 <script lang="ts">
-import { computed, toRef, defineComponent } from "vue";
-import type { PropType } from "vue";
-import { twMerge, twJoin } from "tailwind-merge";
-import { useMeiUI } from "../../composables/use-mei-ui";
-import { mergeConfig } from "../../utils";
-import { useInjectButtonGroup } from "../../composables/use-button-group";
+import { computed, defineComponent, toRef } from 'vue'
+import type { PropType } from 'vue'
+import { twJoin, twMerge } from 'tailwind-merge'
+import { useMeiUI } from '../../composables/use-mei-ui'
+import { mergeConfig } from '../../utils'
+import { useInjectButtonGroup } from '../../composables/use-button-group'
 import type {
   BadgeColor,
   BadgeSize,
   BadgeVariant,
   Strategy,
-} from "../../types";
-// @ts-expect-error
-import appConfig from "#build/app.config";
-import { badge } from "#mei-ui/ui-configs";
+} from '../../types'
+// @ts-expect-error - no types available
+import appConfig from '#build/app.config'
+import { badge } from '#mei-ui/ui-configs'
 
 const config = mergeConfig<typeof badge>(
   appConfig.meiUI.strategy,
   appConfig.meiUI.badge,
-  badge
-);
+  badge,
+)
 
 export default defineComponent({
   inheritAttrs: false,
@@ -37,7 +28,7 @@ export default defineComponent({
       type: String as PropType<BadgeSize>,
       default: () => config.default.size,
       validator(value: string) {
-        return Object.keys(config.size).includes(value);
+        return Object.keys(config.size).includes(value)
       },
     },
     color: {
@@ -47,7 +38,7 @@ export default defineComponent({
         return [
           ...appConfig.meiUI.colors,
           ...Object.keys(config.color),
-        ].includes(value);
+        ].includes(value)
       },
     },
     variant: {
@@ -56,8 +47,8 @@ export default defineComponent({
       validator(value: string) {
         return [
           ...Object.keys(config.variant),
-          ...Object.values(config.color).flatMap((value) => Object.keys(value)),
-        ].includes(value);
+          ...Object.values(config.color).flatMap(value => Object.keys(value)),
+        ].includes(value)
       },
     },
     label: {
@@ -66,7 +57,7 @@ export default defineComponent({
     },
     class: {
       type: [String, Object, Array] as PropType<any>,
-      default: () => "",
+      default: () => '',
     },
     ui: {
       type: Object as PropType<
@@ -76,14 +67,14 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const { ui, attrs } = useMeiUI("badge", toRef(props, "ui"), config);
+    const { ui, attrs } = useMeiUI('badge', toRef(props, 'ui'), config)
 
-    const { size, rounded } = useInjectButtonGroup({ ui, props });
+    const { size, rounded } = useInjectButtonGroup({ ui, props })
 
     const badgeClass = computed(() => {
-      const variant =
-        ui.value.color?.[props.color as string]?.[props.variant as string] ||
-        ui.value.variant[props.variant];
+      const variant
+        = ui.value.color?.[props.color as string]?.[props.variant as string]
+        || ui.value.variant[props.variant]
 
       return twMerge(
         twJoin(
@@ -91,16 +82,25 @@ export default defineComponent({
           ui.value.font,
           rounded.value,
           ui.value.size[size.value],
-          variant?.replaceAll("{color}", props.color)
+          variant?.replaceAll('{color}', props.color),
         ),
-        props.class
-      );
-    });
+        props.class,
+      )
+    })
 
     return {
       attrs,
       badgeClass,
-    };
+    }
   },
-});
+})
 </script>
+
+<template>
+  <span
+    :class="badgeClass"
+    v-bind="attrs"
+  >
+    <slot>{{ label }}</slot>
+  </span>
+</template>

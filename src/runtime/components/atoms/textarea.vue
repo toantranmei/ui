@@ -1,63 +1,41 @@
-<template>
-  <div :class="ui.wrapper">
-    <textarea
-      :id="inputId"
-      ref="textarea"
-      :value="modelValue"
-      :name="name"
-      :rows="rows"
-      :required="required"
-      :disabled="disabled"
-      :placeholder="placeholder"
-      :class="textareaClass"
-      v-bind="attrs"
-      @input="onInput"
-      @blur="onBlur"
-      @change="onChange"
-    />
-
-    <slot />
-  </div>
-</template>
-
 <script lang="ts">
 import {
-  ref,
   computed,
+  defineComponent,
+  nextTick,
+  onMounted,
+  ref,
   toRef,
   watch,
-  onMounted,
-  nextTick,
-  defineComponent,
-} from "vue";
-import type { PropType } from "vue";
-import { twMerge, twJoin } from "tailwind-merge";
-import { defu } from "defu";
-import { useMeiUI } from "../../composables/use-mei-ui";
-import { useFormGroup } from "../../composables/use-form-group";
-import { mergeConfig, looseToNumber } from "../../utils";
+} from 'vue'
+import type { PropType } from 'vue'
+import { twJoin, twMerge } from 'tailwind-merge'
+import { defu } from 'defu'
+import { useMeiUI } from '../../composables/use-mei-ui'
+import { useFormGroup } from '../../composables/use-form-group'
+import { looseToNumber, mergeConfig } from '../../utils'
 import type {
-  TextareaSize,
-  TextareaColor,
-  TextareaVariant,
   Strategy,
-} from "../../types";
-// @ts-expect-error
-import appConfig from "#build/app.config";
-import { textarea } from "#mei-ui/ui-configs";
+  TextareaColor,
+  TextareaSize,
+  TextareaVariant,
+} from '../../types'
+// @ts-expect-error - no types available
+import appConfig from '#build/app.config'
+import { textarea } from '#mei-ui/ui-configs'
 
 const config = mergeConfig<typeof textarea>(
   appConfig.meiUI.strategy,
   appConfig.meiUI.textarea,
-  textarea
-);
+  textarea,
+)
 
 export default defineComponent({
   inheritAttrs: false,
   props: {
     modelValue: {
       type: [String, Number],
-      default: "",
+      default: '',
     },
     id: {
       type: String,
@@ -111,7 +89,7 @@ export default defineComponent({
       type: String as PropType<TextareaSize>,
       default: null,
       validator(value: string) {
-        return Object.keys(config.size).includes(value);
+        return Object.keys(config.size).includes(value)
       },
     },
     color: {
@@ -121,7 +99,7 @@ export default defineComponent({
         return [
           ...appConfig.meiUI.colors,
           ...Object.keys(config.color),
-        ].includes(value);
+        ].includes(value)
       },
     },
     variant: {
@@ -130,8 +108,8 @@ export default defineComponent({
       validator(value: string) {
         return [
           ...Object.keys(config.variant),
-          ...Object.values(config.color).flatMap((value) => Object.keys(value)),
-        ].includes(value);
+          ...Object.values(config.color).flatMap(value => Object.keys(value)),
+        ].includes(value)
       },
     },
     textareaClass: {
@@ -140,7 +118,7 @@ export default defineComponent({
     },
     class: {
       type: [String, Object, Array] as PropType<any>,
-      default: () => "",
+      default: () => '',
     },
     ui: {
       type: Object as PropType<
@@ -150,129 +128,129 @@ export default defineComponent({
     },
     modelModifiers: {
       type: Object as PropType<{
-        trim?: boolean;
-        lazy?: boolean;
-        number?: boolean;
+        trim?: boolean
+        lazy?: boolean
+        number?: boolean
       }>,
       default: () => ({}),
     },
   },
-  emits: ["update:modelValue", "blur", "change"],
+  emits: ['update:modelValue', 'blur', 'change'],
   setup(props, { emit }) {
     const { ui, attrs } = useMeiUI(
-      "textarea",
-      toRef(props, "ui"),
+      'textarea',
+      toRef(props, 'ui'),
       config,
-      toRef(props, "class")
-    );
+      toRef(props, 'class'),
+    )
 
-    const { emitFormBlur, emitFormInput, inputId, color, size, name } =
-      useFormGroup(props, config);
+    const { emitFormBlur, emitFormInput, inputId, color, size, name }
+      = useFormGroup(props, config)
 
     const modelModifiers = ref(
       defu({}, props.modelModifiers, {
         trim: false,
         lazy: false,
         number: false,
-      })
-    );
+      }),
+    )
 
-    const textarea = ref<HTMLTextAreaElement | null>(null);
+    const textarea = ref<HTMLTextAreaElement | null>(null)
 
     const autoFocus = () => {
       if (props.autofocus) {
-        textarea.value?.focus();
+        textarea.value?.focus()
       }
-    };
+    }
 
     const autoResize = () => {
       if (props.autoresize) {
         if (!textarea.value) {
-          return;
+          return
         }
 
-        textarea.value.rows = props.rows;
+        textarea.value.rows = props.rows
 
-        const styles = window.getComputedStyle(textarea.value);
-        const paddingTop = parseInt(styles.paddingTop);
-        const paddingBottom = parseInt(styles.paddingBottom);
-        const padding = paddingTop + paddingBottom;
-        const lineHeight = parseInt(styles.lineHeight);
-        const { scrollHeight } = textarea.value;
-        const newRows = (scrollHeight - padding) / lineHeight;
+        const styles = window.getComputedStyle(textarea.value)
+        const paddingTop = Number.parseInt(styles.paddingTop)
+        const paddingBottom = Number.parseInt(styles.paddingBottom)
+        const padding = paddingTop + paddingBottom
+        const lineHeight = Number.parseInt(styles.lineHeight)
+        const { scrollHeight } = textarea.value
+        const newRows = (scrollHeight - padding) / lineHeight
 
         if (newRows > props.rows) {
           textarea.value.rows = props.maxrows
             ? Math.min(newRows, props.maxrows)
-            : newRows;
+            : newRows
         }
       }
-    };
+    }
 
     // Custom function to handle the v-model properties
     const updateInput = (value: string) => {
       if (modelModifiers.value.trim) {
-        value = value.trim();
+        value = value.trim()
       }
 
       if (modelModifiers.value.number) {
-        value = looseToNumber(value);
+        value = looseToNumber(value)
       }
 
-      emit("update:modelValue", value);
-      emitFormInput();
-    };
+      emit('update:modelValue', value)
+      emitFormInput()
+    }
 
     const onInput = (event: Event) => {
-      autoResize();
+      autoResize()
       if (!modelModifiers.value.lazy) {
-        updateInput((event.target as HTMLInputElement).value);
+        updateInput((event.target as HTMLInputElement).value)
       }
-    };
+    }
 
     const onChange = (event: Event) => {
-      const value = (event.target as HTMLInputElement).value;
-      emit("change", value);
+      const value = (event.target as HTMLInputElement).value
+      emit('change', value)
 
       if (modelModifiers.value.lazy) {
-        updateInput(value);
+        updateInput(value)
       }
 
       // Update trimmed input so that it has same behavior as native input
       if (modelModifiers.value.trim) {
-        (event.target as HTMLInputElement).value = value.trim();
+        (event.target as HTMLInputElement).value = value.trim()
       }
-    };
+    }
 
     const onBlur = (event: FocusEvent) => {
-      emit("blur", event);
-      emitFormBlur();
-    };
+      emit('blur', event)
+      emitFormBlur()
+    }
 
     onMounted(() => {
       setTimeout(() => {
-        autoFocus();
-      }, props.autofocusDelay);
-    });
+        autoFocus()
+      }, props.autofocusDelay)
+    })
 
     watch(
       () => props.modelValue,
       () => {
-        nextTick(autoResize);
-      }
-    );
+        nextTick(autoResize)
+      },
+    )
 
     onMounted(() => {
       setTimeout(() => {
-        autoFocus();
-        autoResize();
-      }, 100);
-    });
+        autoFocus()
+        autoResize()
+      }, 100)
+    })
 
     const textareaClass = computed(() => {
-      const variant =
-        ui.value.color?.[color.value as string]?.[props.variant as string] ||
-        ui.value.variant[props.variant];
+      const variant
+        = ui.value.color?.[color.value as string]?.[props.variant as string]
+        || ui.value.variant[props.variant]
 
       return twMerge(
         twJoin(
@@ -281,28 +259,50 @@ export default defineComponent({
           ui.value.rounded,
           ui.value.placeholder,
           ui.value.size[size.value],
-          props.padded ? ui.value.padding[size.value] : "p-0",
-          variant?.replaceAll("{color}", color.value),
-          !props.resize && "resize-none"
+          props.padded ? ui.value.padding[size.value] : 'p-0',
+          variant?.replaceAll('{color}', color.value),
+          !props.resize && 'resize-none',
         ),
-        props.textareaClass
-      );
-    });
+        props.textareaClass,
+      )
+    })
 
     return {
-      // eslint-disable-next-line vue/no-dupe-keys
+
       ui,
       attrs,
-      // eslint-disable-next-line vue/no-dupe-keys
+
       name,
       inputId,
       textarea,
-      // eslint-disable-next-line vue/no-dupe-keys
+
       textareaClass,
       onInput,
       onChange,
       onBlur,
-    };
+    }
   },
-});
+})
 </script>
+
+<template>
+  <div :class="ui.wrapper">
+    <textarea
+      :id="inputId"
+      ref="textarea"
+      :value="modelValue"
+      :name="name"
+      :rows="rows"
+      :required="required"
+      :disabled="disabled"
+      :placeholder="placeholder"
+      :class="textareaClass"
+      v-bind="attrs"
+      @input="onInput"
+      @blur="onBlur"
+      @change="onChange"
+    />
+
+    <slot />
+  </div>
+</template>

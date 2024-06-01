@@ -2,13 +2,13 @@ export function omit<T extends Record<string, any>, K extends keyof T>(
   object: T,
   keysToOmit: K[] | any[],
 ): Pick<T, Exclude<keyof T, K>> {
-  const result = { ...object };
+  const result = { ...object }
 
   for (const key of keysToOmit) {
-    delete result[key];
+    delete result[key]
   }
 
-  return result;
+  return result
 }
 
 export function get(
@@ -16,22 +16,22 @@ export function get(
   path: (string | number)[] | string,
   defaultValue?: any,
 ): any {
-  if (typeof path === "string") {
-    path = path.split(".").map((key) => {
-      const numKey = Number(key);
-      return isNaN(numKey) ? key : numKey;
-    });
+  if (typeof path === 'string') {
+    path = path.split('.').map((key) => {
+      const numKey = Number(key)
+      return Number.isNaN(numKey) ? key : numKey
+    })
   }
 
-  let result: any = object;
+  let result: any = object
 
   for (const key of path) {
     if (result === undefined || result === null) {
-      return defaultValue;
+      return defaultValue
     }
 
-    result = result[key];
+    result = result[key]
   }
 
-  return result !== undefined ? result : defaultValue;
+  return result !== undefined ? result : defaultValue
 }

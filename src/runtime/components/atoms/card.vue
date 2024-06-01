@@ -1,3 +1,56 @@
+<script lang="ts">
+import { computed, defineComponent, toRef } from 'vue'
+import type { PropType } from 'vue'
+import { twJoin, twMerge } from 'tailwind-merge'
+import { useMeiUI } from '../../composables/use-mei-ui'
+import { mergeConfig } from '../../utils'
+import type { Strategy } from '../../types'
+// @ts-expect-error - no types available
+import appConfig from '#build/app.config'
+import { card } from '#mei-ui/ui-configs'
+
+const config = mergeConfig<typeof card>(appConfig.meiUI.strategy, appConfig.meiUI.card, card)
+
+export default defineComponent({
+  inheritAttrs: false,
+  props: {
+    as: {
+      type: String,
+      default: 'div',
+    },
+    class: {
+      type: [String, Object, Array] as PropType<any>,
+      default: () => '',
+    },
+    ui: {
+      type: Object as PropType<Partial<typeof config> & { strategy?: Strategy }>,
+      default: () => ({}),
+    },
+  },
+  setup(props) {
+    const { ui, attrs } = useMeiUI('card', toRef(props, 'ui'), config)
+
+    const cardClass = computed(() => {
+      return twMerge(twJoin(
+        ui.value.base,
+        ui.value.rounded,
+        ui.value.divide,
+        ui.value.ring,
+        ui.value.shadow,
+        ui.value.background,
+      ), props.class)
+    })
+
+    return {
+
+      ui,
+      attrs,
+      cardClass,
+    }
+  },
+})
+</script>
+
 <template>
   <component
     :is="$attrs.onSubmit ? 'form' : as"
@@ -24,56 +77,3 @@
     </div>
   </component>
 </template>
-
-<script lang="ts">
-import { computed, toRef, defineComponent } from 'vue'
-import type { PropType } from 'vue'
-import { twMerge, twJoin } from 'tailwind-merge'
-import { useMeiUI } from "../../composables/use-mei-ui";
-import { mergeConfig } from '../../utils'
-import type { Strategy } from '../../types'
-// @ts-expect-error
-import appConfig from '#build/app.config'
-import { card } from '#mei-ui/ui-configs'
-
-const config = mergeConfig<typeof card>(appConfig.meiUI.strategy, appConfig.meiUI.card, card)
-
-export default defineComponent({
-  inheritAttrs: false,
-  props: {
-    as: {
-      type: String,
-      default: 'div'
-    },
-    class: {
-      type: [String, Object, Array] as PropType<any>,
-      default: () => ''
-    },
-    ui: {
-      type: Object as PropType<Partial<typeof config> & { strategy?: Strategy }>,
-      default: () => ({})
-    }
-  },
-  setup (props) {
-    const { ui, attrs } = useMeiUI('card', toRef(props, 'ui'), config)
-
-    const cardClass = computed(() => {
-      return twMerge(twJoin(
-        ui.value.base,
-        ui.value.rounded,
-        ui.value.divide,
-        ui.value.ring,
-        ui.value.shadow,
-        ui.value.background
-      ), props.class)
-    })
-
-    return {
-      // eslint-disable-next-line vue/no-dupe-keys
-      ui,
-      attrs,
-      cardClass
-    }
-  }
-})
-</script>

@@ -1,3 +1,222 @@
+<script lang="ts">
+import {
+  computed,
+  defineComponent,
+  onMounted,
+  onUnmounted,
+  ref,
+  toRef,
+  watch,
+  watchEffect,
+} from 'vue'
+import type { PropType } from 'vue'
+import { twJoin, twMerge } from 'tailwind-merge'
+import { useMeiUI } from '../../composables/use-mei-ui'
+import { useTimer } from '../../composables/use-timer'
+import { mergeConfig } from '../../utils'
+import type {
+  Avatar,
+  Button,
+  NotificationAction,
+  NotificationColor,
+  Strategy,
+} from '../../types'
+import MeiAvatar from './avatar.vue'
+import MeiButton from './button.vue'
+import MeiIcon from './icon.vue'
+// @ts-expect-error - no types available
+import appConfig from '#build/app.config'
+import { notification } from '#mei-ui/ui-configs'
+
+const config = mergeConfig<typeof notification>(
+  appConfig.meiUI.strategy,
+  appConfig.meiUI.notification,
+  notification,
+)
+
+export default defineComponent({
+  components: {
+    MeiIcon,
+    MeiAvatar,
+    MeiButton,
+  },
+  inheritAttrs: false,
+  props: {
+    id: {
+      type: [String, Number],
+      required: true,
+    },
+    title: {
+      type: String,
+      default: null,
+    },
+    description: {
+      type: String,
+      default: null,
+    },
+    icon: {
+      type: String,
+      default: () => config.default.icon,
+    },
+    avatar: {
+      type: Object as PropType<Avatar>,
+      default: null,
+    },
+    closeButton: {
+      type: Object as PropType<Button>,
+      default: () => config.default.closeButton as Button,
+    },
+    timeout: {
+      type: Number,
+      default: () => config.default.timeout,
+    },
+    actions: {
+      type: Array as PropType<NotificationAction[]>,
+      default: () => [],
+    },
+    callback: {
+      type: Function,
+      default: null,
+    },
+    color: {
+      type: String as PropType<NotificationColor>,
+      default: () => config.default.color,
+      validator(value: string) {
+        return ['gray', ...appConfig.meiUI.colors].includes(value)
+      },
+    },
+    class: {
+      type: [String, Object, Array] as PropType<any>,
+      default: () => '',
+    },
+    ui: {
+      type: Object as PropType<
+        Partial<typeof config> & { strategy?: Strategy }
+      >,
+      default: () => ({}),
+    },
+  },
+  emits: ['close'],
+  setup(props, { emit }) {
+    const { ui, attrs } = useMeiUI('notification', toRef(props, 'ui'), config)
+
+    let timer: null | ReturnType<typeof useTimer> = null
+    const remaining = ref(props.timeout)
+
+    const wrapperClass = computed(() => {
+      return twMerge(
+        twJoin(
+          ui.value.wrapper,
+          ui.value.background?.replaceAll('{color}', props.color),
+          ui.value.rounded,
+          ui.value.shadow,
+        ),
+        props.class,
+      )
+    })
+
+    const progressClass = computed(() => {
+      return twJoin(
+        ui.value.progress.base,
+        ui.value.progress.background?.replaceAll('{color}', props.color),
+      )
+    })
+
+    const progressStyle = computed(() => {
+      const remainingPercent = (remaining.value / props.timeout) * 100
+
+      return { width: `${remainingPercent || 0}%` }
+    })
+
+    const iconClass = computed(() => {
+      return twJoin(
+        ui.value.icon.base,
+        ui.value.icon.color?.replaceAll('{color}', props.color),
+      )
+    })
+
+    function onMouseover() {
+      if (timer) {
+        timer.pause()
+      }
+    }
+
+    function onMouseleave() {
+      if (timer) {
+        timer.resume()
+      }
+    }
+
+    function onClose() {
+      if (timer) {
+        timer.stop()
+      }
+
+      if (props.callback) {
+        props.callback()
+      }
+
+      emit('close')
+    }
+
+    function onAction(action: NotificationAction) {
+      if (timer) {
+        timer.stop()
+      }
+
+      if (action.click) {
+        action.click()
+      }
+
+      emit('close')
+    }
+
+    function initTimer() {
+      if (timer) {
+        timer.stop()
+      }
+
+      if (!props.timeout) {
+        return
+      }
+
+      timer = useTimer(() => {
+        onClose()
+      }, props.timeout)
+
+      watchEffect(() => {
+        remaining.value = timer?.remaining.value ?? 0
+      })
+    }
+
+    watch(() => props.timeout, initTimer)
+
+    onMounted(initTimer)
+
+    onUnmounted(() => {
+      if (timer) {
+        timer.stop()
+      }
+    })
+
+    return {
+
+      ui,
+      attrs,
+      wrapperClass,
+      progressClass,
+      progressStyle,
+      iconClass,
+      onMouseover,
+      onMouseleave,
+      onClose,
+      onAction,
+      twMerge,
+    }
+  },
+})
+</script>
+
 <template>
   <Transition
     appear
@@ -50,7 +269,7 @@
               :class="
                 twMerge(
                   ui.description,
-                  !(title && $slots.title) && 'mt-0 leading-5'
+                  !(title && $slots.title) && 'mt-0 leading-5',
                 )
               "
             >
@@ -76,8 +295,8 @@
           </div>
           <div
             v-if="
-              closeButton ||
-                (!description && !$slots.description && actions.length)
+              closeButton
+                || (!description && !$slots.description && actions.length)
             "
             :class="twMerge(ui.actions, 'mt-0')"
           >
@@ -109,222 +328,3 @@
     </div>
   </Transition>
 </template>
-
-<script lang="ts">
-import {
-  ref,
-  computed,
-  toRef,
-  onMounted,
-  onUnmounted,
-  watch,
-  watchEffect,
-  defineComponent,
-} from "vue";
-import type { PropType } from "vue";
-import { twMerge, twJoin } from "tailwind-merge";
-import MeiIcon from "./icon.vue";
-import MeiAvatar from "./avatar.vue";
-import MeiButton from "./button.vue";
-import { useMeiUI } from "../../composables/use-mei-ui";
-import { useTimer } from "../../composables/use-timer";
-import { mergeConfig } from "../../utils";
-import type {
-  Avatar,
-  Button,
-  NotificationColor,
-  NotificationAction,
-  Strategy,
-} from "../../types";
-// @ts-expect-error
-import appConfig from "#build/app.config";
-import { notification } from "#mei-ui/ui-configs";
-
-const config = mergeConfig<typeof notification>(
-  appConfig.meiUI.strategy,
-  appConfig.meiUI.notification,
-  notification
-);
-
-export default defineComponent({
-  components: {
-    MeiIcon,
-    MeiAvatar,
-    MeiButton,
-  },
-  inheritAttrs: false,
-  props: {
-    id: {
-      type: [String, Number],
-      required: true,
-    },
-    title: {
-      type: String,
-      default: null,
-    },
-    description: {
-      type: String,
-      default: null,
-    },
-    icon: {
-      type: String,
-      default: () => config.default.icon,
-    },
-    avatar: {
-      type: Object as PropType<Avatar>,
-      default: null,
-    },
-    closeButton: {
-      type: Object as PropType<Button>,
-      default: () => config.default.closeButton as Button,
-    },
-    timeout: {
-      type: Number,
-      default: () => config.default.timeout,
-    },
-    actions: {
-      type: Array as PropType<NotificationAction[]>,
-      default: () => [],
-    },
-    callback: {
-      type: Function,
-      default: null,
-    },
-    color: {
-      type: String as PropType<NotificationColor>,
-      default: () => config.default.color,
-      validator(value: string) {
-        return ["gray", ...appConfig.meiUI.colors].includes(value);
-      },
-    },
-    class: {
-      type: [String, Object, Array] as PropType<any>,
-      default: () => "",
-    },
-    ui: {
-      type: Object as PropType<
-        Partial<typeof config> & { strategy?: Strategy }
-      >,
-      default: () => ({}),
-    },
-  },
-  emits: ["close"],
-  setup(props, { emit }) {
-    const { ui, attrs } = useMeiUI("notification", toRef(props, "ui"), config);
-
-    let timer: null | ReturnType<typeof useTimer> = null;
-    const remaining = ref(props.timeout);
-
-    const wrapperClass = computed(() => {
-      return twMerge(
-        twJoin(
-          ui.value.wrapper,
-          ui.value.background?.replaceAll("{color}", props.color),
-          ui.value.rounded,
-          ui.value.shadow
-        ),
-        props.class
-      );
-    });
-
-    const progressClass = computed(() => {
-      return twJoin(
-        ui.value.progress.base,
-        ui.value.progress.background?.replaceAll("{color}", props.color)
-      );
-    });
-
-    const progressStyle = computed(() => {
-      const remainingPercent = (remaining.value / props.timeout) * 100;
-
-      return { width: `${remainingPercent || 0}%` };
-    });
-
-    const iconClass = computed(() => {
-      return twJoin(
-        ui.value.icon.base,
-        ui.value.icon.color?.replaceAll("{color}", props.color)
-      );
-    });
-
-    function onMouseover() {
-      if (timer) {
-        timer.pause();
-      }
-    }
-
-    function onMouseleave() {
-      if (timer) {
-        timer.resume();
-      }
-    }
-
-    function onClose() {
-      if (timer) {
-        timer.stop();
-      }
-
-      if (props.callback) {
-        props.callback();
-      }
-
-      emit("close");
-    }
-
-    function onAction(action: NotificationAction) {
-      if (timer) {
-        timer.stop();
-      }
-
-      if (action.click) {
-        action.click();
-      }
-
-      emit("close");
-    }
-
-    function initTimer() {
-      if (timer) {
-        timer.stop();
-      }
-
-      if (!props.timeout) {
-        return;
-      }
-
-      timer = useTimer(() => {
-        onClose();
-      }, props.timeout);
-
-      watchEffect(() => {
-        remaining.value = timer.remaining.value;
-      });
-    }
-
-    watch(() => props.timeout, initTimer);
-
-    onMounted(initTimer);
-
-    onUnmounted(() => {
-      if (timer) {
-        timer.stop();
-      }
-    });
-
-    return {
-      // eslint-disable-next-line vue/no-dupe-keys
-      ui,
-      attrs,
-      wrapperClass,
-      progressClass,
-      progressStyle,
-      iconClass,
-      onMouseover,
-      onMouseleave,
-      onClose,
-      onAction,
-      twMerge,
-    };
-  },
-});
-</script>

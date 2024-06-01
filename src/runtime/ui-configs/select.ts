@@ -9,6 +9,6 @@ export default {
     color: 'white',
     variant: 'outline',
     loadingIcon: 'i-heroicons-arrow-path-20-solid',
-    trailingIcon: 'i-heroicons-chevron-down-20-solid'
-  }
+    trailingIcon: 'i-heroicons-chevron-down-20-solid',
+  },
 }

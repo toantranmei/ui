@@ -1,11 +1,11 @@
-name: "🐛 Bug report"
+name: 🐛 Bug report
 description: Report a bug to help us improve the module.
-labels: ["bug"]
+labels: [bug]
 body:
   - type: markdown
     attributes:
       value: |
-        Before reporting a bug, please make sure that you have read through our [documentation](https://mei-nuxt3-ui.toantranmei.com) and existing [issues](https://github.com/toantranmei/mei-nuxt3-ui/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc).
+        Before reporting a bug, please make sure that you have read through our [documentation](https://mei-nuxt3-ui.toantranmei.com) and existing [issues](https://github.com/toantranmei/ui/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc).
   - type: textarea
     id: env
     attributes:

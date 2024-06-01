@@ -1,11 +1,11 @@
-name: "🚀 Feature request"
+name: 🚀 Feature request
 description: Suggest an idea or enhancement for the module.
-labels: ["enhancement"]
+labels: [enhancement]
 body:
   - type: markdown
     attributes:
       value: |
-        Before requesting a feature, please make sure that you have read through our [documentation](https://mei-nuxt3-ui.toantranmei.com) and existing [issues](https://github.com/nuxt/toantranmei/mei-nuxt3-ui/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc).
+        Before requesting a feature, please make sure that you have read through our [documentation](https://mei-nuxt3-ui.toantranmei.com) and existing [issues](https://github.com/nuxt/toantranmei/ui/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc).
   - type: textarea
     id: description
     attributes:

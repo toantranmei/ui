@@ -1,7 +1,20 @@
+<script setup lang="ts">
+const items = [
+  [
+    {
+      label: 'Profile',
+      avatar: {
+        src: 'https://avatars.githubusercontent.com/u/739984?v=4',
+      },
+    },
+  ],
+]
+</script>
+
 <template>
   <div>
     dropdown:
-    <mei-dropdown
+    <MeiDropdown
       :items="items"
       mode="hover"
       :popper="{ placement: 'bottom-start' }"
@@ -13,19 +26,6 @@
       >
         dopdown
       </button>
-    </mei-dropdown>
+    </MeiDropdown>
   </div>
 </template>
-
-<script setup lang="ts">
-const items = [
-  [
-    {
-      label: "Profile",
-      avatar: {
-        src: "https://avatars.githubusercontent.com/u/739984?v=4",
-      },
-    },
-  ],
-];
-</script>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <mei-radio />
+    <MeiRadio />
     asjdhjashj
   </div>
 </template>

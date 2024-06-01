@@ -1,12 +1,12 @@
+<script setup lang="ts">
+const selected = ref(false)
+</script>
+
 <template>
   <div>
-    toggle: <mei-toggle
+    toggle: <MeiToggle
       v-model="selected"
       color="primary"
     />
   </div>
 </template>
-
-<script setup lang="ts">
-const selected = ref(false);
-</script>

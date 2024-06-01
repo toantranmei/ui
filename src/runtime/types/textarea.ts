@@ -1,7 +1,7 @@
-import { textarea } from '../ui-configs'
-import type { NestedKeyOf, ExtractDeepKey, ExtractDeepObject } from '.'
-import colors from '#mei-ui-colors'
 import type { AppConfig } from 'nuxt/schema'
+import type { textarea } from '../ui-configs'
+import type { ExtractDeepKey, ExtractDeepObject, NestedKeyOf } from '.'
+import type colors from '#mei-ui-colors'
 
 export type TextareaSize = keyof typeof textarea.size | ExtractDeepKey<AppConfig, ['ui', 'textarea', 'size']>
 export type TextareaColor = keyof typeof textarea.color | ExtractDeepKey<AppConfig, ['ui', 'textarea', 'color']> | typeof colors[number]

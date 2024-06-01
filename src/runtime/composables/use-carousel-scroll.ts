@@ -1,9 +1,9 @@
-import { ref, type Ref, onMounted, onUnmounted } from 'vue'
+import { type Ref, onMounted, onUnmounted, ref } from 'vue'
 
-export const useCarouselScroll = (el: Ref<HTMLElement>) => {
+export function useCarouselScroll(el: Ref<HTMLElement>) {
   const x = ref<number>(0)
 
-  function onMouseDown (e) {
+  function onMouseDown(e) {
     el.value.style.scrollSnapType = 'none'
     el.value.style.scrollBehavior = 'auto'
 
@@ -13,7 +13,7 @@ export const useCarouselScroll = (el: Ref<HTMLElement>) => {
     window.addEventListener('mouseup', onMouseUp)
   }
 
-  function onMouseUp () {
+  function onMouseUp() {
     el.value.style.removeProperty('scroll-behavior')
     el.value.style.removeProperty('scroll-snap-type')
 
@@ -21,7 +21,7 @@ export const useCarouselScroll = (el: Ref<HTMLElement>) => {
     window.removeEventListener('mouseup', onMouseUp)
   }
 
-  function onMouseMove (e) {
+  function onMouseMove(e) {
     e.preventDefault()
 
     const delta = e.pageX - x.value

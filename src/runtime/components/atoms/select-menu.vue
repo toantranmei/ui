@@ -1,3 +1,541 @@
+<script lang="ts">
+import { computed, defineComponent, ref, toRef, watch } from 'vue'
+import type { PropType } from 'vue'
+import {
+  Combobox as HCombobox,
+  ComboboxButton as HComboboxButton,
+  ComboboxInput as HComboboxInput,
+  ComboboxOption as HComboboxOption,
+  ComboboxOptions as HComboboxOptions,
+  Listbox as HListbox,
+  ListboxButton as HListboxButton,
+  ListboxOption as HListboxOption,
+  ListboxOptions as HListboxOptions,
+  provideUseId,
+} from '@headlessui/vue'
+import { computedAsync, useDebounceFn } from '@vueuse/core'
+import { defu } from 'defu'
+import { twJoin, twMerge } from 'tailwind-merge'
+import { useMeiUI } from '../../composables/use-mei-ui'
+import { usePopper } from '../../composables/use-popper'
+import { useFormGroup } from '../../composables/use-form-group'
+import { get, mergeConfig } from '../../utils'
+import { useInjectButtonGroup } from '../../composables/use-button-group'
+import type {
+  PopperOptions,
+  SelectColor,
+  SelectSize,
+  SelectVariant,
+  Strategy,
+} from '../../types'
+import MeiAvatar from './avatar.vue'
+import MeiIcon from './icon.vue'
+// @ts-expect-error - no types available
+import appConfig from '#build/app.config'
+import { select, selectMenu } from '#mei-ui/ui-configs'
+import { useId } from '#imports'
+
+const config = mergeConfig<typeof select>(
+  appConfig.meiUI.strategy,
+  appConfig.meiUI.select,
+  select,
+)
+
+const configMenu = mergeConfig<typeof selectMenu>(
+  appConfig.meiUI.strategy,
+  appConfig.meiUI.selectMenu,
+  selectMenu,
+)
+
+export default defineComponent({
+  components: {
+    HCombobox,
+    HComboboxButton,
+    HComboboxOptions,
+    HComboboxOption,
+    HComboboxInput,
+    HListbox,
+    HListboxButton,
+    HListboxOptions,
+    HListboxOption,
+    MeiIcon,
+    MeiAvatar,
+  },
+  inheritAttrs: false,
+  props: {
+    modelValue: {
+      type: [String, Number, Object, Array, Boolean],
+      default: '',
+    },
+    query: {
+      type: String,
+      default: null,
+    },
+    by: {
+      type: String,
+      default: undefined,
+    },
+    options: {
+      type: Array as PropType<
+        { [key: string]: any, disabled?: boolean }[] | string[]
+      >,
+      default: () => [],
+    },
+    id: {
+      type: String,
+      default: null,
+    },
+    name: {
+      type: String,
+      default: null,
+    },
+    required: {
+      type: Boolean,
+      default: false,
+    },
+    icon: {
+      type: String,
+      default: null,
+    },
+    loadingIcon: {
+      type: String,
+      default: () => config.default.loadingIcon,
+    },
+    leadingIcon: {
+      type: String,
+      default: null,
+    },
+    trailingIcon: {
+      type: String,
+      default: () => config.default.trailingIcon,
+    },
+    trailing: {
+      type: Boolean,
+      default: false,
+    },
+    leading: {
+      type: Boolean,
+      default: false,
+    },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
+    selectedIcon: {
+      type: String,
+      default: () => configMenu.default.selectedIcon,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+    multiple: {
+      type: Boolean,
+      default: false,
+    },
+    searchable: {
+      type: [Boolean, Function] as PropType<
+        boolean | ((query: string) => Promise<any[]> | any[])
+      >,
+      default: false,
+    },
+    searchablePlaceholder: {
+      type: String,
+      default: 'Search...',
+    },
+    searchableLazy: {
+      type: Boolean,
+      default: false,
+    },
+    clearSearchOnClose: {
+      type: Boolean,
+      default: () => configMenu.default.clearSearchOnClose,
+    },
+    debounce: {
+      type: Number,
+      default: 200,
+    },
+    creatable: {
+      type: Boolean,
+      default: false,
+    },
+    showCreateOptionWhen: {
+      type: String as PropType<'always' | 'empty'>,
+      default: () => configMenu.default.showCreateOptionWhen,
+    },
+    placeholder: {
+      type: String,
+      default: null,
+    },
+    padded: {
+      type: Boolean,
+      default: true,
+    },
+    size: {
+      type: String as PropType<SelectSize>,
+      default: null,
+      validator(value: string) {
+        return Object.keys(config.size).includes(value)
+      },
+    },
+    color: {
+      type: String as PropType<SelectColor>,
+      default: () => config.default.color,
+      validator(value: string) {
+        return [
+          ...appConfig.meiUI.colors,
+          ...Object.keys(config.color),
+        ].includes(value)
+      },
+    },
+    variant: {
+      type: String as PropType<SelectVariant>,
+      default: () => config.default.variant,
+      validator(value: string) {
+        return [
+          ...Object.keys(config.variant),
+          ...Object.values(config.color).flatMap(value => Object.keys(value)),
+        ].includes(value)
+      },
+    },
+    optionAttribute: {
+      type: String,
+      default: 'label',
+    },
+    valueAttribute: {
+      type: String,
+      default: null,
+    },
+    searchAttributes: {
+      type: Array,
+      default: null,
+    },
+    popper: {
+      type: Object as PropType<PopperOptions>,
+      default: () => ({}),
+    },
+    selectClass: {
+      type: String,
+      default: null,
+    },
+    class: {
+      type: [String, Object, Array] as PropType<any>,
+      default: () => '',
+    },
+    ui: {
+      type: Object as PropType<
+        Partial<typeof config> & { strategy?: Strategy }
+      >,
+      default: () => ({}),
+    },
+    uiMenu: {
+      type: Object as PropType<
+        Partial<typeof configMenu> & { strategy?: Strategy }
+      >,
+      default: () => ({}),
+    },
+  },
+  emits: ['update:modelValue', 'update:query', 'open', 'close', 'change'],
+  setup(props, { emit, slots }) {
+    const { ui, attrs } = useMeiUI(
+      'select',
+      toRef(props, 'ui'),
+      config,
+      toRef(props, 'class'),
+    )
+    const { ui: uiMenu } = useMeiUI(
+      'selectMenu',
+      toRef(props, 'uiMenu'),
+      configMenu,
+    )
+
+    const popper = computed<PopperOptions>(() =>
+      defu({}, props.popper, uiMenu.value.popper as PopperOptions),
+    )
+
+    const [trigger, container] = usePopper(popper.value)
+
+    const { size: sizeButtonGroup, rounded } = useInjectButtonGroup({
+      ui,
+      props,
+    })
+    const {
+      emitFormBlur,
+      emitFormChange,
+      inputId,
+      color,
+      size: sizeFormGroup,
+      name,
+    } = useFormGroup(props, config)
+
+    const size = computed(() => sizeButtonGroup.value || sizeFormGroup.value)
+
+    const internalQuery = ref('')
+    const query = computed({
+      get() {
+        return props.query ?? internalQuery.value
+      },
+      set(value) {
+        internalQuery.value = value
+        emit('update:query', value)
+      },
+    })
+
+    const label = computed(() => {
+      if (props.multiple) {
+        if (Array.isArray(props.modelValue) && props.modelValue.length) {
+          return `${props.modelValue.length} selected`
+        }
+        else {
+          return null
+        }
+      }
+      else if (props.modelValue !== undefined && props.modelValue !== null) {
+        if (props.valueAttribute) {
+          const option = props.options.find(
+            option => option[props.valueAttribute] === props.modelValue,
+          )
+          return option ? option[props.optionAttribute] : null
+        }
+        else {
+          return ['string', 'number'].includes(typeof props.modelValue)
+            ? props.modelValue
+            : props.modelValue[props.optionAttribute]
+        }
+      }
+
+      return null
+    })
+
+    const isLeading = computed(() => {
+      return (
+        (props.icon && props.leading)
+        || (props.icon && !props.trailing)
+        || (props.loading && !props.trailing)
+        || props.leadingIcon
+      )
+    })
+
+    const isTrailing = computed(() => {
+      return (
+        (props.icon && props.trailing)
+        || (props.loading && props.trailing)
+        || props.trailingIcon
+      )
+    })
+
+    const selectClass = computed(() => {
+      const variant
+        = ui.value.color?.[color.value as string]?.[props.variant as string]
+        || ui.value.variant[props.variant]
+
+      return twMerge(
+        twJoin(
+          ui.value.base,
+          uiMenu.value.select,
+          rounded.value,
+          ui.value.size[size.value],
+          ui.value.gap[size.value],
+          props.padded ? ui.value.padding[size.value] : 'p-0',
+          variant?.replaceAll('{color}', color.value),
+          (isLeading.value || slots.leading)
+          && ui.value.leading.padding[size.value],
+          (isTrailing.value || slots.trailing)
+          && ui.value.trailing.padding[size.value],
+        ),
+        props.placeholder
+        && props.modelValue === undefined
+        && props.modelValue === null
+        && ui.value.placeholder,
+        props.selectClass,
+      )
+    })
+
+    const leadingIconName = computed(() => {
+      if (props.loading) {
+        return props.loadingIcon
+      }
+
+      return props.leadingIcon || props.icon
+    })
+
+    const trailingIconName = computed(() => {
+      if (props.loading && !isLeading.value) {
+        return props.loadingIcon
+      }
+
+      return props.trailingIcon || props.icon
+    })
+
+    const leadingWrapperIconClass = computed(() => {
+      return twJoin(
+        ui.value.icon.leading.wrapper,
+        ui.value.icon.leading.pointer,
+        ui.value.icon.leading.padding[size.value],
+      )
+    })
+
+    const leadingIconClass = computed(() => {
+      return twJoin(
+        ui.value.icon.base,
+        color.value
+        && appConfig.meiUI.colors.includes(color.value)
+        && ui.value.icon.color.replaceAll('{color}', color.value),
+        ui.value.icon.size[size.value],
+        props.loading && ui.value.icon.loading,
+      )
+    })
+
+    const trailingWrapperIconClass = computed(() => {
+      return twJoin(
+        ui.value.icon.trailing.wrapper,
+        ui.value.icon.trailing.pointer,
+        ui.value.icon.trailing.padding[size.value],
+      )
+    })
+
+    const trailingIconClass = computed(() => {
+      return twJoin(
+        ui.value.icon.base,
+        color.value
+        && appConfig.meiUI.colors.includes(color.value)
+        && ui.value.icon.color.replaceAll('{color}', color.value),
+        ui.value.icon.size[size.value],
+        props.loading && !isLeading.value && ui.value.icon.loading,
+      )
+    })
+
+    const debouncedSearch
+      = typeof props.searchable === 'function'
+        ? useDebounceFn(props.searchable, props.debounce)
+        : undefined
+
+    const filteredOptions = computedAsync(
+      async () => {
+        if (props.searchable && debouncedSearch) {
+          return await debouncedSearch(query.value)
+        }
+
+        if (query.value === '') {
+          return props.options
+        }
+
+        return (props.options as any[]).filter((option: any) => {
+          return (
+            props.searchAttributes?.length
+              ? props.searchAttributes
+              : [props.optionAttribute]
+          ).some((searchAttribute: any) => {
+            if (['string', 'number'].includes(typeof option)) {
+              return String(option).search(new RegExp(query.value, 'i')) !== -1
+            }
+
+            const child = get(option, searchAttribute)
+
+            return (
+              child !== null
+              && child !== undefined
+              && String(child).search(new RegExp(query.value, 'i')) !== -1
+            )
+          })
+        })
+      },
+      [],
+      {
+        lazy: props.searchableLazy,
+      },
+    )
+
+    const createOption = computed(() => {
+      if (query.value === '') {
+        return null
+      }
+      if (
+        props.showCreateOptionWhen === 'empty'
+        && filteredOptions.value.length
+      ) {
+        return null
+      }
+      if (props.showCreateOptionWhen === 'always') {
+        const existingOption = filteredOptions.value.find(option =>
+          ['string', 'number'].includes(typeof option)
+            ? option === query.value
+            : option[props.optionAttribute] === query.value,
+        )
+        if (existingOption) {
+          return null
+        }
+      }
+
+      return ['string', 'number'].includes(typeof props.modelValue)
+        ? query.value
+        : { [props.optionAttribute]: query.value }
+    })
+
+    function clearOnClose() {
+      if (props.clearSearchOnClose) {
+        query.value = ''
+      }
+    }
+
+    watch(container, (value) => {
+      if (value) {
+        emit('open')
+      }
+      else {
+        clearOnClose()
+        emit('close')
+        emitFormBlur()
+      }
+    })
+
+    function onUpdate(value: any) {
+      emit('update:modelValue', value)
+      emit('change', value)
+      emitFormChange()
+    }
+
+    function onQueryChange(event: any) {
+      query.value = event.target.value
+    }
+
+    provideUseId(() => useId())
+
+    return {
+
+      ui,
+
+      uiMenu,
+      attrs,
+
+      name,
+      inputId,
+
+      popper,
+      trigger,
+      container,
+      label,
+      isLeading,
+      isTrailing,
+
+      selectClass,
+      leadingIconName,
+      leadingIconClass,
+      leadingWrapperIconClass,
+      trailingIconName,
+      trailingIconClass,
+      trailingWrapperIconClass,
+      filteredOptions,
+      createOption,
+
+      query,
+      onUpdate,
+      onQueryChange,
+    }
+  },
+})
+</script>
+
 <template>
   <component
     :is="searchable ? 'HCombobox' : 'HListbox'"
@@ -230,7 +768,7 @@
                     :active="active"
                     :selected="selected"
                   >
-                    <span :class="uiMenu.option.create">Create "{{ createOption[optionAttribute] }}"</span>
+                    <span :class="uiMenu.option.create">Create "{{ (createOption as any)[optionAttribute] }}"</span>
                   </slot>
                 </div>
               </li>
@@ -263,537 +801,3 @@
     </div>
   </component>
 </template>
-
-<script lang="ts">
-import { ref, computed, toRef, watch, defineComponent } from "vue";
-import type { PropType } from "vue";
-import {
-  Combobox as HCombobox,
-  ComboboxButton as HComboboxButton,
-  ComboboxOptions as HComboboxOptions,
-  ComboboxOption as HComboboxOption,
-  ComboboxInput as HComboboxInput,
-  Listbox as HListbox,
-  ListboxButton as HListboxButton,
-  ListboxOptions as HListboxOptions,
-  ListboxOption as HListboxOption,
-  provideUseId,
-} from "@headlessui/vue";
-import { computedAsync, useDebounceFn } from "@vueuse/core";
-import { defu } from "defu";
-import { twMerge, twJoin } from "tailwind-merge";
-import MeiIcon from "./icon.vue";
-import MeiAvatar from "./avatar.vue";
-import { useMeiUI } from "../../composables/use-mei-ui";
-import { usePopper } from "../../composables/use-popper";
-import { useFormGroup } from "../../composables/use-form-group";
-import { get, mergeConfig } from "../../utils";
-import { useInjectButtonGroup } from "../../composables/use-button-group";
-import type {
-  SelectSize,
-  SelectColor,
-  SelectVariant,
-  PopperOptions,
-  Strategy,
-} from "../../types";
-// @ts-expect-error
-import appConfig from "#build/app.config";
-import { select, selectMenu } from "#mei-ui/ui-configs";
-import { useId } from "#imports";
-
-const config = mergeConfig<typeof select>(
-  appConfig.meiUI.strategy,
-  appConfig.meiUI.select,
-  select
-);
-
-const configMenu = mergeConfig<typeof selectMenu>(
-  appConfig.meiUI.strategy,
-  appConfig.meiUI.selectMenu,
-  selectMenu
-);
-
-export default defineComponent({
-  components: {
-    HCombobox,
-    HComboboxButton,
-    HComboboxOptions,
-    HComboboxOption,
-    HComboboxInput,
-    HListbox,
-    HListboxButton,
-    HListboxOptions,
-    HListboxOption,
-    MeiIcon,
-    MeiAvatar,
-  },
-  inheritAttrs: false,
-  props: {
-    modelValue: {
-      type: [String, Number, Object, Array, Boolean],
-      default: "",
-    },
-    query: {
-      type: String,
-      default: null,
-    },
-    by: {
-      type: String,
-      default: undefined,
-    },
-    options: {
-      type: Array as PropType<
-        { [key: string]: any; disabled?: boolean }[] | string[]
-      >,
-      default: () => [],
-    },
-    id: {
-      type: String,
-      default: null,
-    },
-    name: {
-      type: String,
-      default: null,
-    },
-    required: {
-      type: Boolean,
-      default: false,
-    },
-    icon: {
-      type: String,
-      default: null,
-    },
-    loadingIcon: {
-      type: String,
-      default: () => config.default.loadingIcon,
-    },
-    leadingIcon: {
-      type: String,
-      default: null,
-    },
-    trailingIcon: {
-      type: String,
-      default: () => config.default.trailingIcon,
-    },
-    trailing: {
-      type: Boolean,
-      default: false,
-    },
-    leading: {
-      type: Boolean,
-      default: false,
-    },
-    loading: {
-      type: Boolean,
-      default: false,
-    },
-    selectedIcon: {
-      type: String,
-      default: () => configMenu.default.selectedIcon,
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-    multiple: {
-      type: Boolean,
-      default: false,
-    },
-    searchable: {
-      type: [Boolean, Function] as PropType<
-        boolean | ((query: string) => Promise<any[]> | any[])
-      >,
-      default: false,
-    },
-    searchablePlaceholder: {
-      type: String,
-      default: "Search...",
-    },
-    searchableLazy: {
-      type: Boolean,
-      default: false,
-    },
-    clearSearchOnClose: {
-      type: Boolean,
-      default: () => configMenu.default.clearSearchOnClose,
-    },
-    debounce: {
-      type: Number,
-      default: 200,
-    },
-    creatable: {
-      type: Boolean,
-      default: false,
-    },
-    showCreateOptionWhen: {
-      type: String as PropType<"always" | "empty">,
-      default: () => configMenu.default.showCreateOptionWhen,
-    },
-    placeholder: {
-      type: String,
-      default: null,
-    },
-    padded: {
-      type: Boolean,
-      default: true,
-    },
-    size: {
-      type: String as PropType<SelectSize>,
-      default: null,
-      validator(value: string) {
-        return Object.keys(config.size).includes(value);
-      },
-    },
-    color: {
-      type: String as PropType<SelectColor>,
-      default: () => config.default.color,
-      validator(value: string) {
-        return [
-          ...appConfig.meiUI.colors,
-          ...Object.keys(config.color),
-        ].includes(value);
-      },
-    },
-    variant: {
-      type: String as PropType<SelectVariant>,
-      default: () => config.default.variant,
-      validator(value: string) {
-        return [
-          ...Object.keys(config.variant),
-          ...Object.values(config.color).flatMap((value) => Object.keys(value)),
-        ].includes(value);
-      },
-    },
-    optionAttribute: {
-      type: String,
-      default: "label",
-    },
-    valueAttribute: {
-      type: String,
-      default: null,
-    },
-    searchAttributes: {
-      type: Array,
-      default: null,
-    },
-    popper: {
-      type: Object as PropType<PopperOptions>,
-      default: () => ({}),
-    },
-    selectClass: {
-      type: String,
-      default: null,
-    },
-    class: {
-      type: [String, Object, Array] as PropType<any>,
-      default: () => "",
-    },
-    ui: {
-      type: Object as PropType<
-        Partial<typeof config> & { strategy?: Strategy }
-      >,
-      default: () => ({}),
-    },
-    uiMenu: {
-      type: Object as PropType<
-        Partial<typeof configMenu> & { strategy?: Strategy }
-      >,
-      default: () => ({}),
-    },
-  },
-  emits: ["update:modelValue", "update:query", "open", "close", "change"],
-  setup(props, { emit, slots }) {
-    const { ui, attrs } = useMeiUI(
-      "select",
-      toRef(props, "ui"),
-      config,
-      toRef(props, "class")
-    );
-    const { ui: uiMenu } = useMeiUI(
-      "selectMenu",
-      toRef(props, "uiMenu"),
-      configMenu
-    );
-
-    const popper = computed<PopperOptions>(() =>
-      defu({}, props.popper, uiMenu.value.popper as PopperOptions)
-    );
-
-    const [trigger, container] = usePopper(popper.value);
-
-    const { size: sizeButtonGroup, rounded } = useInjectButtonGroup({
-      ui,
-      props,
-    });
-    const {
-      emitFormBlur,
-      emitFormChange,
-      inputId,
-      color,
-      size: sizeFormGroup,
-      name,
-    } = useFormGroup(props, config);
-
-    const size = computed(() => sizeButtonGroup.value || sizeFormGroup.value);
-
-    const internalQuery = ref("");
-    const query = computed({
-      get() {
-        return props.query ?? internalQuery.value;
-      },
-      set(value) {
-        internalQuery.value = value;
-        emit("update:query", value);
-      },
-    });
-
-    const label = computed(() => {
-      if (props.multiple) {
-        if (Array.isArray(props.modelValue) && props.modelValue.length) {
-          return `${props.modelValue.length} selected`;
-        } else {
-          return null;
-        }
-      } else if (props.modelValue !== undefined && props.modelValue !== null) {
-        if (props.valueAttribute) {
-          const option = props.options.find(
-            (option) => option[props.valueAttribute] === props.modelValue
-          );
-          return option ? option[props.optionAttribute] : null;
-        } else {
-          return ["string", "number"].includes(typeof props.modelValue)
-            ? props.modelValue
-            : props.modelValue[props.optionAttribute];
-        }
-      }
-
-      return null;
-    });
-
-    const selectClass = computed(() => {
-      const variant =
-        ui.value.color?.[color.value as string]?.[props.variant as string] ||
-        ui.value.variant[props.variant];
-
-      return twMerge(
-        twJoin(
-          ui.value.base,
-          uiMenu.value.select,
-          rounded.value,
-          ui.value.size[size.value],
-          ui.value.gap[size.value],
-          props.padded ? ui.value.padding[size.value] : "p-0",
-          variant?.replaceAll("{color}", color.value),
-          (isLeading.value || slots.leading) &&
-            ui.value.leading.padding[size.value],
-          (isTrailing.value || slots.trailing) &&
-            ui.value.trailing.padding[size.value]
-        ),
-        props.placeholder &&
-          props.modelValue === undefined &&
-          props.modelValue === null &&
-          ui.value.placeholder,
-        props.selectClass
-      );
-    });
-
-    const isLeading = computed(() => {
-      return (
-        (props.icon && props.leading) ||
-        (props.icon && !props.trailing) ||
-        (props.loading && !props.trailing) ||
-        props.leadingIcon
-      );
-    });
-
-    const isTrailing = computed(() => {
-      return (
-        (props.icon && props.trailing) ||
-        (props.loading && props.trailing) ||
-        props.trailingIcon
-      );
-    });
-
-    const leadingIconName = computed(() => {
-      if (props.loading) {
-        return props.loadingIcon;
-      }
-
-      return props.leadingIcon || props.icon;
-    });
-
-    const trailingIconName = computed(() => {
-      if (props.loading && !isLeading.value) {
-        return props.loadingIcon;
-      }
-
-      return props.trailingIcon || props.icon;
-    });
-
-    const leadingWrapperIconClass = computed(() => {
-      return twJoin(
-        ui.value.icon.leading.wrapper,
-        ui.value.icon.leading.pointer,
-        ui.value.icon.leading.padding[size.value]
-      );
-    });
-
-    const leadingIconClass = computed(() => {
-      return twJoin(
-        ui.value.icon.base,
-        color.value &&
-          appConfig.meiUI.colors.includes(color.value) &&
-          ui.value.icon.color.replaceAll("{color}", color.value),
-        ui.value.icon.size[size.value],
-        props.loading && ui.value.icon.loading
-      );
-    });
-
-    const trailingWrapperIconClass = computed(() => {
-      return twJoin(
-        ui.value.icon.trailing.wrapper,
-        ui.value.icon.trailing.pointer,
-        ui.value.icon.trailing.padding[size.value]
-      );
-    });
-
-    const trailingIconClass = computed(() => {
-      return twJoin(
-        ui.value.icon.base,
-        color.value &&
-          appConfig.meiUI.colors.includes(color.value) &&
-          ui.value.icon.color.replaceAll("{color}", color.value),
-        ui.value.icon.size[size.value],
-        props.loading && !isLeading.value && ui.value.icon.loading
-      );
-    });
-
-    const debouncedSearch =
-      typeof props.searchable === "function"
-        ? useDebounceFn(props.searchable, props.debounce)
-        : undefined;
-
-    const filteredOptions = computedAsync(
-      async () => {
-        if (props.searchable && debouncedSearch) {
-          return await debouncedSearch(query.value);
-        }
-
-        if (query.value === "") {
-          return props.options;
-        }
-
-        return (props.options as any[]).filter((option: any) => {
-          return (
-            props.searchAttributes?.length
-              ? props.searchAttributes
-              : [props.optionAttribute]
-          ).some((searchAttribute: any) => {
-            if (["string", "number"].includes(typeof option)) {
-              return String(option).search(new RegExp(query.value, "i")) !== -1;
-            }
-
-            const child = get(option, searchAttribute);
-
-            return (
-              child !== null &&
-              child !== undefined &&
-              String(child).search(new RegExp(query.value, "i")) !== -1
-            );
-          });
-        });
-      },
-      [],
-      {
-        lazy: props.searchableLazy,
-      }
-    );
-
-    const createOption = computed(() => {
-      if (query.value === "") {
-        return null;
-      }
-      if (
-        props.showCreateOptionWhen === "empty" &&
-        filteredOptions.value.length
-      ) {
-        return null;
-      }
-      if (props.showCreateOptionWhen === "always") {
-        const existingOption = filteredOptions.value.find((option) =>
-          ["string", "number"].includes(typeof option)
-            ? option === query.value
-            : option[props.optionAttribute] === query.value
-        );
-        if (existingOption) {
-          return null;
-        }
-      }
-
-      return ["string", "number"].includes(typeof props.modelValue)
-        ? query.value
-        : { [props.optionAttribute]: query.value };
-    });
-
-    function clearOnClose() {
-      if (props.clearSearchOnClose) {
-        query.value = "";
-      }
-    }
-
-    watch(container, (value) => {
-      if (value) {
-        emit("open");
-      } else {
-        clearOnClose();
-        emit("close");
-        emitFormBlur();
-      }
-    });
-
-    function onUpdate(value: any) {
-      emit("update:modelValue", value);
-      emit("change", value);
-      emitFormChange();
-    }
-
-    function onQueryChange(event: any) {
-      query.value = event.target.value;
-    }
-
-    provideUseId(() => useId());
-
-    return {
-      // eslint-disable-next-line vue/no-dupe-keys
-      ui,
-      // eslint-disable-next-line vue/no-dupe-keys
-      uiMenu,
-      attrs,
-      // eslint-disable-next-line vue/no-dupe-keys
-      name,
-      inputId,
-      // eslint-disable-next-line vue/no-dupe-keys
-      popper,
-      trigger,
-      container,
-      label,
-      isLeading,
-      isTrailing,
-      // eslint-disable-next-line vue/no-dupe-keys
-      selectClass,
-      leadingIconName,
-      leadingIconClass,
-      leadingWrapperIconClass,
-      trailingIconName,
-      trailingIconClass,
-      trailingWrapperIconClass,
-      filteredOptions,
-      createOption,
-      // eslint-disable-next-line vue/no-dupe-keys
-      query,
-      onUpdate,
-      onQueryChange,
-    };
-  },
-});
-</script>

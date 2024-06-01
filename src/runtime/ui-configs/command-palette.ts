@@ -11,18 +11,18 @@ export default {
       base: 'pointer-events-none absolute start-4 text-gray-400 dark:text-gray-500',
       loading: 'animate-spin',
       size: 'h-5 w-5',
-      padding: 'ps-11'
+      padding: 'ps-11',
     },
     closeButton: {
       base: 'absolute end-4',
-      padding: 'pe-10'
-    }
+      padding: 'pe-10',
+    },
   },
   emptyState: {
     wrapper: 'flex flex-col items-center justify-center flex-1 px-6 py-14 sm:px-14',
     label: 'text-sm text-center text-gray-900 dark:text-white',
     queryLabel: 'text-sm text-center text-gray-900 dark:text-white',
-    icon: 'w-6 h-6 mx-auto text-gray-400 dark:text-gray-500 mb-4'
+    icon: 'w-6 h-6 mx-auto text-gray-400 dark:text-gray-500 mb-4',
   },
   group: {
     wrapper: 'p-2',
@@ -39,23 +39,23 @@ export default {
       icon: {
         base: 'flex-shrink-0 w-5 h-5',
         active: 'text-gray-900 dark:text-white',
-        inactive: 'text-gray-400 dark:text-gray-500'
+        inactive: 'text-gray-400 dark:text-gray-500',
       },
       selectedIcon: {
-        base: 'h-5 w-5 text-gray-900 dark:text-white flex-shrink-0'
+        base: 'h-5 w-5 text-gray-900 dark:text-white flex-shrink-0',
       },
       avatar: {
         base: 'flex-shrink-0',
-        size: '2xs' as const
+        size: '2xs' as const,
       },
       chip: {
-        base: 'flex-shrink-0 w-2 h-2 mx-1 rounded-full'
+        base: 'flex-shrink-0 w-2 h-2 mx-1 rounded-full',
       },
       disabled: 'opacity-50',
-      shortcuts: 'hidden md:inline-flex flex-shrink-0 gap-0.5'
+      shortcuts: 'hidden md:inline-flex flex-shrink-0 gap-0.5',
     },
     active: 'flex-shrink-0 text-gray-500 dark:text-gray-400',
-    inactive: 'flex-shrink-0 text-gray-500 dark:text-gray-400'
+    inactive: 'flex-shrink-0 text-gray-500 dark:text-gray-400',
   },
   default: {
     icon: 'i-heroicons-magnifying-glass-20-solid',
@@ -63,9 +63,9 @@ export default {
     emptyState: {
       icon: 'i-heroicons-magnifying-glass-20-solid',
       label: 'We couldn\'t find any items.',
-      queryLabel: 'We couldn\'t find any items with that term. Please try again.'
+      queryLabel: 'We couldn\'t find any items with that term. Please try again.',
     },
     closeButton: null,
-    selectedIcon: 'i-heroicons-check-20-solid'
-  }
+    selectedIcon: 'i-heroicons-check-20-solid',
+  },
 }

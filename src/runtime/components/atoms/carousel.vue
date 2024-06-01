@@ -1,3 +1,144 @@
+<script lang="ts">
+import { computed, defineComponent, ref, toRef } from 'vue'
+import type { PropType } from 'vue'
+import { twMerge } from 'tailwind-merge'
+import { useElementSize, useResizeObserver, useScroll } from '@vueuse/core'
+import { mergeConfig } from '../../utils'
+import type { Button, Strategy } from '../../types'
+import { useMeiUI } from '../../composables/use-mei-ui'
+import { useCarouselScroll } from '../../composables/use-carousel-scroll'
+import MeiButton from './button.vue'
+// @ts-expect-error - no types available
+import appConfig from '#build/app.config'
+import { carousel } from '#mei-ui/ui-configs'
+
+const config = mergeConfig<typeof carousel>(
+  appConfig.meiUI.strategy,
+  appConfig.meiUI.carousel,
+  carousel,
+)
+
+export default defineComponent({
+  components: {
+    MeiButton,
+  },
+  inheritAttrs: false,
+  props: {
+    items: {
+      type: Array as PropType<any[]>,
+      default: () => [],
+    },
+    arrows: {
+      type: Boolean,
+      default: false,
+    },
+    indicators: {
+      type: Boolean,
+      default: false,
+    },
+    prevButton: {
+      type: Object as PropType<Button & { class?: string }>,
+      default: () => config.default.prevButton as Button & { class?: string },
+    },
+    nextButton: {
+      type: Object as PropType<Button & { class?: string }>,
+      default: () => config.default.nextButton as Button & { class?: string },
+    },
+    class: {
+      type: [String, Object, Array] as PropType<any>,
+      default: () => '',
+    },
+    ui: {
+      type: Object as PropType<
+        Partial<typeof config & { strategy?: Strategy }>
+      >,
+      default: undefined,
+    },
+  },
+  setup(props, { expose }) {
+    const { ui, attrs } = useMeiUI(
+      'carousel',
+      toRef(props, 'ui'),
+      config,
+      toRef(props, 'class'),
+    )
+
+    const carouselRef = ref<HTMLElement>()
+    const itemWidth = ref(0)
+
+    const { x } = useScroll(carouselRef, { behavior: 'smooth' })
+
+    const { width: carouselWidth } = useElementSize(carouselRef)
+
+    useCarouselScroll(carouselRef)
+
+    useResizeObserver(carouselRef, (entries) => {
+      const [entry] = entries
+
+      itemWidth.value = entry?.target?.firstElementChild?.clientWidth || 0
+    })
+
+    const currentPage = computed(() => {
+      if (!itemWidth.value) {
+        return 0
+      }
+
+      return Math.round(x.value / itemWidth.value) + 1
+    })
+
+    const pages = computed(() => {
+      if (!itemWidth.value) {
+        return 0
+      }
+
+      return (
+        props.items.length
+        - Math.round(carouselWidth.value / itemWidth.value)
+        + 1
+      )
+    })
+
+    const isFirst = computed(() => currentPage.value <= 1)
+    const isLast = computed(() => currentPage.value === pages.value)
+
+    function onClickNext() {
+      x.value += itemWidth.value
+    }
+
+    function onClickPrev() {
+      x.value -= itemWidth.value
+    }
+
+    function onClick(page: number) {
+      x.value = (page - 1) * itemWidth.value
+    }
+
+    expose({
+      pages,
+      page: currentPage,
+      prev: onClickPrev,
+      next: onClickNext,
+      select: onClick,
+    })
+
+    return {
+
+      ui,
+      attrs,
+      isFirst,
+      isLast,
+      carouselRef,
+      pages,
+      currentPage,
+      onClickNext,
+      onClickPrev,
+      onClick,
+      twMerge,
+    }
+  },
+})
+</script>
+
 <template>
   <div
     :class="ui.wrapper"
@@ -89,147 +230,6 @@
     </div>
   </div>
 </template>
-
-<script lang="ts">
-import { ref, toRef, computed, defineComponent } from "vue";
-import type { PropType } from "vue";
-import { twMerge } from "tailwind-merge";
-import { mergeConfig } from "../../utils";
-import MeiButton from "./button.vue";
-import type { Strategy, Button } from "../../types";
-import { useMeiUI } from "../../composables/use-mei-ui";
-import { useCarouselScroll } from "../../composables/use-carousel-scroll";
-import { useScroll, useResizeObserver, useElementSize } from "@vueuse/core";
-// @ts-expect-error
-import appConfig from "#build/app.config";
-import { carousel } from "#mei-ui/ui-configs";
-
-const config = mergeConfig<typeof carousel>(
-  appConfig.meiUI.strategy,
-  appConfig.meiUI.carousel,
-  carousel
-);
-
-export default defineComponent({
-  components: {
-    MeiButton,
-  },
-  inheritAttrs: false,
-  props: {
-    items: {
-      type: Array as PropType<any[]>,
-      default: () => [],
-    },
-    arrows: {
-      type: Boolean,
-      default: false,
-    },
-    indicators: {
-      type: Boolean,
-      default: false,
-    },
-    prevButton: {
-      type: Object as PropType<Button & { class?: string }>,
-      default: () => config.default.prevButton as Button & { class?: string },
-    },
-    nextButton: {
-      type: Object as PropType<Button & { class?: string }>,
-      default: () => config.default.nextButton as Button & { class?: string },
-    },
-    class: {
-      type: [String, Object, Array] as PropType<any>,
-      default: () => "",
-    },
-    ui: {
-      type: Object as PropType<
-        Partial<typeof config & { strategy?: Strategy }>
-      >,
-      default: undefined,
-    },
-  },
-  setup(props, { expose }) {
-    const { ui, attrs } = useMeiUI(
-      "carousel",
-      toRef(props, "ui"),
-      config,
-      toRef(props, "class")
-    );
-
-    const carouselRef = ref<HTMLElement>();
-    const itemWidth = ref(0);
-
-    const { x } = useScroll(carouselRef, { behavior: "smooth" });
-
-    const { width: carouselWidth } = useElementSize(carouselRef);
-
-    useCarouselScroll(carouselRef);
-
-    useResizeObserver(carouselRef, (entries) => {
-      const [entry] = entries;
-
-      itemWidth.value = entry?.target?.firstElementChild?.clientWidth || 0;
-    });
-
-    const currentPage = computed(() => {
-      if (!itemWidth.value) {
-        return 0;
-      }
-
-      return Math.round(x.value / itemWidth.value) + 1;
-    });
-
-    const pages = computed(() => {
-      if (!itemWidth.value) {
-        return 0;
-      }
-
-      return (
-        props.items.length -
-        Math.round(carouselWidth.value / itemWidth.value) +
-        1
-      );
-    });
-
-    const isFirst = computed(() => currentPage.value <= 1);
-    const isLast = computed(() => currentPage.value === pages.value);
-
-    function onClickNext() {
-      x.value += itemWidth.value;
-    }
-
-    function onClickPrev() {
-      x.value -= itemWidth.value;
-    }
-
-    function onClick(page: number) {
-      x.value = (page - 1) * itemWidth.value;
-    }
-
-    expose({
-      pages,
-      page: currentPage,
-      prev: onClickPrev,
-      next: onClickNext,
-      select: onClick,
-    });
-
-    return {
-      // eslint-disable-next-line vue/no-dupe-keys
-      ui,
-      attrs,
-      isFirst,
-      isLast,
-      carouselRef,
-      pages,
-      currentPage,
-      onClickNext,
-      onClickPrev,
-      onClick,
-      twMerge,
-    };
-  },
-});
-</script>
 
 <style scoped>
 /* Hide scrollbar for Chrome, Safari and Opera */

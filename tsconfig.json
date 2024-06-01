@@ -1,8 +1,8 @@
 {
   "extends": "./playground/.nuxt/tsconfig.json",
-  "exclude": ["dist", "playground", "node_modules"],
   "compilerOptions": {
-    "noImplicitAny": false,
-    "strictNullChecks": false
-  }
+    "strictNullChecks": false,
+    "noImplicitAny": false
+  },
+  "exclude": ["dist", "playground", "node_modules"]
 }

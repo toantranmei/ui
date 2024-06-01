@@ -13,21 +13,21 @@ export default {
   icon: {
     base: 'flex-shrink-0 w-5 h-5 relative',
     active: 'text-gray-700 dark:text-gray-200',
-    inactive: 'text-gray-400 dark:text-gray-500 group-hover:text-gray-700 dark:group-hover:text-gray-200'
+    inactive: 'text-gray-400 dark:text-gray-500 group-hover:text-gray-700 dark:group-hover:text-gray-200',
   },
   avatar: {
     base: 'flex-shrink-0',
-    size: '2xs' as const
+    size: '2xs' as const,
   },
   badge: {
     base: 'flex-shrink-0 ml-auto relative rounded',
     color: 'gray' as const,
     variant: 'solid' as const,
-    size: 'xs' as const
+    size: 'xs' as const,
   },
   divider: {
     wrapper: {
-      base: 'p-2'
-    }
-  }
+      base: 'p-2',
+    },
+  },
 }

@@ -1,5 +1,5 @@
 <template>
-  <mei-card>
+  <MeiCard>
     <template #header>
       header
     </template>
@@ -9,5 +9,5 @@
     <template #footer>
       footer
     </template>
-  </mei-card>
+  </MeiCard>
 </template>

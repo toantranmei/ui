@@ -27,37 +27,37 @@ export default {
     icon: {
       base: 'flex-shrink-0 h-5 w-5',
       active: 'text-gray-900 dark:text-white',
-      inactive: 'text-gray-400 dark:text-gray-500'
+      inactive: 'text-gray-400 dark:text-gray-500',
     },
     selectedIcon: {
       wrapper: 'absolute inset-y-0 end-0 flex items-center',
       padding: 'pe-2',
-      base: 'h-5 w-5 text-gray-900 dark:text-white flex-shrink-0'
+      base: 'h-5 w-5 text-gray-900 dark:text-white flex-shrink-0',
     },
     avatar: {
       base: 'flex-shrink-0',
-      size: '2xs' as const
+      size: '2xs' as const,
     },
     chip: {
-      base: 'flex-shrink-0 w-2 h-2 mx-1 rounded-full'
-    }
+      base: 'flex-shrink-0 w-2 h-2 mx-1 rounded-full',
+    },
   },
   // Syntax for `<Transition>` component https://vuejs.org/guide/built-ins/transition.html#css-based-transitions
   transition: {
     leaveActiveClass: 'transition ease-in duration-100',
     leaveFromClass: 'opacity-100',
-    leaveToClass: 'opacity-0'
+    leaveToClass: 'opacity-0',
   },
   popper: {
-    placement: 'bottom-end'
+    placement: 'bottom-end',
   },
   default: {
     selectedIcon: 'i-heroicons-check-20-solid',
-    trailingIcon: 'i-heroicons-chevron-down-20-solid'
+    trailingIcon: 'i-heroicons-chevron-down-20-solid',
   },
   arrow: {
     ...arrow,
     ring: 'before:ring-1 before:ring-gray-200 dark:before:ring-gray-700',
-    background: 'before:bg-white dark:before:bg-gray-700'
-  }
+    background: 'before:bg-white dark:before:bg-gray-700',
+  },
 }

@@ -1,11 +1,11 @@
-import { h, computed, toRef, defineComponent } from 'vue'
+import { computed, defineComponent, h, toRef } from 'vue'
 import type { PropType } from 'vue'
-import { twMerge, twJoin } from 'tailwind-merge'
+import { twJoin, twMerge } from 'tailwind-merge'
 import { useMeiUI } from '../../composables/use-mei-ui'
-import { mergeConfig, getSlotsChildren } from '../../utils'
+import { getSlotsChildren, mergeConfig } from '../../utils'
 import { useProvideButtonGroup } from '../../composables/use-button-group'
 import type { ButtonSize, Strategy } from '../../types'
-// @ts-expect-error
+// @ts-expect-error - Typings not available
 import appConfig from '#build/app.config'
 import { button, buttonGroup } from '#mei-ui/ui-configs'
 
@@ -19,27 +19,27 @@ export default defineComponent({
     size: {
       type: String as PropType<ButtonSize>,
       default: null,
-      validator (value: string) {
+      validator(value: string) {
         return Object.keys(buttonConfig.size).includes(value)
-      }
+      },
     },
     orientation: {
       type: String as PropType<'horizontal' | 'vertical'>,
       default: 'horizontal',
-      validator (value: string) {
+      validator(value: string) {
         return ['horizontal', 'vertical'].includes(value)
-      }
+      },
     },
     class: {
       type: [String, Object, Array] as PropType<any>,
-      default: () => ''
+      default: () => '',
     },
     ui: {
       type: Object as PropType<Partial<typeof buttonGroupConfig> & { strategy?: Strategy }>,
-      default: () => ({})
-    }
+      default: () => ({}),
+    },
   },
-  setup (props, { slots }) {
+  setup(props, { slots }) {
     const { ui, attrs } = useMeiUI('buttonGroup', toRef(props, 'ui'), buttonGroupConfig)
 
     const children = computed(() => getSlotsChildren(slots))
@@ -48,7 +48,7 @@ export default defineComponent({
       return twMerge(twJoin(
         ui.value.wrapper[props.orientation],
         ui.value.rounded,
-        ui.value.shadow
+        ui.value.shadow,
       ), props.class)
     })
 
@@ -57,5 +57,5 @@ export default defineComponent({
     useProvideButtonGroup({ orientation: toRef(props, 'orientation'), size: toRef(props, 'size'), ui, rounded })
 
     return () => h('div', { class: wrapperClass.value, ...attrs.value }, children.value)
-  }
+  },
 })

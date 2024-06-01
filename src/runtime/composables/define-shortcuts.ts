@@ -1,7 +1,7 @@
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue'
 import type { ComputedRef, WatchSource } from 'vue'
 import { logicAnd, logicNot } from '@vueuse/math'
-import { useEventListener, useDebounceFn } from '@vueuse/core'
+import { useDebounceFn, useEventListener } from '@vueuse/core'
 import { useShortcuts } from './use-shortcuts'
 
 export interface ShortcutConfig {
@@ -32,10 +32,12 @@ interface Shortcut {
   // keyCode?: number
 }
 
-const chainedShortcutRegex = /^[^-]+.*-.*[^-]+$/
-const combinedShortcutRegex = /^[^_]+.*_.*[^_]+$/
+// eslint-disable-next-line regexp/no-super-linear-backtracking
+const chainedShortcutRegex = /^[^-]+(?:-.*)?-.*(?:[\n\r\u2028\u2029][^-]*|[^-\n\r\u2028\u2029])$/
+// eslint-disable-next-line regexp/no-super-linear-backtracking
+const combinedShortcutRegex = /^[^_]+(?:_.*)?_.*(?:[\n\r\u2028\u2029][^_]*|[^\n\r_\u2028\u2029])$/
 
-export const defineShortcuts = (config: ShortcutsConfig, options: ShortcutsOptions = {}) => {
+export function defineShortcuts(config: ShortcutsConfig, options: ShortcutsOptions = {}) {
   const { macOS, usingInput } = useShortcuts()
 
   let shortcuts: Shortcut[] = []
@@ -50,7 +52,7 @@ export const defineShortcuts = (config: ShortcutsConfig, options: ShortcutsOptio
     // Input autocomplete triggers a keydown event
     if (!e.key) { return }
 
-    const alphabeticalKey = /^[a-z]{1}$/i.test(e.key)
+    const alphabeticalKey = /^[a-z]$/i.test(e.key)
 
     let chainedKey
     chainedInputs.value.push(e.key)
@@ -102,10 +104,12 @@ export const defineShortcuts = (config: ShortcutsConfig, options: ShortcutsOptio
     let shortcut: Partial<Shortcut>
 
     if (key.includes('-') && key !== '-' && !key.match(chainedShortcutRegex)?.length) {
+      // eslint-disable-next-line no-console
       console.trace(`[Shortcut] Invalid key: "${key}"`)
     }
 
     if (key.includes('_') && key !== '_' && !key.match(combinedShortcutRegex)?.length) {
+      // eslint-disable-next-line no-console
       console.trace(`[Shortcut] Invalid key: "${key}"`)
     }
 
@@ -116,16 +120,17 @@ export const defineShortcuts = (config: ShortcutsConfig, options: ShortcutsOptio
         metaKey: false,
         ctrlKey: false,
         shiftKey: false,
-        altKey: false
+        altKey: false,
       }
-    } else {
+    }
+    else {
       const keySplit = key.toLowerCase().split('_').map(k => k)
       shortcut = {
         key: keySplit.filter(k => !['meta', 'ctrl', 'shift', 'alt'].includes(k)).join('_'),
         metaKey: keySplit.includes('meta'),
         ctrlKey: keySplit.includes('ctrl'),
         shiftKey: keySplit.includes('shift'),
-        altKey: keySplit.includes('alt')
+        altKey: keySplit.includes('alt'),
       }
     }
     shortcut.chained = chained
@@ -139,11 +144,13 @@ export const defineShortcuts = (config: ShortcutsConfig, options: ShortcutsOptio
     // Retrieve handler function
     if (typeof shortcutConfig === 'function') {
       shortcut.handler = shortcutConfig
-    } else if (typeof shortcutConfig === 'object') {
+    }
+    else if (typeof shortcutConfig === 'object') {
       shortcut = { ...shortcut, handler: shortcutConfig.handler }
     }
 
     if (!shortcut.handler) {
+      // eslint-disable-next-line no-console
       console.trace('[Shortcut] Invalid value')
       return null
     }
@@ -152,7 +159,8 @@ export const defineShortcuts = (config: ShortcutsConfig, options: ShortcutsOptio
     const conditions: ComputedRef<boolean>[] = []
     if (!(shortcutConfig as ShortcutConfig).usingInput) {
       conditions.push(logicNot(usingInput))
-    } else if (typeof (shortcutConfig as ShortcutConfig).usingInput === 'string') {
+    }
+    else if (typeof (shortcutConfig as ShortcutConfig).usingInput === 'string') {
       conditions.push(computed(() => usingInput.value === (shortcutConfig as ShortcutConfig).usingInput))
     }
     shortcut.condition = logicAnd(...conditions, ...((shortcutConfig as ShortcutConfig).whenever || []))

@@ -1,11 +1,11 @@
-import { h, cloneVNode, computed, toRef, defineComponent } from 'vue'
+import { cloneVNode, computed, defineComponent, h, toRef } from 'vue'
 import type { PropType } from 'vue'
-import { twMerge, twJoin } from 'tailwind-merge'
-import MeiAvatar from './avatar.vue'
+import { twJoin, twMerge } from 'tailwind-merge'
 import { useMeiUI } from '../../composables/use-mei-ui'
-import { mergeConfig, getSlotsChildren } from '../../utils'
+import { getSlotsChildren, mergeConfig } from '../../utils'
 import type { AvatarSize, Strategy } from '../../types'
-// @ts-expect-error
+import MeiAvatar from './avatar.vue'
+// @ts-expect-error - Typings not available
 import appConfig from '#build/app.config'
 import { avatar, avatarGroup } from '#mei-ui/ui-configs'
 
@@ -19,29 +19,29 @@ export default defineComponent({
     size: {
       type: String as PropType<AvatarSize>,
       default: null,
-      validator (value: string) {
+      validator(value: string) {
         return Object.keys(avatarConfig.size).includes(value)
-      }
+      },
     },
     max: {
       type: Number,
-      default: null
+      default: null,
     },
     class: {
       type: [String, Object, Array] as PropType<any>,
-      default: () => ''
+      default: () => '',
     },
     ui: {
       type: Object as PropType<Partial<typeof avatarGroupConfig> & { strategy?: Strategy }>,
-      default: () => ({})
-    }
+      default: () => ({}),
+    },
   },
-  setup (props, { slots }) {
+  setup(props, { slots }) {
     const { ui, attrs } = useMeiUI('avatarGroup', toRef(props, 'ui'), avatarGroupConfig, toRef(props, 'class'))
 
     const children = computed(() => getSlotsChildren(slots))
 
-    const max = computed(() => typeof props.max === 'string' ? parseInt(props.max, 10) : props.max)
+    const max = computed(() => typeof props.max === 'string' ? Number.parseInt(props.max, 10) : props.max)
 
     const clones = computed(() => children.value.map((node, index) => {
       const vProps: any = {}
@@ -61,7 +61,7 @@ export default defineComponent({
         return h(MeiAvatar, {
           size: props.size || (avatarConfig.default.size as AvatarSize),
           text: `+${children.value.length - max.value}`,
-          class: twJoin(ui.value.ring, ui.value.margin)
+          class: twJoin(ui.value.ring, ui.value.margin),
         })
       }
 
@@ -69,5 +69,5 @@ export default defineComponent({
     }).filter(Boolean).reverse())
 
     return () => h('div', { class: ui.value.wrapper, ...attrs.value }, clones.value)
-  }
+  },
 })

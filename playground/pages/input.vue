@@ -1,5 +1,5 @@
 <template>
-  <mei-input
+  <MeiInput
     color="primary"
     variant="outline"
     placeholder="Search..."

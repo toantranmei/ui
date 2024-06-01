@@ -1,47 +1,47 @@
-import { createRequire } from "node:module";
-import { name, version } from "../package.json";
+import { createRequire } from 'node:module'
 import {
-  defineNuxtModule,
-  installModule,
-  createResolver,
-  useLogger,
-  addPlugin,
   addComponentsDir,
   addImportsDir,
-} from "@nuxt/kit";
+  addPlugin,
+  createResolver,
+  defineNuxtModule,
+  installModule,
+  useLogger,
+} from '@nuxt/kit'
 
-import {
-  type CollectionNames,
-  type IconsPluginOptions,
-} from "@egoist/tailwindcss-icons";
-import createTemplates from "./runtime/templates";
-import * as config from "./runtime/ui-configs";
-import type { DeepPartial, Strategy } from "./runtime/types/utils";
+import type {
+  CollectionNames,
+  IconsPluginOptions,
+} from '@egoist/tailwindcss-icons'
+import { name, version } from '../package.json'
+import createTemplates from './runtime/templates'
+import type * as config from './runtime/ui-configs'
+import type { DeepPartial, Strategy } from './runtime/types/utils'
 import installTailwind from './runtime/tailwind'
 
-const _require = createRequire(import.meta.url);
-const defaultColors = _require("tailwindcss/colors.js");
+const _require = createRequire(import.meta.url)
+const defaultColors = _require('tailwindcss/colors.js')
 
-delete defaultColors.lightBlue;
-delete defaultColors.warmGray;
-delete defaultColors.trueGray;
-delete defaultColors.coolGray;
-delete defaultColors.blueGray;
+delete defaultColors.lightBlue
+delete defaultColors.warmGray
+delete defaultColors.trueGray
+delete defaultColors.coolGray
+delete defaultColors.blueGray
 
 type UI = {
-  primary?: string;
-  gray?: string;
-  colors?: string[];
-  strategy?: Strategy;
-  [key: string]: any;
-} & DeepPartial<typeof config>;
+  primary?: string
+  gray?: string
+  colors?: string[]
+  strategy?: Strategy
+  [key: string]: any
+} & DeepPartial<typeof config>
 
-declare module "@nuxt/schema" {
+declare module '@nuxt/schema' {
   interface AppConfigInput {
-    meiUI?: UI;
+    meiUI?: UI
   }
   interface AppConfig {
-    meiUI?: UI;
+    meiUI?: UI
   }
 }
 
@@ -49,83 +49,83 @@ export interface ModuleOptions {
   /**
    * @default 'Mei'
    */
-  prefix?: string;
+  prefix?: string
 
   /**
    * @default false
    */
-  global?: boolean;
+  global?: boolean
 
-  icons: CollectionNames[] | "all" | IconsPluginOptions;
+  icons: CollectionNames[] | 'all' | IconsPluginOptions
 
-  safelistColors?: string[];
+  safelistColors?: string[]
   /**
    * Disables the global css styles added by the module.
    */
-  disableGlobalStyles?: boolean;
+  disableGlobalStyles?: boolean
 }
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
     name,
     version,
-    configKey: "meiUI"
+    configKey: 'meiUI',
   },
   defaults: {
-    prefix: "Mei",
-    icons: ["heroicons"],
-    safelistColors: ["primary"],
+    prefix: 'Mei',
+    icons: ['heroicons'],
+    safelistColors: ['primary'],
     disableGlobalStyles: false,
   },
   async setup(options, nuxt) {
-    const logger = useLogger(name);
-    const { resolve } = createResolver(import.meta.url);
+    const logger = useLogger(name)
+    const { resolve } = createResolver(import.meta.url)
 
-    logger.info(`\`${name}\` setup starting`);
+    logger.info(`\`${name}\` setup starting`)
 
     // Transpile runtime
-    const runtimeDir = resolve("./runtime");
-    nuxt.options.build.transpile.push(runtimeDir);
-    nuxt.options.build.transpile.push("@popperjs/core", "@headlessui/vue");
+    const runtimeDir = resolve('./runtime')
+    nuxt.options.build.transpile.push(runtimeDir)
+    nuxt.options.build.transpile.push('@popperjs/core', '@headlessui/vue')
 
-    nuxt.options.alias["#mei-ui"] = runtimeDir;
+    nuxt.options.alias['#mei-ui'] = runtimeDir
 
     if (!options.disableGlobalStyles) {
-      nuxt.options.css.push(resolve(runtimeDir, "mei-ui.css"));
+      nuxt.options.css.push(resolve(runtimeDir, 'mei-ui.css'))
     }
 
     // create templates types definitions
-    createTemplates(nuxt);
+    createTemplates(nuxt)
 
     // Install dependency modules
-    await installModule("nuxt-icon");
-    await installModule("@nuxtjs/color-mode", { classSuffix: "" });
+    await installModule('nuxt-icon')
+    await installModule('@nuxtjs/color-mode', { classSuffix: '' })
     await installTailwind(options, nuxt, resolve)
 
     // Plugins
     addPlugin({
-      src: resolve(runtimeDir, "plugins", "colors"),
-    });
+      src: resolve(runtimeDir, 'plugins', 'colors'),
+    })
 
     addPlugin({
-      src: resolve(runtimeDir, "plugins", "modals"),
-    });
+      src: resolve(runtimeDir, 'plugins', 'modals'),
+    })
 
     addPlugin({
-      src: resolve(runtimeDir, "plugins", "slide-overs"),
-    });
+      src: resolve(runtimeDir, 'plugins', 'slide-overs'),
+    })
 
     // Components
     addComponentsDir({
-      path: resolve(runtimeDir, "components", "atoms"),
+      path: resolve(runtimeDir, 'components', 'atoms'),
       prefix: options.prefix,
       global: options.global,
       watch: false,
-    });
+    })
 
     // Composables
-    addImportsDir(resolve(runtimeDir, "composables"));
+    addImportsDir(resolve(runtimeDir, 'composables'))
 
-    logger.success(`\`${name}\` setup done`);
+    logger.success(`\`${name}\` setup done`)
   },
-});
+})

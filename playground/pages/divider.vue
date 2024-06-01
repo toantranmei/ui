@@ -1,6 +1,6 @@
 <template>
-  <mei-box>
-    <mei-text>This is paragraph text</mei-text>
-    <mei-divider />
-  </mei-box>
+  <MeiBox>
+    <MeiText>This is paragraph text</MeiText>
+    <MeiDivider />
+  </MeiBox>
 </template>

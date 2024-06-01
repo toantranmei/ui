@@ -6,6 +6,6 @@ export default {
   default: {
     size: 'sm',
     color: 'white',
-    variant: 'outline'
-  }
+    variant: 'outline',
+  },
 }

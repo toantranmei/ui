@@ -1,3 +1,123 @@
+<script lang="ts">
+import { computed, defineComponent, inject, provide, ref, toRef } from 'vue'
+import type { PropType, Ref } from 'vue'
+import { useMeiUI } from '../../composables/use-mei-ui'
+import { mergeConfig } from '../../utils'
+import type {
+  FormError,
+  FormGroupSize,
+  InjectedFormGroupValue,
+  Strategy,
+} from '../../types'
+// @ts-expect-error - no types available
+import appConfig from '#build/app.config'
+import { formGroup } from '#mei-ui/ui-configs'
+import { useId } from '#imports'
+
+const config = mergeConfig<typeof formGroup>(
+  appConfig.meiUI.strategy,
+  appConfig.meiUI.formGroup,
+  formGroup,
+)
+
+export default defineComponent({
+  inheritAttrs: false,
+  props: {
+    name: {
+      type: String,
+      default: null,
+    },
+    size: {
+      type: String as PropType<FormGroupSize>,
+      default: null,
+      validator(value: string) {
+        return Object.keys(config.size).includes(value)
+      },
+    },
+    label: {
+      type: String,
+      default: null,
+    },
+    description: {
+      type: String,
+      default: null,
+    },
+    required: {
+      type: Boolean,
+      default: false,
+    },
+    help: {
+      type: String,
+      default: null,
+    },
+    error: {
+      type: [String, Boolean],
+      default: null,
+    },
+    hint: {
+      type: String,
+      default: null,
+    },
+    class: {
+      type: [String, Object, Array] as PropType<any>,
+      default: () => '',
+    },
+    ui: {
+      type: Object as PropType<
+        Partial<typeof config> & { strategy?: Strategy }
+      >,
+      default: () => ({}),
+    },
+    eagerValidation: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  setup(props) {
+    const { ui, attrs } = useMeiUI(
+      'formGroup',
+      toRef(props, 'ui'),
+      config,
+      toRef(props, 'class'),
+    )
+
+    const formErrors = inject<Ref<FormError[]> | null>('form-errors', null)
+
+    const error = computed(() => {
+      return (props.error && typeof props.error === 'string')
+        || typeof props.error === 'boolean'
+        ? props.error
+        : formErrors?.value?.find(error => error.path === props.name)
+          ?.message
+    })
+
+    const size = computed(
+      () => ui.value.size[props.size ?? config.default.size],
+    )
+    const inputId = ref(useId())
+
+    provide<InjectedFormGroupValue>('form-group', {
+      error,
+      inputId,
+      name: computed(() => props.name),
+      size: computed(() => props.size),
+      eagerValidation: computed(() => props.eagerValidation),
+    })
+
+    return {
+
+      ui,
+      attrs,
+      inputId,
+
+      size,
+
+      error,
+    }
+  },
+})
+</script>
+
 <template>
   <div
     :class="ui.wrapper"
@@ -79,123 +199,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts">
-import { computed, defineComponent, provide, inject, ref, toRef } from "vue";
-import type { Ref, PropType } from "vue";
-import { useMeiUI } from "../../composables/use-mei-ui";
-import { mergeConfig } from "../../utils";
-import type {
-  FormError,
-  InjectedFormGroupValue,
-  FormGroupSize,
-  Strategy,
-} from "../../types";
-// @ts-expect-error
-import appConfig from "#build/app.config";
-import { formGroup } from "#mei-ui/ui-configs";
-import { useId } from "#imports";
-
-const config = mergeConfig<typeof formGroup>(
-  appConfig.meiUI.strategy,
-  appConfig.meiUI.formGroup,
-  formGroup
-);
-
-export default defineComponent({
-  inheritAttrs: false,
-  props: {
-    name: {
-      type: String,
-      default: null,
-    },
-    size: {
-      type: String as PropType<FormGroupSize>,
-      default: null,
-      validator(value: string) {
-        return Object.keys(config.size).includes(value);
-      },
-    },
-    label: {
-      type: String,
-      default: null,
-    },
-    description: {
-      type: String,
-      default: null,
-    },
-    required: {
-      type: Boolean,
-      default: false,
-    },
-    help: {
-      type: String,
-      default: null,
-    },
-    error: {
-      type: [String, Boolean],
-      default: null,
-    },
-    hint: {
-      type: String,
-      default: null,
-    },
-    class: {
-      type: [String, Object, Array] as PropType<any>,
-      default: () => "",
-    },
-    ui: {
-      type: Object as PropType<
-        Partial<typeof config> & { strategy?: Strategy }
-      >,
-      default: () => ({}),
-    },
-    eagerValidation: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  setup(props) {
-    const { ui, attrs } = useMeiUI(
-      "formGroup",
-      toRef(props, "ui"),
-      config,
-      toRef(props, "class")
-    );
-
-    const formErrors = inject<Ref<FormError[]> | null>("form-errors", null);
-
-    const error = computed(() => {
-      return (props.error && typeof props.error === "string") ||
-        typeof props.error === "boolean"
-        ? props.error
-        : formErrors?.value?.find((error) => error.path === props.name)
-            ?.message;
-    });
-
-    const size = computed(
-      () => ui.value.size[props.size ?? config.default.size]
-    );
-    const inputId = ref(useId());
-
-    provide<InjectedFormGroupValue>("form-group", {
-      error,
-      inputId,
-      name: computed(() => props.name),
-      size: computed(() => props.size),
-      eagerValidation: computed(() => props.eagerValidation),
-    });
-
-    return {
-      // eslint-disable-next-line vue/no-dupe-keys
-      ui,
-      attrs,
-      inputId,
-      // eslint-disable-next-line vue/no-dupe-keys
-      size,
-      // eslint-disable-next-line vue/no-dupe-keys
-      error,
-    };
-  },
-});
-</script>

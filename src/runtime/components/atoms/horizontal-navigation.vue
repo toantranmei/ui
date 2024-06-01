@@ -1,3 +1,78 @@
+<script lang="ts">
+import { computed, defineComponent, toRef } from 'vue'
+import type { PropType } from 'vue'
+import { twJoin, twMerge } from 'tailwind-merge'
+import { useMeiUI } from '../../composables/use-mei-ui'
+import { getMeiLinkProps, mergeConfig } from '../../utils'
+import type { HorizontalNavigationLink, Strategy } from '../../types'
+import MeiIcon from './icon.vue'
+import MeiAvatar from './alert.vue'
+import MeiBadge from './badge.vue'
+import MeiLink from './link.vue'
+// @ts-expect-error - no types available
+import appConfig from '#build/app.config'
+import { horizontalNavigation } from '#mei-ui/ui-configs'
+
+const config = mergeConfig<typeof horizontalNavigation>(
+  appConfig.meiUI.strategy,
+  appConfig.meiUI.horizontalNavigation,
+  horizontalNavigation,
+)
+
+export default defineComponent({
+  components: {
+    MeiIcon,
+    MeiAvatar,
+    MeiBadge,
+    MeiLink,
+  },
+  inheritAttrs: false,
+  props: {
+    links: {
+      type: Array as PropType<
+        HorizontalNavigationLink[][] | HorizontalNavigationLink[]
+      >,
+      default: () => [],
+    },
+    class: {
+      type: [String, Object, Array] as PropType<any>,
+      default: () => '',
+    },
+    ui: {
+      type: Object as PropType<
+        Partial<typeof config> & { strategy?: Strategy }
+      >,
+      default: () => ({}),
+    },
+  },
+  setup(props) {
+    const { ui, attrs } = useMeiUI(
+      'horizontalNavigation',
+      toRef(props, 'ui'),
+      config,
+      toRef(props, 'class'),
+    )
+
+    const sections = computed(
+      () =>
+        (Array.isArray(props.links[0])
+          ? props.links
+          : [props.links]) as HorizontalNavigationLink[][],
+    )
+
+    return {
+
+      ui,
+      attrs,
+      sections,
+      getMeiLinkProps,
+      twMerge,
+      twJoin,
+    }
+  },
+})
+</script>
+
 <template>
   <nav
     :class="ui.wrapper"
@@ -45,9 +120,9 @@
                 twMerge(
                   twJoin(
                     ui.icon.base,
-                    isActive ? ui.icon.active : ui.icon.inactive
+                    isActive ? ui.icon.active : ui.icon.inactive,
                   ),
-                  link.iconClass
+                  link.iconClass,
                 )
               "
             />
@@ -78,8 +153,8 @@
                 size: ui.badge.size,
                 color: ui.badge.color,
                 variant: ui.badge.variant,
-                ...(typeof link.badge === 'string' ||
-                  typeof link.badge === 'number'
+                ...(typeof link.badge === 'string'
+                  || typeof link.badge === 'number'
                   ? { label: link.badge }
                   : link.badge),
               }"
@@ -91,78 +166,3 @@
     </ul>
   </nav>
 </template>
-
-<script lang="ts">
-import { toRef, defineComponent, computed } from "vue";
-import type { PropType } from "vue";
-import { twMerge, twJoin } from "tailwind-merge";
-import MeiIcon from "./icon.vue";
-import MeiAvatar from "./alert.vue";
-import MeiBadge from "./badge.vue";
-import MeiLink from "./link.vue";
-import { useMeiUI } from "../../composables/use-mei-ui";
-import { mergeConfig, getMeiLinkProps } from "../../utils";
-import type { HorizontalNavigationLink, Strategy } from "../../types";
-// @ts-expect-error
-import appConfig from "#build/app.config";
-import { horizontalNavigation } from "#mei-ui/ui-configs";
-
-const config = mergeConfig<typeof horizontalNavigation>(
-  appConfig.meiUI.strategy,
-  appConfig.meiUI.horizontalNavigation,
-  horizontalNavigation
-);
-
-export default defineComponent({
-  components: {
-    MeiIcon,
-    MeiAvatar,
-    MeiBadge,
-    MeiLink,
-  },
-  inheritAttrs: false,
-  props: {
-    links: {
-      type: Array as PropType<
-        HorizontalNavigationLink[][] | HorizontalNavigationLink[]
-      >,
-      default: () => [],
-    },
-    class: {
-      type: [String, Object, Array] as PropType<any>,
-      default: () => "",
-    },
-    ui: {
-      type: Object as PropType<
-        Partial<typeof config> & { strategy?: Strategy }
-      >,
-      default: () => ({}),
-    },
-  },
-  setup(props) {
-    const { ui, attrs } = useMeiUI(
-      "horizontalNavigation",
-      toRef(props, "ui"),
-      config,
-      toRef(props, "class")
-    );
-
-    const sections = computed(
-      () =>
-        (Array.isArray(props.links[0])
-          ? props.links
-          : [props.links]) as HorizontalNavigationLink[][]
-    );
-
-    return {
-      // eslint-disable-next-line vue/no-dupe-keys
-      ui,
-      attrs,
-      sections,
-      getMeiLinkProps,
-      twMerge,
-      twJoin,
-    };
-  },
-});
-</script>

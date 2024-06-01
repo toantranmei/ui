@@ -1,13 +1,13 @@
 <template>
   <div>
     tooltip:
-    <mei-tooltip
+    <MeiTooltip
       text="Tooltip example"
       :shortcuts="['⌘', 'O']"
     >
-      <mei-button color="gray">
+      <MeiButton color="gray">
         aaa
-      </mei-button>
-    </mei-tooltip>
+      </MeiButton>
+    </MeiTooltip>
   </div>
 </template>

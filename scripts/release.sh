@@ -12,5 +12,5 @@ if [[ ! -z ${NODE_AUTH_TOKEN} ]] ; then
 fi
 
 # Release package
-echo "Publishing @toantranmei/mei-nuxt3-ui"
+echo "Publishing @toantranmei/ui"
 npm publish -q --access public

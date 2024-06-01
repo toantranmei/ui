@@ -1,6 +1,6 @@
-import type { PropType } from "vue";
-import type { NuxtLinkProps } from "#app";
-import type { RouteLocationRaw } from "#vue-router";
+import type { PropType } from 'vue'
+import type { NuxtLinkProps } from '#app'
+import type { RouteLocationRaw } from '#vue-router'
 
 export const nuxtLinkProps = {
   to: {
@@ -16,78 +16,78 @@ export const nuxtLinkProps = {
 
   // Attributes
   target: {
-    type: String as PropType<NuxtLinkProps["target"]>,
+    type: String as PropType<NuxtLinkProps['target']>,
     default: undefined,
     required: false,
   },
   rel: {
-    type: String as PropType<NuxtLinkProps["rel"]>,
+    type: String as PropType<NuxtLinkProps['rel']>,
     default: undefined,
     required: false,
   },
   noRel: {
-    type: Boolean as PropType<NuxtLinkProps["noRel"]>,
+    type: Boolean as PropType<NuxtLinkProps['noRel']>,
     default: undefined,
     required: false,
   },
 
   // Prefetching
   prefetch: {
-    type: Boolean as PropType<NuxtLinkProps["prefetch"]>,
+    type: Boolean as PropType<NuxtLinkProps['prefetch']>,
     default: undefined,
     required: false,
   },
   noPrefetch: {
-    type: Boolean as PropType<NuxtLinkProps["noPrefetch"]>,
+    type: Boolean as PropType<NuxtLinkProps['noPrefetch']>,
     default: undefined,
     required: false,
   },
 
   // Styling
   activeClass: {
-    type: String as PropType<NuxtLinkProps["activeClass"]>,
+    type: String as PropType<NuxtLinkProps['activeClass']>,
     default: undefined,
     required: false,
   },
   exactActiveClass: {
-    type: String as PropType<NuxtLinkProps["exactActiveClass"]>,
+    type: String as PropType<NuxtLinkProps['exactActiveClass']>,
     default: undefined,
     required: false,
   },
   prefetchedClass: {
-    type: String as PropType<NuxtLinkProps["prefetchedClass"]>,
+    type: String as PropType<NuxtLinkProps['prefetchedClass']>,
     default: undefined,
     required: false,
   },
 
   // Vue Router's `<RouterLink>` additional props
   replace: {
-    type: Boolean as PropType<NuxtLinkProps["replace"]>,
+    type: Boolean as PropType<NuxtLinkProps['replace']>,
     default: undefined,
     required: false,
   },
   ariaCurrentValue: {
-    type: String as PropType<NuxtLinkProps["ariaCurrentValue"]>,
+    type: String as PropType<NuxtLinkProps['ariaCurrentValue']>,
     default: undefined,
     required: false,
   },
 
   // Edge cases handling
   external: {
-    type: Boolean as PropType<NuxtLinkProps["external"]>,
+    type: Boolean as PropType<NuxtLinkProps['external']>,
     default: undefined,
     required: false,
   },
-} as const;
+} as const
 
 const meiLinkProps = {
   as: {
     type: String,
-    default: "button",
+    default: 'button',
   },
   type: {
     type: String,
-    default: "button",
+    default: 'button',
   },
   disabled: {
     type: Boolean,
@@ -113,26 +113,26 @@ const meiLinkProps = {
     type: String,
     default: undefined,
   },
-} as const;
+} as const
 
-export const getNuxtLinkProps = (props: any) => {
-  const keys = Object.keys(nuxtLinkProps);
-
-  return keys.reduce((acc: any, key) => {
-    if (props[key] !== undefined) {
-      acc[key] = props[key];
-    }
-    return acc;
-  }, {});
-};
-
-export const getMeiLinkProps = (props: any) => {
-  const keys = [...Object.keys(nuxtLinkProps), ...Object.keys(meiLinkProps)];
+export function getNuxtLinkProps(props: any) {
+  const keys = Object.keys(nuxtLinkProps)
 
   return keys.reduce((acc: any, key) => {
     if (props[key] !== undefined) {
-      acc[key] = props[key];
+      acc[key] = props[key]
     }
-    return acc;
-  }, {});
-};
+    return acc
+  }, {})
+}
+
+export function getMeiLinkProps(props: any) {
+  const keys = [...Object.keys(nuxtLinkProps), ...Object.keys(meiLinkProps)]
+
+  return keys.reduce((acc: any, key) => {
+    if (props[key] !== undefined) {
+      acc[key] = props[key]
+    }
+    return acc
+  }, {})
+}

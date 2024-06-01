@@ -1,3 +1,150 @@
+<script lang="ts">
+import { defineComponent, onMounted, ref, toRef, watch } from 'vue'
+import type { PropType } from 'vue'
+import {
+  Tab as HTab,
+  TabGroup as HTabGroup,
+  TabList as HTabList,
+  TabPanel as HTabPanel,
+  TabPanels as HTabPanels,
+  provideUseId,
+} from '@headlessui/vue'
+import { useResizeObserver } from '@vueuse/core'
+import { useMeiUI } from '../../composables/use-mei-ui'
+import { mergeConfig } from '../../utils'
+import type { Strategy, TabItem } from '../../types'
+// @ts-expect-error - Importing from the build folder
+import appConfig from '#build/app.config'
+import { tabs } from '#mei-ui/ui-configs'
+import { useId } from '#imports'
+
+const config = mergeConfig<typeof tabs>(
+  appConfig.meiUI.strategy,
+  appConfig.meiUI.tabs,
+  tabs,
+)
+
+export default defineComponent({
+  components: {
+    HTabGroup,
+    HTabList,
+    HTab,
+    HTabPanels,
+    HTabPanel,
+  },
+  inheritAttrs: false,
+  props: {
+    modelValue: {
+      type: Number,
+      default: undefined,
+    },
+    orientation: {
+      type: String as PropType<'horizontal' | 'vertical'>,
+      default: 'horizontal',
+      validator: (value: string) => ['horizontal', 'vertical'].includes(value),
+    },
+    defaultIndex: {
+      type: Number,
+      default: 0,
+    },
+    items: {
+      type: Array as PropType<TabItem[]>,
+      default: () => [],
+    },
+    unmount: {
+      type: Boolean,
+      default: false,
+    },
+    class: {
+      type: [String, Object, Array] as PropType<any>,
+      default: () => '',
+    },
+    ui: {
+      type: Object as PropType<
+        Partial<typeof config> & { strategy?: Strategy }
+      >,
+      default: () => ({}),
+    },
+  },
+  emits: ['update:modelValue', 'change'],
+  setup(props, { emit }) {
+    const { ui, attrs } = useMeiUI(
+      'tabs',
+      toRef(props, 'ui'),
+      config,
+      toRef(props, 'class'),
+    )
+
+    const listRef = ref<HTMLElement>()
+    const itemRefs = ref<HTMLElement[]>([])
+    const markerRef = ref<HTMLElement>()
+
+    const selectedIndex = ref<number | undefined>(
+      props.modelValue || props.defaultIndex,
+    )
+
+    // Methods
+
+    function calcMarkerSize(index: number | undefined) {
+      // @ts-expect-error - The value is always a number
+      const tab = itemRefs.value[index]?.$el
+      if (!tab) {
+        return
+      }
+
+      if (!markerRef.value) {
+        return
+      }
+
+      markerRef.value.style.top = `${tab.offsetTop}px`
+      markerRef.value.style.left = `${tab.offsetLeft}px`
+      markerRef.value.style.width = `${tab.offsetWidth}px`
+      markerRef.value.style.height = `${tab.offsetHeight}px`
+    }
+
+    function onChange(index: number) {
+      selectedIndex.value = index
+
+      emit('change', index)
+
+      if (props.modelValue !== undefined) {
+        emit('update:modelValue', selectedIndex.value)
+      }
+
+      calcMarkerSize(selectedIndex.value)
+    }
+
+    useResizeObserver(listRef, () => {
+      calcMarkerSize(selectedIndex.value)
+    })
+
+    watch(
+      () => props.modelValue,
+      (value) => {
+        selectedIndex.value = value
+
+        calcMarkerSize(selectedIndex.value)
+      },
+    )
+
+    onMounted(() => calcMarkerSize(selectedIndex.value))
+
+    provideUseId(() => useId())
+
+    return {
+
+      ui,
+      attrs,
+      listRef,
+      itemRefs,
+      markerRef,
+      selectedIndex,
+      onChange,
+    }
+  },
+})
+</script>
+
 <template>
   <HTabGroup
     :vertical="orientation === 'vertical'"
@@ -20,8 +167,8 @@
         orientation === 'horizontal' && 'inline-grid items-center',
       ]"
       :style="[
-        orientation === 'horizontal' &&
-          `grid-template-columns: repeat(${items.length}, minmax(0, 1fr))`,
+        orientation === 'horizontal'
+          && `grid-template-columns: repeat(${items.length}, minmax(0, 1fr))`,
       ]"
     >
       <div
@@ -91,150 +238,3 @@
     </HTabPanels>
   </HTabGroup>
 </template>
-
-<script lang="ts">
-import { toRef, ref, watch, onMounted, defineComponent } from "vue";
-import type { PropType } from "vue";
-import {
-  TabGroup as HTabGroup,
-  TabList as HTabList,
-  Tab as HTab,
-  TabPanels as HTabPanels,
-  TabPanel as HTabPanel,
-  provideUseId,
-} from "@headlessui/vue";
-import { useResizeObserver } from "@vueuse/core";
-import { useMeiUI } from "../../composables/use-mei-ui";
-import { mergeConfig } from "../../utils";
-import type { TabItem, Strategy } from "../../types";
-// @ts-expect-error
-import appConfig from "#build/app.config";
-import { tabs } from "#mei-ui/ui-configs";
-import { useId } from "#imports";
-
-const config = mergeConfig<typeof tabs>(
-  appConfig.meiUI.strategy,
-  appConfig.meiUI.tabs,
-  tabs
-);
-
-export default defineComponent({
-  components: {
-    HTabGroup,
-    HTabList,
-    HTab,
-    HTabPanels,
-    HTabPanel,
-  },
-  inheritAttrs: false,
-  props: {
-    modelValue: {
-      type: Number,
-      default: undefined,
-    },
-    orientation: {
-      type: String as PropType<"horizontal" | "vertical">,
-      default: "horizontal",
-      validator: (value: string) => ["horizontal", "vertical"].includes(value),
-    },
-    defaultIndex: {
-      type: Number,
-      default: 0,
-    },
-    items: {
-      type: Array as PropType<TabItem[]>,
-      default: () => [],
-    },
-    unmount: {
-      type: Boolean,
-      default: false,
-    },
-    class: {
-      type: [String, Object, Array] as PropType<any>,
-      default: () => "",
-    },
-    ui: {
-      type: Object as PropType<
-        Partial<typeof config> & { strategy?: Strategy }
-      >,
-      default: () => ({}),
-    },
-  },
-  emits: ["update:modelValue", "change"],
-  setup(props, { emit }) {
-    const { ui, attrs } = useMeiUI(
-      "tabs",
-      toRef(props, "ui"),
-      config,
-      toRef(props, "class")
-    );
-
-    const listRef = ref<HTMLElement>();
-    const itemRefs = ref<HTMLElement[]>([]);
-    const markerRef = ref<HTMLElement>();
-
-    const selectedIndex = ref<number | undefined>(
-      props.modelValue || props.defaultIndex
-    );
-
-    // Methods
-
-    function calcMarkerSize(index: number | undefined) {
-      // @ts-ignore
-      const tab = itemRefs.value[index]?.$el;
-      if (!tab) {
-        return;
-      }
-
-      if (!markerRef.value) {
-        return;
-      }
-
-      markerRef.value.style.top = `${tab.offsetTop}px`;
-      markerRef.value.style.left = `${tab.offsetLeft}px`;
-      markerRef.value.style.width = `${tab.offsetWidth}px`;
-      markerRef.value.style.height = `${tab.offsetHeight}px`;
-    }
-
-    function onChange(index: number) {
-      selectedIndex.value = index;
-
-      emit("change", index);
-
-      if (props.modelValue !== undefined) {
-        emit("update:modelValue", selectedIndex.value);
-      }
-
-      calcMarkerSize(selectedIndex.value);
-    }
-
-    useResizeObserver(listRef, () => {
-      calcMarkerSize(selectedIndex.value);
-    });
-
-    watch(
-      () => props.modelValue,
-      (value) => {
-        selectedIndex.value = value;
-
-        calcMarkerSize(selectedIndex.value);
-      }
-    );
-
-    onMounted(() => calcMarkerSize(selectedIndex.value));
-
-    provideUseId(() => useId());
-
-    return {
-      // eslint-disable-next-line vue/no-dupe-keys
-      ui,
-      attrs,
-      listRef,
-      itemRefs,
-      markerRef,
-      selectedIndex,
-      onChange,
-    };
-  },
-});
-</script>

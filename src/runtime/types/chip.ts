@@ -1,5 +1,5 @@
-import { chip } from '../ui-configs'
-import colors from '#mei-ui-colors'
+import type { chip } from '../ui-configs'
+import type colors from '#mei-ui-colors'
 
 export type ChipSize = keyof typeof chip.size
 export type ChipColor = 'gray' | typeof colors[number]

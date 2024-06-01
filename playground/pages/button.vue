@@ -1,5 +1,5 @@
 <template>
   <div>
-    button: <mei-button>Button</mei-button>
+    button: <MeiButton>Button</MeiButton>
   </div>
 </template>

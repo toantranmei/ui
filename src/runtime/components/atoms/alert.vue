@@ -1,3 +1,111 @@
+<script lang="ts">
+import { computed, defineComponent, toRef } from 'vue'
+import type { PropType } from 'vue'
+import { twJoin, twMerge } from 'tailwind-merge'
+import { useMeiUI } from '../../composables/use-mei-ui'
+import type { AlertAction, AlertColor, AlertVariant, Avatar, Button, Strategy } from '../../types'
+import { mergeConfig } from '../../utils'
+import MeiIcon from './icon.vue'
+import MeiAvatar from './avatar.vue'
+import MeiButton from './button.vue'
+// @ts-expect-error - no types available
+import appConfig from '#build/app.config'
+import { alert } from '#mei-ui/ui-configs'
+
+const config = mergeConfig<typeof alert>(appConfig.meiUI.strategy, appConfig.meiUI.alert, alert)
+
+export default defineComponent({
+  components: {
+    MeiIcon,
+    MeiAvatar,
+    MeiButton,
+  },
+  inheritAttrs: false,
+  props: {
+    title: {
+      type: String,
+      default: null,
+    },
+    description: {
+      type: String,
+      default: null,
+    },
+    icon: {
+      type: String,
+      default: () => config.default.icon,
+    },
+    avatar: {
+      type: Object as PropType<Avatar>,
+      default: null,
+    },
+    closeButton: {
+      type: Object as PropType<Button>,
+      default: () => config.default.closeButton as unknown as Button,
+    },
+    actions: {
+      type: Array as PropType<AlertAction[]>,
+      default: () => [],
+    },
+    color: {
+      type: String as PropType<AlertColor>,
+      default: () => config.default.color,
+      validator(value: string) {
+        return [...appConfig.meiUI.colors, ...Object.keys(config.color)].includes(value)
+      },
+    },
+    variant: {
+      type: String as PropType<AlertVariant>,
+      default: () => config.default.variant,
+      validator(value: string) {
+        return [
+          ...Object.keys(config.variant),
+          ...Object.values(config.color).flatMap(value => Object.keys(value)),
+        ].includes(value)
+      },
+    },
+    class: {
+      type: [String, Object, Array] as PropType<any>,
+      default: () => '',
+    },
+    ui: {
+      type: Object as PropType<Partial<typeof config> & { strategy?: Strategy }>,
+      default: () => ({}),
+    },
+  },
+  emits: ['close'],
+  setup(props) {
+    const { ui, attrs } = useMeiUI('alert', toRef(props, 'ui'), config)
+
+    const alertClass = computed(() => {
+      const variant = ui.value.color?.[props.color as string]?.[props.variant as string] || ui.value.variant[props.variant]
+
+      return twMerge(twJoin(
+        ui.value.wrapper,
+        ui.value.rounded,
+        ui.value.shadow,
+        ui.value.padding,
+        variant?.replaceAll('{color}', props.color),
+      ), props.class)
+    })
+
+    function onAction(action: AlertAction) {
+      if (action.click) {
+        action.click()
+      }
+    }
+
+    return {
+
+      ui,
+      attrs,
+      alertClass,
+      onAction,
+      twMerge,
+    }
+  },
+})
+</script>
+
 <template>
   <div
     :class="alertClass"
@@ -87,111 +195,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts">
-import { computed, toRef, defineComponent } from 'vue'
-import type { PropType } from 'vue'
-import { twMerge, twJoin } from 'tailwind-merge'
-import MeiIcon from "./icon.vue";
-import MeiAvatar from "./avatar.vue";
-import MeiButton from './button.vue'
-import { useMeiUI } from "../../composables/use-mei-ui";
-import type { Avatar, Button, AlertColor, AlertVariant, AlertAction, Strategy } from '../../types'
-import { mergeConfig } from '../../utils'
-// @ts-expect-error
-import appConfig from '#build/app.config'
-import { alert } from '#mei-ui/ui-configs'
-
-const config = mergeConfig<typeof alert>(appConfig.meiUI.strategy, appConfig.meiUI.alert, alert)
-
-export default defineComponent({
-  components: {
-    MeiIcon,
-    MeiAvatar,
-    MeiButton
-  },
-  inheritAttrs: false,
-  props: {
-    title: {
-      type: String,
-      default: null
-    },
-    description: {
-      type: String,
-      default: null
-    },
-    icon: {
-      type: String,
-      default: () => config.default.icon
-    },
-    avatar: {
-      type: Object as PropType<Avatar>,
-      default: null
-    },
-    closeButton: {
-      type: Object as PropType<Button>,
-      default: () => config.default.closeButton as unknown as Button
-    },
-    actions: {
-      type: Array as PropType<AlertAction[]>,
-      default: () => []
-    },
-    color: {
-      type: String as PropType<AlertColor>,
-      default: () => config.default.color,
-      validator (value: string) {
-        return [...appConfig.meiUI.colors, ...Object.keys(config.color)].includes(value)
-      }
-    },
-    variant: {
-      type: String as PropType<AlertVariant>,
-      default: () => config.default.variant,
-      validator (value: string) {
-        return [
-          ...Object.keys(config.variant),
-          ...Object.values(config.color).flatMap(value => Object.keys(value))
-        ].includes(value)
-      }
-    },
-    class: {
-      type: [String, Object, Array] as PropType<any>,
-      default: () => ''
-    },
-    ui: {
-      type: Object as PropType<Partial<typeof config> & { strategy?: Strategy }>,
-      default: () => ({})
-    }
-  },
-  emits: ['close'],
-  setup (props) {
-    const { ui, attrs } = useMeiUI('alert', toRef(props, 'ui'), config)
-
-    const alertClass = computed(() => {
-      const variant = ui.value.color?.[props.color as string]?.[props.variant as string] || ui.value.variant[props.variant]
-
-      return twMerge(twJoin(
-        ui.value.wrapper,
-        ui.value.rounded,
-        ui.value.shadow,
-        ui.value.padding,
-        variant?.replaceAll('{color}', props.color)
-      ), props.class)
-    })
-
-    function onAction (action: AlertAction) {
-      if (action.click) {
-        action.click()
-      }
-    }
-
-    return {
-      // eslint-disable-next-line vue/no-dupe-keys
-      ui,
-      attrs,
-      alertClass,
-      onAction,
-      twMerge
-    }
-  }
-})
-</script>

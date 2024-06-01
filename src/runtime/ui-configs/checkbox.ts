@@ -13,6 +13,6 @@ export default {
   required: 'text-sm text-red-500 dark:text-red-400',
   help: 'text-sm text-gray-500 dark:text-gray-400',
   default: {
-    color: 'primary'
-  }
+    color: 'primary',
+  },
 }

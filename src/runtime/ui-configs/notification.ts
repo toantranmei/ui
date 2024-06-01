@@ -13,15 +13,15 @@ export default {
   ring: 'ring-1 ring-gray-200 dark:ring-gray-800',
   icon: {
     base: 'flex-shrink-0 w-5 h-5',
-    color: 'text-{color}-500 dark:text-{color}-400'
+    color: 'text-{color}-500 dark:text-{color}-400',
   },
   avatar: {
     base: 'flex-shrink-0 self-center',
-    size: 'md' as const
+    size: 'md' as const,
   },
   progress: {
     base: 'absolute bottom-0 end-0 start-0 h-1',
-    background: 'bg-{color}-500 dark:bg-{color}-400'
+    background: 'bg-{color}-500 dark:bg-{color}-400',
   },
   // Syntax for `<Transition>` component https://vuejs.org/guide/built-ins/transition.html#css-based-transitions
   transition: {
@@ -30,7 +30,7 @@ export default {
     enterToClass: 'translate-y-0 opacity-100 sm:translate-x-0',
     leaveActiveClass: 'transition ease-in duration-100',
     leaveFromClass: 'opacity-100',
-    leaveToClass: 'opacity-0'
+    leaveToClass: 'opacity-0',
   },
   default: {
     color: 'primary',
@@ -40,11 +40,11 @@ export default {
       icon: 'i-heroicons-x-mark-20-solid',
       color: 'gray' as const,
       variant: 'link' as const,
-      padded: false
+      padded: false,
     },
     actionButton: {
       size: 'xs' as const,
-      color: 'white' as const
-    }
-  }
+      color: 'white' as const,
+    },
+  },
 }

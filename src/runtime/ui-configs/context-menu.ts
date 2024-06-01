@@ -16,11 +16,11 @@ export default {
     enterToClass: 'opacity-100 translate-y-0',
     leaveActiveClass: 'transition ease-in duration-150',
     leaveFromClass: 'opacity-100 translate-y-0',
-    leaveToClass: 'opacity-0 translate-y-1'
+    leaveToClass: 'opacity-0 translate-y-1',
   },
   popper: {
     placement: 'bottom-start',
-    scroll: false
+    scroll: false,
   },
-  arrow
+  arrow,
 }

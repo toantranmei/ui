@@ -1,16 +1,16 @@
-import type { Component } from "vue";
+import type { Component } from 'vue'
 
 export interface SlideOver {
-  meiUI?: any;
-  side?: "right" | "left";
-  transition?: boolean;
-  appear?: boolean;
-  overlay?: boolean;
-  preventClose?: boolean;
-  modelValue?: boolean;
+  meiUI?: any
+  side?: 'right' | 'left'
+  transition?: boolean
+  appear?: boolean
+  overlay?: boolean
+  preventClose?: boolean
+  modelValue?: boolean
 }
 
 export interface SlideOverState {
-  component: Component | string;
-  props: SlideOver;
+  component: Component | string
+  props: SlideOver
 }
