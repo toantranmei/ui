@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/toantranmei/ui/compare/v1.2.10...v1.3.0) (2024-06-01)
+
+
+### Bug Fixes
+
+* remove typecheck temp ([120c789](https://github.com/toantranmei/ui/commit/120c789780448cca9e8fe615f5615ce9bb4c159e))
+
 ## [1.2.10](https://github.com/toantranmei/ui/compare/v1.2.9...v1.2.10) (2024-05-11)
 
 
