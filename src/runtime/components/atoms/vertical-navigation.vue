@@ -173,7 +173,7 @@ export default defineComponent({
       </li>
       <MeiDivider
         v-if="sectionIndex < sections.length - 1"
-        :ui="(ui.divider as any)"
+        :ui="ui.divider"
       />
     </ul>
   </nav>

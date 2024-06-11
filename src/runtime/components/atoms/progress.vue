@@ -225,14 +225,14 @@ export default defineComponent({
         :style="{ width: `${percent}%` }"
       >
         <div :class="indicatorClass">
-          {{ Math.round(percent!) }}%
+          {{ Math.round(percent) }}%
         </div>
       </div>
     </slot>
 
     <progress
       :class="progressClass"
-      v-bind="{ value, max: realMax! }"
+      v-bind="{ value, max: realMax }"
     >
       {{ percent !== undefined ? `${Math.round(percent)}%` : undefined }}
     </progress>
