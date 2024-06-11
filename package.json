@@ -1,7 +1,7 @@
 {
   "name": "@toantranmei/ui",
   "type": "module",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "A UI Library for Modern Web Apps, powered by Vue & Tailwind CSS.",
   "author": "Toan Tran <Mei>",
   "license": "MIT",

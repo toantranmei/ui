@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.1](https://github.com/toantranmei/ui/compare/v1.3.0...v1.3.1) (2024-06-11)
+
+
+### Bug Fixes
+
+* remove error syntax when use diff version ([e6aac6f](https://github.com/toantranmei/ui/commit/e6aac6ff1ad24fe738a1b3f80599d80e6c170ac4))
+
 ## [1.3.0](https://github.com/toantranmei/ui/compare/v1.2.10...v1.3.0) (2024-06-01)
 
 
