@@ -13,7 +13,7 @@ import { mergeConfig } from '../../utils'
 import type { KbdSize, Strategy } from '../../types'
 // @ts-expect-error
 import appConfig from '#build/app.config'
-import { kbd } from '#ui/ui.config'
+import { kbd } from '#mei-ui/ui.config'
 
 const config = mergeConfig<typeof kbd>(appConfig.meiUI.strategy, appConfig.meiUI.kbd, kbd)
 

@@ -27,7 +27,7 @@
     "play": "nuxi dev playground",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "typecheck": "vue-tsc --noEmit && nuxi typecheck docs",
+    "typecheck": "vue-tsc --noEmit",
     "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare",
     "release": "release-it",
     "test": "vitest"

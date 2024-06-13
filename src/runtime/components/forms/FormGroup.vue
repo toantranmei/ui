@@ -47,7 +47,7 @@ import { mergeConfig } from '../../utils'
 import type { FormError, InjectedFormGroupValue, FormGroupSize, Strategy } from '../../types'
 // @ts-expect-error
 import appConfig from '#build/app.config'
-import { formGroup } from '#ui/ui.config'
+import { formGroup } from '#mei-ui/ui.config'
 import { useId } from '#imports'
 
 const config = mergeConfig<typeof formGroup>(appConfig.meiUI.strategy, appConfig.meiUI.formGroup, formGroup)

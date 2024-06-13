@@ -19,7 +19,7 @@ import { mergeConfig } from '../../utils'
 import type { ChipSize, ChipColor, ChipPosition, Strategy } from '../../types'
 // @ts-expect-error
 import appConfig from '#build/app.config'
-import { chip } from '#ui/ui.config'
+import { chip } from '#mei-ui/ui.config'
 
 const config = mergeConfig<typeof chip>(appConfig.meiUI.strategy, appConfig.meiUI.chip, chip)
 

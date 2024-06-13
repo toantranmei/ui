@@ -52,7 +52,7 @@ import { mergeConfig } from '../../utils'
 import type { TabItem, Strategy } from '../../types'
 // @ts-expect-error
 import appConfig from '#build/app.config'
-import { tabs } from '#ui/ui.config'
+import { tabs } from '#mei-ui/ui.config'
 import { useId } from '#imports'
 
 const config = mergeConfig<typeof tabs>(appConfig.meiUI.strategy, appConfig.meiUI.tabs, tabs)

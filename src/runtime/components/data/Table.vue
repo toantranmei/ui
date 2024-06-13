@@ -98,7 +98,7 @@ import { mergeConfig, get } from '../../utils'
 import type { Strategy, Button, ProgressColor, ProgressAnimation } from '../../types'
 // @ts-expect-error
 import appConfig from '#build/app.config'
-import { table } from '#ui/ui.config'
+import { table } from '#mei-ui/ui.config'
 
 const config = mergeConfig<typeof table>(appConfig.meiUI.strategy, appConfig.meiUI.table, table)
 

@@ -37,7 +37,7 @@ import { mergeConfig } from '../../utils'
 import type { Strategy } from '../../types'
 // @ts-expect-error
 import appConfig from '#build/app.config'
-import { checkbox } from '#ui/ui.config'
+import { checkbox } from '#mei-ui/ui.config'
 import colors from '#mei-ui-colors'
 import { useId } from '#app'
 

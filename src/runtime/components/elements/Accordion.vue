@@ -76,7 +76,7 @@ import { mergeConfig, omit } from '../../utils'
 import type { AccordionItem, Strategy } from '../../types'
 // @ts-expect-error
 import appConfig from '#build/app.config'
-import { accordion, button } from '#ui/ui.config'
+import { accordion, button } from '#mei-ui/ui.config'
 import { useId } from '#imports'
 
 const config = mergeConfig<typeof accordion>(appConfig.meiUI.strategy, appConfig.meiUI.accordion, accordion)

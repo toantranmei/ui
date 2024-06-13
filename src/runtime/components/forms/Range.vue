@@ -29,7 +29,7 @@ import { mergeConfig } from '../../utils'
 import type { RangeSize, RangeColor, Strategy } from '../../types'
 // @ts-expect-error
 import appConfig from '#build/app.config'
-import { range } from '#ui/ui.config'
+import { range } from '#mei-ui/ui.config'
 
 const config = mergeConfig<typeof range>(appConfig.meiUI.strategy, appConfig.meiUI.range, range)
 

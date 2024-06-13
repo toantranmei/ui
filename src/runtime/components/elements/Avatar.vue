@@ -30,7 +30,7 @@ import { mergeConfig } from '../../utils'
 import type { AvatarSize, AvatarChipColor, AvatarChipPosition, Strategy } from '../../types'
 // @ts-expect-error
 import appConfig from '#build/app.config'
-import { avatar } from '#ui/ui.config'
+import { avatar } from '#mei-ui/ui.config'
 
 const config = mergeConfig<typeof avatar>(appConfig.meiUI.strategy, appConfig.meiUI.avatar, avatar)
 

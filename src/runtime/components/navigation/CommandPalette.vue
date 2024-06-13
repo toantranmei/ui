@@ -78,7 +78,7 @@ import { mergeConfig } from '../../utils'
 import type { Group, Command, Button, Strategy } from '../../types'
 // @ts-expect-error
 import appConfig from '#build/app.config'
-import { commandPalette } from '#ui/ui.config'
+import { commandPalette } from '#mei-ui/ui.config'
 import { useId } from '#imports'
 
 const config = mergeConfig<typeof commandPalette>(appConfig.meiUI.strategy, appConfig.meiUI.commandPalette, commandPalette)

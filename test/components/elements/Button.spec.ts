@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { UButton } from '#components'
+import { MeiButton } from '#components'
 import type { TypeOf } from 'zod'
 import ComponentRender from '../component-render'
 
@@ -16,7 +16,7 @@ describe('Button', () => {
       options.slots = options.slots || { default: () => 'label' }
       options.slots.default = options.slots.default || (() => 'label')
     }
-    const html = await ComponentRender(nameOrHtml, options, UButton)
+    const html = await ComponentRender(nameOrHtml, options, MeiButton)
     expect(html).toMatchSnapshot()
   })
 })

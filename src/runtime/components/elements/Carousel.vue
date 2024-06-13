@@ -67,7 +67,7 @@ import { useCarouselScroll } from '../../composables/useCarouselScroll'
 import { useScroll, useResizeObserver, useElementSize } from '@vueuse/core'
 // @ts-expect-error
 import appConfig from '#build/app.config'
-import { carousel } from '#ui/ui.config'
+import { carousel } from '#mei-ui/ui.config'
 
 const config = mergeConfig<typeof carousel>(appConfig.meiUI.strategy, appConfig.meiUI.carousel, carousel)
 

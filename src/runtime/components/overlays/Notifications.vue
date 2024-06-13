@@ -31,7 +31,7 @@ import type { Notification, Strategy } from '../../types'
 import { useState } from '#imports'
 // @ts-expect-error
 import appConfig from '#build/app.config'
-import { notifications } from '#ui/ui.config'
+import { notifications } from '#mei-ui/ui.config'
 
 const config = mergeConfig<typeof notifications>(appConfig.meiUI.strategy, appConfig.meiUI.notifications, notifications)
 

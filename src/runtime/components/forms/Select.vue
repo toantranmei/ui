@@ -64,7 +64,7 @@ import { useInjectButtonGroup } from '../../composables/useButtonGroup'
 import type { SelectSize, SelectColor, SelectVariant, Strategy } from '../../types'
 // @ts-expect-error
 import appConfig from '#build/app.config'
-import { select } from '#ui/ui.config'
+import { select } from '#mei-ui/ui.config'
 
 const config = mergeConfig<typeof select>(appConfig.meiUI.strategy, appConfig.meiUI.select, select)
 

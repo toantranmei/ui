@@ -29,7 +29,7 @@ import { mergeConfig } from '../../utils'
 import type { Avatar, DividerSize, Strategy } from '../../types'
 // @ts-expect-error
 import appConfig from '#build/app.config'
-import { divider } from '#ui/ui.config'
+import { divider } from '#mei-ui/ui.config'
 
 const config = mergeConfig<typeof divider>(appConfig.meiUI.strategy, appConfig.meiUI.divider, divider)
 

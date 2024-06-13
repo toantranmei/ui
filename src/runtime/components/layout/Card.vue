@@ -25,7 +25,7 @@ import { mergeConfig } from '../../utils'
 import type { Strategy } from '../../types'
 // @ts-expect-error
 import appConfig from '#build/app.config'
-import { card } from '#ui/ui.config'
+import { card } from '#mei-ui/ui.config'
 
 const config = mergeConfig<typeof card>(appConfig.meiUI.strategy, appConfig.meiUI.card, card)
 

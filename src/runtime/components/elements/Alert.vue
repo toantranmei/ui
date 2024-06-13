@@ -51,7 +51,7 @@ import type { Avatar, Button, AlertColor, AlertVariant, AlertAction, Strategy } 
 import { mergeConfig } from '../../utils'
 // @ts-expect-error
 import appConfig from '#build/app.config'
-import { alert } from '#ui/ui.config'
+import { alert } from '#mei-ui/ui.config'
 
 const config = mergeConfig<typeof alert>(appConfig.meiUI.strategy, appConfig.meiUI.alert, alert)
 

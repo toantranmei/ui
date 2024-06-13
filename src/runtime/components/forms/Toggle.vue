@@ -41,7 +41,7 @@ import { mergeConfig } from '../../utils'
 import type { ToggleSize, ToggleColor, Strategy } from '../../types'
 // @ts-expect-error
 import appConfig from '#build/app.config'
-import { toggle } from '#ui/ui.config'
+import { toggle } from '#mei-ui/ui.config'
 import { useId } from '#imports'
 
 const config = mergeConfig<typeof toggle>(appConfig.meiUI.strategy, appConfig.meiUI.toggle, toggle)

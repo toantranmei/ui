@@ -13,7 +13,7 @@ import { mergeConfig } from '../../utils'
 import type { Strategy } from '../../types'
 // @ts-expect-error
 import appConfig from '#build/app.config'
-import { container } from '#ui/ui.config'
+import { container } from '#mei-ui/ui.config'
 
 const config = mergeConfig<typeof container>(appConfig.meiUI.strategy, appConfig.meiUI.container, container)
 

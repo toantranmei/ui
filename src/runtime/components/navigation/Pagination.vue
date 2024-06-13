@@ -77,7 +77,7 @@ import { mergeConfig } from '../../utils'
 import type { Button, ButtonSize, Strategy } from '../../types'
 // @ts-expect-error
 import appConfig from '#build/app.config'
-import { pagination, button } from '#ui/ui.config'
+import { pagination, button } from '#mei-ui/ui.config'
 
 const config = mergeConfig<typeof pagination>(appConfig.meiUI.strategy, appConfig.meiUI.pagination, pagination)
 

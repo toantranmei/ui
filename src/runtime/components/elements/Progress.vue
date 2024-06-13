@@ -31,7 +31,7 @@ import { mergeConfig } from '../../utils'
 import type { Strategy, ProgressSize, ProgressAnimation, ProgressColor } from '../../types'
 // @ts-expect-error
 import appConfig from '#build/app.config'
-import { progress } from '#ui/ui.config'
+import { progress } from '#mei-ui/ui.config'
 
 const config = mergeConfig<typeof progress>(appConfig.meiUI.strategy, appConfig.meiUI.progress, progress)
 

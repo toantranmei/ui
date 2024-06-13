@@ -36,7 +36,7 @@ import { mergeConfig } from '../../utils'
 import type { Strategy } from '../../types'
 // @ts-expect-error
 import appConfig from '#build/app.config'
-import { radio } from '#ui/ui.config'
+import { radio } from '#mei-ui/ui.config'
 import colors from '#mei-ui-colors'
 import { useId } from '#imports'
 

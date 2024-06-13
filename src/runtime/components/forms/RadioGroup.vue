@@ -35,7 +35,7 @@ import { mergeConfig, get } from '../../utils'
 import type { Strategy } from '../../types'
 // @ts-expect-error
 import appConfig from '#build/app.config'
-import { radioGroup, radio } from '#ui/ui.config'
+import { radioGroup, radio } from '#mei-ui/ui.config'
 import colors from '#mei-ui-colors'
 
 const config = mergeConfig<typeof radioGroup>(appConfig.meiUI.strategy, appConfig.meiUI.radioGroup, radioGroup)

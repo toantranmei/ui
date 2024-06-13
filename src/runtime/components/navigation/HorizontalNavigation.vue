@@ -64,7 +64,7 @@ import { mergeConfig, getULinkProps } from '../../utils'
 import type { HorizontalNavigationLink, Strategy } from '../../types'
 // @ts-expect-error
 import appConfig from '#build/app.config'
-import { horizontalNavigation } from '#ui/ui.config'
+import { horizontalNavigation } from '#mei-ui/ui.config'
 
 const config = mergeConfig<typeof horizontalNavigation>(appConfig.meiUI.strategy, appConfig.meiUI.horizontalNavigation, horizontalNavigation)
 

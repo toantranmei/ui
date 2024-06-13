@@ -8,7 +8,7 @@ import { mergeConfig, getSlotsChildren } from '../../utils'
 import type { Strategy, MeterSize } from '../../types'
 // @ts-expect-error
 import appConfig from '#build/app.config'
-import { meter, meterGroup } from '#ui/ui.config'
+import { meter, meterGroup } from '#mei-ui/ui.config'
 
 const meterConfig = mergeConfig<typeof meter>(appConfig.meiUI.strategy, appConfig.meiUI.meter, meter)
 const meterGroupConfig = mergeConfig<typeof meterGroup>(appConfig.meiUI.strategy, appConfig.meiUI.meterGroup, meterGroup)

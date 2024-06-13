@@ -35,7 +35,7 @@ import { mergeConfig } from '../../utils'
 import type { Strategy } from '../../types'
 // @ts-expect-error
 import appConfig from '#build/app.config'
-import { modal } from '#ui/ui.config'
+import { modal } from '#mei-ui/ui.config'
 import { useId } from '#imports'
 
 const config = mergeConfig<typeof modal>(appConfig.meiUI.strategy, appConfig.meiUI.modal, modal)

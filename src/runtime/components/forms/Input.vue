@@ -44,7 +44,7 @@ import { useInjectButtonGroup } from '../../composables/useButtonGroup'
 import type { InputSize, InputColor, InputVariant, Strategy } from '../../types'
 // @ts-expect-error
 import appConfig from '#build/app.config'
-import { input } from '#ui/ui.config'
+import { input } from '#mei-ui/ui.config'
 
 const config = mergeConfig<typeof input>(appConfig.meiUI.strategy, appConfig.meiUI.input, input)
 

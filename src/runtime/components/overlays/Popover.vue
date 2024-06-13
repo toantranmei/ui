@@ -46,7 +46,7 @@ import { mergeConfig } from '../../utils'
 import type { PopperOptions, Strategy } from '../../types'
 // @ts-expect-error
 import appConfig from '#build/app.config'
-import { popover } from '#ui/ui.config'
+import { popover } from '#mei-ui/ui.config'
 import { useId } from '#imports'
 
 const config = mergeConfig<typeof popover>(appConfig.meiUI.strategy, appConfig.meiUI.popover, popover)

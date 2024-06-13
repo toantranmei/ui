@@ -25,7 +25,7 @@ import { mergeConfig } from '../../utils'
 import type { PopperOptions, Strategy } from '../../types'
 // @ts-expect-error
 import appConfig from '#build/app.config'
-import { contextMenu } from '#ui/ui.config'
+import { contextMenu } from '#mei-ui/ui.config'
 
 const config = mergeConfig<typeof contextMenu>(appConfig.meiUI.strategy, appConfig.meiUI.contextMenu, contextMenu)
 

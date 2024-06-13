@@ -39,7 +39,7 @@ import { mergeConfig } from '../../utils'
 import type { PopperOptions, Strategy } from '../../types'
 // @ts-expect-error
 import appConfig from '#build/app.config'
-import { tooltip } from '#ui/ui.config'
+import { tooltip } from '#mei-ui/ui.config'
 
 const config = mergeConfig<typeof tooltip>(appConfig.meiUI.strategy, appConfig.meiUI.tooltip, tooltip)
 

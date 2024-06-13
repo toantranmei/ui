@@ -28,7 +28,7 @@ import { useInjectButtonGroup } from '../../composables/useButtonGroup'
 import type { ButtonColor, ButtonSize, ButtonVariant, Strategy } from '../../types'
 // @ts-expect-error
 import appConfig from '#build/app.config'
-import { button } from '#ui/ui.config'
+import { button } from '#mei-ui/ui.config'
 
 const config = mergeConfig<typeof button>(appConfig.meiUI.strategy, appConfig.meiUI.button, button)
 

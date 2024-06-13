@@ -77,7 +77,7 @@ import UIcon from '../elements/Icon.vue'
 import UAvatar from '../elements/Avatar.vue'
 import UKbd from '../elements/Kbd.vue'
 import type { Group } from '../../types'
-import { commandPalette } from '#ui/ui.config'
+import { commandPalette } from '#mei-ui/ui.config'
 import { useId } from '#imports'
 
 export default defineComponent({

@@ -7,7 +7,7 @@ import { useProvideButtonGroup } from '../../composables/useButtonGroup'
 import type { ButtonSize, Strategy } from '../../types'
 // @ts-expect-error
 import appConfig from '#build/app.config'
-import { button, buttonGroup } from '#ui/ui.config'
+import { button, buttonGroup } from '#mei-ui/ui.config'
 
 const buttonConfig = mergeConfig<typeof button>(appConfig.meiUI.strategy, appConfig.meiUI.button, button)
 const buttonGroupConfig = mergeConfig<typeof buttonGroup>(appConfig.meiUI.strategy, appConfig.meiUI.buttonGroup, buttonGroup)

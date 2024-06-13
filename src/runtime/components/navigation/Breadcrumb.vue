@@ -44,7 +44,7 @@ import { mergeConfig, getULinkProps } from '../../utils'
 import type { BreadcrumbLink, Strategy } from '../../types'
 // @ts-expect-error
 import appConfig from '#build/app.config'
-import { breadcrumb } from '#ui/ui.config'
+import { breadcrumb } from '#mei-ui/ui.config'
 
 const config = mergeConfig<typeof breadcrumb>(appConfig.meiUI.strategy, appConfig.meiUI.breadcrumb, breadcrumb)
 

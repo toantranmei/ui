@@ -37,7 +37,7 @@ import { mergeConfig } from '../../utils'
 import type { Strategy, MeterColor, MeterSize } from '../../types'
 // @ts-expect-error
 import appConfig from '#build/app.config'
-import { meter } from '#ui/ui.config'
+import { meter } from '#mei-ui/ui.config'
 
 const config = mergeConfig<typeof meter>(appConfig.meiUI.strategy, appConfig.meiUI.meter, meter)
 

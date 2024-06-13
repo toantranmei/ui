@@ -23,7 +23,7 @@ import { mergeConfig } from '../../utils'
 import type { Strategy } from '../../types'
 // @ts-expect-error
 import appConfig from '#build/app.config'
-import { slideover } from '#ui/ui.config'
+import { slideover } from '#mei-ui/ui.config'
 import { useId } from '#imports'
 
 const config = mergeConfig<typeof slideover>(appConfig.meiUI.strategy, appConfig.meiUI.slideover, slideover)

@@ -31,7 +31,7 @@ import { mergeConfig, looseToNumber } from '../../utils'
 import type { TextareaSize, TextareaColor, TextareaVariant, Strategy } from '../../types'
 // @ts-expect-error
 import appConfig from '#build/app.config'
-import { textarea } from '#ui/ui.config'
+import { textarea } from '#mei-ui/ui.config'
 
 const config = mergeConfig<typeof textarea>(appConfig.meiUI.strategy, appConfig.meiUI.textarea, textarea)
 

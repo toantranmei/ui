@@ -1,6 +1,6 @@
 import { computed, ref, provide, inject, onMounted, onUnmounted, getCurrentInstance } from 'vue'
 import type { Ref, ComponentInternalInstance } from 'vue'
-import { buttonGroup } from '#ui/ui.config'
+import { buttonGroup } from '#mei-ui/ui.config'
 
 type ButtonGroupProps = {
   orientation?: Ref<'horizontal' | 'vertical'>
