@@ -1,0 +1,14 @@
+{
+  "private": true,
+  "name": "@mei/ui-playground",
+  "type": "module",
+  "scripts": {
+    "dev": "nuxi dev",
+    "build": "nuxi build",
+    "generate": "nuxi generate"
+  },
+  "dependencies": {
+    "@mei/ui": "latest",
+    "nuxt": "^3.12.1"
+  }
+}

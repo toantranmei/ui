@@ -1,0 +1,23 @@
+{
+  "prettier.enable": false,
+  "cSpell.words": [
+    "Composables",
+    "defu",
+    "headlessui",
+    "heroicons",
+    "iconify",
+    "nuxi",
+    "nuxt",
+    "nuxtjs",
+    "ohash",
+    "pathe",
+    "popperjs",
+    "scule",
+    "slideovers",
+    "tailwindcss",
+    "toantranmei",
+    "typecheck",
+    "valibot",
+    "vueuse"
+  ]
+}
