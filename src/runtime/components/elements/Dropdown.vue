@@ -64,7 +64,7 @@ import { twMerge, twJoin } from 'tailwind-merge'
 import UIcon from '../elements/Icon.vue'
 import UAvatar from '../elements/Avatar.vue'
 import UKbd from '../elements/Kbd.vue'
-import { useUI } from '../../composables/useUI'
+import { useMeiUI } from '../../composables/useMeiUI'
 import { usePopper } from '../../composables/usePopper'
 import { mergeConfig, getNuxtLinkProps } from '../../utils'
 import type { DropdownItem, PopperOptions, Strategy } from '../../types'
@@ -127,7 +127,7 @@ export default defineComponent({
   },
   emits: ['update:open'],
   setup (props, { emit }) {
-    const { ui, attrs } = useUI('dropdown', toRef(props, 'ui'), config, toRef(props, 'class'))
+    const { ui, attrs } = useMeiUI('dropdown', toRef(props, 'ui'), config, toRef(props, 'class'))
 
     const popper = computed<PopperOptions>(() => defu(props.mode === 'hover' ? { offsetDistance: 0 } : {}, props.popper, ui.value.popper as PopperOptions))
 

@@ -24,7 +24,7 @@ import type { PropType } from 'vue'
 import { twMerge, twJoin } from 'tailwind-merge'
 import UIcon from '../elements/Icon.vue'
 import UAvatar from '../elements/Avatar.vue'
-import { useUI } from '../../composables/useUI'
+import { useMeiUI } from '../../composables/useMeiUI'
 import { mergeConfig } from '../../utils'
 import type { Avatar, DividerSize, Strategy } from '../../types'
 // @ts-expect-error
@@ -79,7 +79,7 @@ export default defineComponent({
     }
   },
   setup (props) {
-    const { ui, attrs } = useUI('divider', toRef(props, 'ui'), config)
+    const { ui, attrs } = useMeiUI('divider', toRef(props, 'ui'), config)
 
     const wrapperClass = computed(() => {
       return twMerge(twJoin(

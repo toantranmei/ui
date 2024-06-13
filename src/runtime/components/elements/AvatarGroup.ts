@@ -2,7 +2,7 @@ import { h, cloneVNode, computed, toRef, defineComponent } from 'vue'
 import type { PropType } from 'vue'
 import { twMerge, twJoin } from 'tailwind-merge'
 import UAvatar from './Avatar.vue'
-import { useUI } from '../../composables/useUI'
+import { useMeiUI } from '../../composables/useMeiUI'
 import { mergeConfig, getSlotsChildren } from '../../utils'
 import type { AvatarSize, Strategy } from '../../types'
 // @ts-expect-error
@@ -37,7 +37,7 @@ export default defineComponent({
     }
   },
   setup (props, { slots }) {
-    const { ui, attrs } = useUI('avatarGroup', toRef(props, 'ui'), avatarGroupConfig, toRef(props, 'class'))
+    const { ui, attrs } = useMeiUI('avatarGroup', toRef(props, 'ui'), avatarGroupConfig, toRef(props, 'class'))
 
     const children = computed(() => getSlotsChildren(slots))
 

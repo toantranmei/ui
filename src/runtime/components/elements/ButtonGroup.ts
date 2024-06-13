@@ -1,7 +1,7 @@
 import { h, computed, toRef, defineComponent } from 'vue'
 import type { PropType } from 'vue'
 import { twMerge, twJoin } from 'tailwind-merge'
-import { useUI } from '../../composables/useUI'
+import { useMeiUI } from '../../composables/useMeiUI'
 import { mergeConfig, getSlotsChildren } from '../../utils'
 import { useProvideButtonGroup } from '../../composables/useButtonGroup'
 import type { ButtonSize, Strategy } from '../../types'
@@ -40,7 +40,7 @@ export default defineComponent({
     }
   },
   setup (props, { slots }) {
-    const { ui, attrs } = useUI('buttonGroup', toRef(props, 'ui'), buttonGroupConfig)
+    const { ui, attrs } = useMeiUI('buttonGroup', toRef(props, 'ui'), buttonGroupConfig)
 
     const children = computed(() => getSlotsChildren(slots))
 

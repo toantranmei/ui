@@ -3,7 +3,7 @@ import type { ComputedRef, VNode, SlotsType, PropType } from 'vue'
 import { twJoin } from 'tailwind-merge'
 import UIcon from './Icon.vue'
 import Meter from './Meter.vue'
-import { useUI } from '../../composables/useUI'
+import { useMeiUI } from '../../composables/useMeiUI'
 import { mergeConfig, getSlotsChildren } from '../../utils'
 import type { Strategy, MeterSize } from '../../types'
 // @ts-expect-error
@@ -56,8 +56,8 @@ export default defineComponent({
     }
   },
   setup (props, { slots }) {
-    const { ui, attrs } = useUI('meterGroup', toRef(props, 'ui'), meterGroupConfig)
-    const { ui: uiMeter } = useUI('meter', undefined, meterConfig)
+    const { ui, attrs } = useMeiUI('meterGroup', toRef(props, 'ui'), meterGroupConfig)
+    const { ui: uiMeter } = useMeiUI('meter', undefined, meterConfig)
 
     // If there is no children, throw an expressive error.
     if (!slots.default) {

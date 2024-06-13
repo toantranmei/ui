@@ -47,7 +47,7 @@ import { toRef, ref, watch, onMounted, defineComponent } from 'vue'
 import type { PropType } from 'vue'
 import { TabGroup as HTabGroup, TabList as HTabList, Tab as HTab, TabPanels as HTabPanels, TabPanel as HTabPanel, provideUseId } from '@headlessui/vue'
 import { useResizeObserver } from '@vueuse/core'
-import { useUI } from '../../composables/useUI'
+import { useMeiUI } from '../../composables/useMeiUI'
 import { mergeConfig } from '../../utils'
 import type { TabItem, Strategy } from '../../types'
 // @ts-expect-error
@@ -103,7 +103,7 @@ export default defineComponent({
   },
   emits: ['update:modelValue', 'change'],
   setup (props, { emit }) {
-    const { ui, attrs } = useUI('tabs', toRef(props, 'ui'), config, toRef(props, 'class'))
+    const { ui, attrs } = useMeiUI('tabs', toRef(props, 'ui'), config, toRef(props, 'class'))
 
     const listRef = ref<HTMLElement>()
     const itemRefs = ref<HTMLElement[]>([])

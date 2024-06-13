@@ -25,7 +25,7 @@ import { defineComponent, ref, computed, toRef, watch } from 'vue'
 import type { PropType } from 'vue'
 import { twMerge, twJoin } from 'tailwind-merge'
 import UIcon from '../elements/Icon.vue'
-import { useUI } from '../../composables/useUI'
+import { useMeiUI } from '../../composables/useMeiUI'
 import { mergeConfig } from '../../utils'
 import type { AvatarSize, AvatarChipColor, AvatarChipPosition, Strategy } from '../../types'
 // @ts-expect-error
@@ -99,7 +99,7 @@ export default defineComponent({
     }
   },
   setup (props) {
-    const { ui, attrs } = useUI('avatar', toRef(props, 'ui'), config)
+    const { ui, attrs } = useMeiUI('avatar', toRef(props, 'ui'), config)
 
     const url = computed(() => {
       if (typeof props.src === 'boolean') {

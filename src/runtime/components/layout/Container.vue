@@ -8,7 +8,7 @@
 import { computed, toRef, defineComponent } from 'vue'
 import type { PropType } from 'vue'
 import { twMerge, twJoin } from 'tailwind-merge'
-import { useUI } from '../../composables/useUI'
+import { useMeiUI } from '../../composables/useMeiUI'
 import { mergeConfig } from '../../utils'
 import type { Strategy } from '../../types'
 // @ts-expect-error
@@ -34,7 +34,7 @@ export default defineComponent({
     }
   },
   setup (props) {
-    const { ui, attrs } = useUI('container', toRef(props, 'ui'), config)
+    const { ui, attrs } = useMeiUI('container', toRef(props, 'ui'), config)
 
     const containerClass = computed(() => {
       return twMerge(twJoin(

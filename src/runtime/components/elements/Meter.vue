@@ -32,7 +32,7 @@ import { computed, defineComponent, toRef } from 'vue'
 import type { SlotsType, PropType } from 'vue'
 import { twJoin } from 'tailwind-merge'
 import UIcon from './Icon.vue'
-import { useUI } from '../../composables/useUI'
+import { useMeiUI } from '../../composables/useMeiUI'
 import { mergeConfig } from '../../utils'
 import type { Strategy, MeterColor, MeterSize } from '../../types'
 // @ts-expect-error
@@ -99,7 +99,7 @@ export default defineComponent({
     }
   },
   setup (props) {
-    const { ui, attrs } = useUI('meter', toRef(props, 'ui'), config, toRef(props, 'class'))
+    const { ui, attrs } = useMeiUI('meter', toRef(props, 'ui'), config, toRef(props, 'class'))
 
     function clampPercent (value: number, min: number, max: number): number {
       if (min == max) {

@@ -93,7 +93,7 @@ import UIcon from '../elements/Icon.vue'
 import UButton from '../elements/Button.vue'
 import UProgress from '../elements/Progress.vue'
 import UCheckbox from '../forms/Checkbox.vue'
-import { useUI } from '../../composables/useUI'
+import { useMeiUI } from '../../composables/useMeiUI'
 import { mergeConfig, get } from '../../utils'
 import type { Strategy, Button, ProgressColor, ProgressAnimation } from '../../types'
 // @ts-expect-error
@@ -207,7 +207,7 @@ export default defineComponent({
   },
   emits: ['update:modelValue', 'update:sort'],
   setup (props, { emit, attrs: $attrs }) {
-    const { ui, attrs } = useUI('table', toRef(props, 'ui'), config, toRef(props, 'class'))
+    const { ui, attrs } = useMeiUI('table', toRef(props, 'ui'), config, toRef(props, 'class'))
 
     const columns = computed(() => props.columns ?? Object.keys(props.rows[0] ?? {}).map((key) => ({ key, label: upperFirst(key), sortable: false, class: undefined, sort: defaultSort })))
 

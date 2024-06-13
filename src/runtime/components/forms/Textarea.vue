@@ -25,7 +25,7 @@ import { ref, computed, toRef, watch, onMounted, nextTick, defineComponent } fro
 import type { PropType } from 'vue'
 import { twMerge, twJoin } from 'tailwind-merge'
 import { defu } from 'defu'
-import { useUI } from '../../composables/useUI'
+import { useMeiUI } from '../../composables/useMeiUI'
 import { useFormGroup } from '../../composables/useFormGroup'
 import { mergeConfig, looseToNumber } from '../../utils'
 import type { TextareaSize, TextareaColor, TextareaVariant, Strategy } from '../../types'
@@ -133,7 +133,7 @@ export default defineComponent({
   },
   emits: ['update:modelValue', 'blur', 'change'],
   setup (props, { emit }) {
-    const { ui, attrs } = useUI('textarea', toRef(props, 'ui'), config, toRef(props, 'class'))
+    const { ui, attrs } = useMeiUI('textarea', toRef(props, 'ui'), config, toRef(props, 'class'))
 
     const { emitFormBlur, emitFormInput, inputId, color, size, name } = useFormGroup(props, config)
 

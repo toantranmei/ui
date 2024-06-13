@@ -22,7 +22,7 @@ import type { PropType } from 'vue'
 import { twMerge, twJoin } from 'tailwind-merge'
 import UIcon from '../elements/Icon.vue'
 import ULink from '../elements/Link.vue'
-import { useUI } from '../../composables/useUI'
+import { useMeiUI } from '../../composables/useMeiUI'
 import { mergeConfig, nuxtLinkProps, getNuxtLinkProps } from '../../utils'
 import { useInjectButtonGroup } from '../../composables/useButtonGroup'
 import type { ButtonColor, ButtonSize, ButtonVariant, Strategy } from '../../types'
@@ -130,7 +130,7 @@ export default defineComponent({
     }
   },
   setup (props, { slots }) {
-    const { ui, attrs } = useUI('button', toRef(props, 'ui'), config)
+    const { ui, attrs } = useMeiUI('button', toRef(props, 'ui'), config)
 
     const { size, rounded } = useInjectButtonGroup({ ui, props })
 

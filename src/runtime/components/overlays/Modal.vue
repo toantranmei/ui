@@ -30,7 +30,7 @@
 import { computed, toRef, defineComponent } from 'vue'
 import type { PropType } from 'vue'
 import { Dialog as HDialog, DialogPanel as HDialogPanel, TransitionRoot, TransitionChild, provideUseId } from '@headlessui/vue'
-import { useUI } from '../../composables/useUI'
+import { useMeiUI } from '../../composables/useMeiUI'
 import { mergeConfig } from '../../utils'
 import type { Strategy } from '../../types'
 // @ts-expect-error
@@ -84,7 +84,7 @@ export default defineComponent({
   },
   emits: ['update:modelValue', 'close', 'close-prevented', 'after-leave'],
   setup (props, { emit }) {
-    const { ui, attrs } = useUI('modal', toRef(props, 'ui'), config, toRef(props, 'class'))
+    const { ui, attrs } = useMeiUI('modal', toRef(props, 'ui'), config, toRef(props, 'class'))
 
     const isOpen = computed({
       get () {

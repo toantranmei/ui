@@ -142,7 +142,7 @@ import { defu } from 'defu'
 import { twMerge, twJoin } from 'tailwind-merge'
 import UIcon from '../elements/Icon.vue'
 import UAvatar from '../elements/Avatar.vue'
-import { useUI } from '../../composables/useUI'
+import { useMeiUI } from '../../composables/useMeiUI'
 import { usePopper } from '../../composables/usePopper'
 import { useFormGroup } from '../../composables/useFormGroup'
 import { get, mergeConfig } from '../../utils'
@@ -336,8 +336,8 @@ export default defineComponent({
   },
   emits: ['update:modelValue', 'update:query', 'open', 'close', 'change'],
   setup (props, { emit, slots }) {
-    const { ui, attrs } = useUI('select', toRef(props, 'ui'), config, toRef(props, 'class'))
-    const { ui: uiMenu } = useUI('selectMenu', toRef(props, 'uiMenu'), configMenu)
+    const { ui, attrs } = useMeiUI('select', toRef(props, 'ui'), config, toRef(props, 'class'))
+    const { ui: uiMenu } = useMeiUI('selectMenu', toRef(props, 'uiMenu'), configMenu)
 
     const popper = computed<PopperOptions>(() => defu({}, props.popper, uiMenu.value.popper as PopperOptions))
 

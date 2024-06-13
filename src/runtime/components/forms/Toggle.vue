@@ -35,7 +35,7 @@ import type { PropType } from 'vue'
 import { Switch as HSwitch, provideUseId } from '@headlessui/vue'
 import { twMerge, twJoin } from 'tailwind-merge'
 import UIcon from '../elements/Icon.vue'
-import { useUI } from '../../composables/useUI'
+import { useMeiUI } from '../../composables/useMeiUI'
 import { useFormGroup } from '../../composables/useFormGroup'
 import { mergeConfig } from '../../utils'
 import type { ToggleSize, ToggleColor, Strategy } from '../../types'
@@ -110,7 +110,7 @@ export default defineComponent({
   },
   emits: ['update:modelValue', 'change'],
   setup (props, { emit }) {
-    const { ui, attrs } = useUI('toggle', toRef(props, 'ui'), config)
+    const { ui, attrs } = useMeiUI('toggle', toRef(props, 'ui'), config)
 
     const { emitFormChange, color, inputId, name } = useFormGroup(props)
 

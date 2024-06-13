@@ -8,7 +8,7 @@
 import { computed, toRef, defineComponent } from 'vue'
 import type { PropType } from 'vue'
 import { twMerge, twJoin } from 'tailwind-merge'
-import { useUI } from '../../composables/useUI'
+import { useMeiUI } from '../../composables/useMeiUI'
 import { mergeConfig } from '../../utils'
 import { useInjectButtonGroup } from '../../composables/useButtonGroup'
 import type { BadgeColor, BadgeSize, BadgeVariant, Strategy } from '../../types'
@@ -59,7 +59,7 @@ export default defineComponent({
     }
   },
   setup (props) {
-    const { ui, attrs } = useUI('badge', toRef(props, 'ui'), config)
+    const { ui, attrs } = useMeiUI('badge', toRef(props, 'ui'), config)
 
     const { size, rounded } = useInjectButtonGroup({ ui, props })
 

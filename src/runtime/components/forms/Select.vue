@@ -57,7 +57,7 @@ import { computed, toRef, defineComponent } from 'vue'
 import type { PropType, ComputedRef } from 'vue'
 import { twMerge, twJoin } from 'tailwind-merge'
 import UIcon from '../elements/Icon.vue'
-import { useUI } from '../../composables/useUI'
+import { useMeiUI } from '../../composables/useMeiUI'
 import { useFormGroup } from '../../composables/useFormGroup'
 import { mergeConfig, get } from '../../utils'
 import { useInjectButtonGroup } from '../../composables/useButtonGroup'
@@ -181,7 +181,7 @@ export default defineComponent({
   },
   emits: ['update:modelValue', 'change'],
   setup (props, { emit, slots }) {
-    const { ui, attrs } = useUI('select', toRef(props, 'ui'), config, toRef(props, 'class'))
+    const { ui, attrs } = useMeiUI('select', toRef(props, 'ui'), config, toRef(props, 'class'))
 
     const { size: sizeButtonGroup, rounded } = useInjectButtonGroup({ ui, props })
 

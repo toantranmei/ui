@@ -39,7 +39,7 @@ import type { PropType } from 'vue'
 import { twMerge, twJoin } from 'tailwind-merge'
 import UIcon from '../elements/Icon.vue'
 import ULink from '../elements/Link.vue'
-import { useUI } from '../../composables/useUI'
+import { useMeiUI } from '../../composables/useMeiUI'
 import { mergeConfig, getULinkProps } from '../../utils'
 import type { BreadcrumbLink, Strategy } from '../../types'
 // @ts-expect-error
@@ -73,7 +73,7 @@ export default defineComponent({
     }
   },
   setup (props) {
-    const { ui, attrs } = useUI('breadcrumb', toRef(props, 'ui'), config, toRef(props, 'class'))
+    const { ui, attrs } = useMeiUI('breadcrumb', toRef(props, 'ui'), config, toRef(props, 'class'))
 
     return {
       // eslint-disable-next-line vue/no-dupe-keys

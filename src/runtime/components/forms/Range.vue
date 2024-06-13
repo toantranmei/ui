@@ -23,7 +23,7 @@
 import { computed, toRef, defineComponent } from 'vue'
 import type { PropType } from 'vue'
 import { twMerge, twJoin } from 'tailwind-merge'
-import { useUI } from '../../composables/useUI'
+import { useMeiUI } from '../../composables/useMeiUI'
 import { useFormGroup } from '../../composables/useFormGroup'
 import { mergeConfig } from '../../utils'
 import type { RangeSize, RangeColor, Strategy } from '../../types'
@@ -93,7 +93,7 @@ export default defineComponent({
   },
   emits: ['update:modelValue', 'change'],
   setup (props, { emit }) {
-    const { ui, attrs } = useUI('range', toRef(props, 'ui'), config)
+    const { ui, attrs } = useMeiUI('range', toRef(props, 'ui'), config)
 
     const { emitFormChange, inputId, color, size, name } = useFormGroup(props, config)
 

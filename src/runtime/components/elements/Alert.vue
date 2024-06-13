@@ -46,7 +46,7 @@ import { twMerge, twJoin } from 'tailwind-merge'
 import UIcon from '../elements/Icon.vue'
 import UAvatar from '../elements/Avatar.vue'
 import UButton from '../elements/Button.vue'
-import { useUI } from '../../composables/useUI'
+import { useMeiUI } from '../../composables/useMeiUI'
 import type { Avatar, Button, AlertColor, AlertVariant, AlertAction, Strategy } from '../../types'
 import { mergeConfig } from '../../utils'
 // @ts-expect-error
@@ -115,7 +115,7 @@ export default defineComponent({
   },
   emits: ['close'],
   setup (props) {
-    const { ui, attrs } = useUI('alert', toRef(props, 'ui'), config)
+    const { ui, attrs } = useMeiUI('alert', toRef(props, 'ui'), config)
 
     const alertClass = computed(() => {
       const variant = ui.value.color?.[props.color as string]?.[props.variant as string] || ui.value.variant[props.variant]

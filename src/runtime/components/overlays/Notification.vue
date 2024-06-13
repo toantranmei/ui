@@ -49,7 +49,7 @@ import { twMerge, twJoin } from 'tailwind-merge'
 import UIcon from '../elements/Icon.vue'
 import UAvatar from '../elements/Avatar.vue'
 import UButton from '../elements/Button.vue'
-import { useUI } from '../../composables/useUI'
+import { useMeiUI } from '../../composables/useMeiUI'
 import { useTimer } from '../../composables/useTimer'
 import { mergeConfig } from '../../utils'
 import type { Avatar, Button, NotificationColor, NotificationAction, Strategy } from '../../types'
@@ -121,7 +121,7 @@ export default defineComponent({
   },
   emits: ['close'],
   setup (props, { emit }) {
-    const { ui, attrs } = useUI('notification', toRef(props, 'ui'), config)
+    const { ui, attrs } = useMeiUI('notification', toRef(props, 'ui'), config)
 
     let timer: null | ReturnType<typeof useTimer> = null
     const remaining = ref(props.timeout)

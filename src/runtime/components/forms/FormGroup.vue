@@ -42,7 +42,7 @@
 <script lang="ts">
 import { computed, defineComponent, provide, inject, ref, toRef } from 'vue'
 import type { Ref, PropType } from 'vue'
-import { useUI } from '../../composables/useUI'
+import { useMeiUI } from '../../composables/useMeiUI'
 import { mergeConfig } from '../../utils'
 import type { FormError, InjectedFormGroupValue, FormGroupSize, Strategy } from '../../types'
 // @ts-expect-error
@@ -104,7 +104,7 @@ export default defineComponent({
     }
   },
   setup (props) {
-    const { ui, attrs } = useUI('formGroup', toRef(props, 'ui'), config, toRef(props, 'class'))
+    const { ui, attrs } = useMeiUI('formGroup', toRef(props, 'ui'), config, toRef(props, 'class'))
 
     const formErrors = inject<Ref<FormError[]> | null>('form-errors', null)
 

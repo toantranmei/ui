@@ -72,7 +72,7 @@ import { computed, toRef, defineComponent } from 'vue'
 import type { PropType } from 'vue'
 import type { RouteLocationRaw } from '#vue-router'
 import UButton from '../elements/Button.vue'
-import { useUI } from '../../composables/useUI'
+import { useMeiUI } from '../../composables/useMeiUI'
 import { mergeConfig } from '../../utils'
 import type { Button, ButtonSize, Strategy } from '../../types'
 // @ts-expect-error
@@ -170,7 +170,7 @@ export default defineComponent({
   },
   emits: ['update:modelValue'],
   setup (props, { emit }) {
-    const { ui, attrs } = useUI('pagination', toRef(props, 'ui'), config, toRef(props, 'class'))
+    const { ui, attrs } = useMeiUI('pagination', toRef(props, 'ui'), config, toRef(props, 'class'))
 
     const currentPage = computed({
       get () {

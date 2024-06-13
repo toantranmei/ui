@@ -31,7 +31,7 @@
 import { computed, toRef, defineComponent } from 'vue'
 import type { PropType } from 'vue'
 import { twMerge, twJoin } from 'tailwind-merge'
-import { useUI } from '../../composables/useUI'
+import { useMeiUI } from '../../composables/useMeiUI'
 import { useFormGroup } from '../../composables/useFormGroup'
 import { mergeConfig } from '../../utils'
 import type { Strategy } from '../../types'
@@ -104,7 +104,7 @@ export default defineComponent({
   },
   emits: ['update:modelValue', 'change'],
   setup (props, { emit }) {
-    const { ui, attrs } = useUI('checkbox', toRef(props, 'ui'), config, toRef(props, 'class'))
+    const { ui, attrs } = useMeiUI('checkbox', toRef(props, 'ui'), config, toRef(props, 'class'))
 
     const { emitFormChange, color, name, inputId: _inputId } = useFormGroup(props)
     const inputId = _inputId.value ?? useId()

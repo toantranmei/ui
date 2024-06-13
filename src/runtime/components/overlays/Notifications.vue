@@ -24,7 +24,7 @@ import { computed, toRef, defineComponent } from 'vue'
 import type { PropType } from 'vue'
 import { twMerge, twJoin } from 'tailwind-merge'
 import UNotification from './Notification.vue'
-import { useUI } from '../../composables/useUI'
+import { useMeiUI } from '../../composables/useMeiUI'
 import { useToast } from '../../composables/useToast'
 import { mergeConfig } from '../../utils'
 import type { Notification, Strategy } from '../../types'
@@ -51,7 +51,7 @@ export default defineComponent({
     }
   },
   setup (props) {
-    const { ui, attrs } = useUI('notifications', toRef(props, 'ui'), config)
+    const { ui, attrs } = useMeiUI('notifications', toRef(props, 'ui'), config)
 
     const toast = useToast()
     const notifications = useState<Notification[]>('notifications', () => [])

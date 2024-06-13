@@ -71,7 +71,7 @@ import type { PropType } from 'vue'
 import { Disclosure as HDisclosure, DisclosureButton as HDisclosureButton, DisclosurePanel as HDisclosurePanel, provideUseId } from '@headlessui/vue'
 import UIcon from '../elements/Icon.vue'
 import UButton from '../elements/Button.vue'
-import { useUI } from '../../composables/useUI'
+import { useMeiUI } from '../../composables/useMeiUI'
 import { mergeConfig, omit } from '../../utils'
 import type { AccordionItem, Strategy } from '../../types'
 // @ts-expect-error
@@ -128,7 +128,7 @@ export default defineComponent({
   },
   emits: ['open'],
   setup (props, { emit }) {
-    const { ui, attrs } = useUI('accordion', toRef(props, 'ui'), config, toRef(props, 'class'))
+    const { ui, attrs } = useMeiUI('accordion', toRef(props, 'ui'), config, toRef(props, 'class'))
 
     const uiButton = computed<typeof configButton>(() => configButton)
 

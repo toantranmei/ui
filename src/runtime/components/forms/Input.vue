@@ -37,7 +37,7 @@ import type { PropType } from 'vue'
 import { twMerge, twJoin } from 'tailwind-merge'
 import UIcon from '../elements/Icon.vue'
 import { defu } from 'defu'
-import { useUI } from '../../composables/useUI'
+import { useMeiUI } from '../../composables/useMeiUI'
 import { useFormGroup } from '../../composables/useFormGroup'
 import { mergeConfig, looseToNumber } from '../../utils'
 import { useInjectButtonGroup } from '../../composables/useButtonGroup'
@@ -165,7 +165,7 @@ export default defineComponent({
   },
   emits: ['update:modelValue', 'blur', 'change'],
   setup (props, { emit, slots }) {
-    const { ui, attrs } = useUI('input', toRef(props, 'ui'), config, toRef(props, 'class'))
+    const { ui, attrs } = useMeiUI('input', toRef(props, 'ui'), config, toRef(props, 'class'))
 
     const { size: sizeButtonGroup, rounded } = useInjectButtonGroup({ ui, props })
 

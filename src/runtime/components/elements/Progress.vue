@@ -26,7 +26,7 @@
 import { computed, defineComponent, toRef } from 'vue'
 import type { PropType } from 'vue'
 import { twJoin } from 'tailwind-merge'
-import { useUI } from '../../composables/useUI'
+import { useMeiUI } from '../../composables/useMeiUI'
 import { mergeConfig } from '../../utils'
 import type { Strategy, ProgressSize, ProgressAnimation, ProgressColor } from '../../types'
 // @ts-expect-error
@@ -81,7 +81,7 @@ export default defineComponent({
     }
   },
   setup (props) {
-    const { ui, attrs } = useUI('progress', toRef(props, 'ui'), config, toRef(props, 'class'))
+    const { ui, attrs } = useMeiUI('progress', toRef(props, 'ui'), config, toRef(props, 'class'))
 
     const indicatorContainerClass = computed(() => {
       return twJoin(

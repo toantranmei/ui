@@ -61,7 +61,7 @@ import UAvatar from '../elements/Avatar.vue'
 import UBadge from '../elements/Badge.vue'
 import ULink from '../elements/Link.vue'
 import UDivider from '../layout/Divider.vue'
-import { useUI } from '../../composables/useUI'
+import { useMeiUI } from '../../composables/useMeiUI'
 import { mergeConfig, getULinkProps } from '../../utils'
 import type { VerticalNavigationLink, Strategy } from '../../types'
 // @ts-expect-error
@@ -94,7 +94,7 @@ export default defineComponent({
     }
   },
   setup (props) {
-    const { ui, attrs } = useUI('verticalNavigation', toRef(props, 'ui'), config, toRef(props, 'class'))
+    const { ui, attrs } = useMeiUI('verticalNavigation', toRef(props, 'ui'), config, toRef(props, 'class'))
 
     const sections = computed(() => (Array.isArray(props.links[0]) ? props.links : [props.links]) as VerticalNavigationLink[][])
 

@@ -14,7 +14,7 @@
 import { defineComponent, computed, toRef } from 'vue'
 import type { PropType } from 'vue'
 import { twJoin } from 'tailwind-merge'
-import { useUI } from '../../composables/useUI'
+import { useMeiUI } from '../../composables/useMeiUI'
 import { mergeConfig } from '../../utils'
 import type { ChipSize, ChipColor, ChipPosition, Strategy } from '../../types'
 // @ts-expect-error
@@ -69,7 +69,7 @@ export default defineComponent({
     }
   },
   setup (props) {
-    const { ui, attrs } = useUI('chip', toRef(props, 'ui'), config, toRef(props, 'class'))
+    const { ui, attrs } = useMeiUI('chip', toRef(props, 'ui'), config, toRef(props, 'class'))
 
     const chipClass = computed(() => {
       return twJoin(

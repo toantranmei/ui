@@ -62,7 +62,7 @@ import { twMerge } from 'tailwind-merge'
 import { mergeConfig } from '../../utils'
 import UButton from '../elements/Button.vue'
 import type { Strategy, Button } from '../../types'
-import { useUI } from '../../composables/useUI'
+import { useMeiUI } from '../../composables/useMeiUI'
 import { useCarouselScroll } from '../../composables/useCarouselScroll'
 import { useScroll, useResizeObserver, useElementSize } from '@vueuse/core'
 // @ts-expect-error
@@ -107,7 +107,7 @@ export default defineComponent({
     }
   },
   setup (props, { expose }) {
-    const { ui, attrs } = useUI('carousel', toRef(props, 'ui'), config, toRef(props, 'class'))
+    const { ui, attrs } = useMeiUI('carousel', toRef(props, 'ui'), config, toRef(props, 'class'))
 
     const carouselRef = ref<HTMLElement>()
     const itemWidth = ref(0)

@@ -40,7 +40,7 @@ import { computed, ref, toRef, onMounted, defineComponent, watch } from 'vue'
 import type { PropType } from 'vue'
 import { defu } from 'defu'
 import { Popover as HPopover, PopoverButton as HPopoverButton, PopoverPanel as HPopoverPanel, provideUseId } from '@headlessui/vue'
-import { useUI } from '../../composables/useUI'
+import { useMeiUI } from '../../composables/useMeiUI'
 import { usePopper } from '../../composables/usePopper'
 import { mergeConfig } from '../../utils'
 import type { PopperOptions, Strategy } from '../../types'
@@ -99,7 +99,7 @@ export default defineComponent({
   },
   emits: ['update:open'],
   setup (props, { emit }) {
-    const { ui, attrs } = useUI('popover', toRef(props, 'ui'), config, toRef(props, 'class'))
+    const { ui, attrs } = useMeiUI('popover', toRef(props, 'ui'), config, toRef(props, 'class'))
 
     const popper = computed<PopperOptions>(() => defu(props.mode === 'hover' ? { offsetDistance: 0 } : {}, props.popper, ui.value.popper as PopperOptions))
 

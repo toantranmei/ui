@@ -29,7 +29,7 @@
 import URadio from './Radio.vue'
 import { computed, defineComponent, provide, toRef } from 'vue'
 import type { PropType } from 'vue'
-import { useUI } from '../../composables/useUI'
+import { useMeiUI } from '../../composables/useMeiUI'
 import { useFormGroup } from '../../composables/useFormGroup'
 import { mergeConfig, get } from '../../utils'
 import type { Strategy } from '../../types'
@@ -97,8 +97,8 @@ export default defineComponent({
   },
   emits: ['update:modelValue', 'change'],
   setup (props, { emit }) {
-    const { ui, attrs } = useUI('radioGroup', toRef(props, 'ui'), config, toRef(props, 'class'))
-    const { ui: uiRadio } = useUI('radio', toRef(props, 'uiRadio'), configRadio)
+    const { ui, attrs } = useMeiUI('radioGroup', toRef(props, 'ui'), config, toRef(props, 'class'))
+    const { ui: uiRadio } = useMeiUI('radio', toRef(props, 'uiRadio'), configRadio)
 
     const { emitFormChange, color, name } = useFormGroup(props, config)
     provide('radio-group', { color, name })

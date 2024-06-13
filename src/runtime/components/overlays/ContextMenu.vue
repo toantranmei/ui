@@ -19,7 +19,7 @@ import { defu } from 'defu'
 import { onClickOutside } from '@vueuse/core'
 import type { VirtualElement } from '@popperjs/core'
 import { twMerge, twJoin } from 'tailwind-merge'
-import { useUI } from '../../composables/useUI'
+import { useMeiUI } from '../../composables/useMeiUI'
 import { usePopper } from '../../composables/usePopper'
 import { mergeConfig } from '../../utils'
 import type { PopperOptions, Strategy } from '../../types'
@@ -55,7 +55,7 @@ export default defineComponent({
   },
   emits: ['update:modelValue', 'close'],
   setup (props, { emit }) {
-    const { ui, attrs } = useUI('contextMenu', toRef(props, 'ui'), config)
+    const { ui, attrs } = useMeiUI('contextMenu', toRef(props, 'ui'), config)
 
     const popper = computed<PopperOptions>(() => defu({}, props.popper, ui.value.popper as PopperOptions))
 

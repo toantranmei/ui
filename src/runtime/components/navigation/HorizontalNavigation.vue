@@ -59,7 +59,7 @@ import UIcon from '../elements/Icon.vue'
 import UAvatar from '../elements/Avatar.vue'
 import UBadge from '../elements/Badge.vue'
 import ULink from '../elements/Link.vue'
-import { useUI } from '../../composables/useUI'
+import { useMeiUI } from '../../composables/useMeiUI'
 import { mergeConfig, getULinkProps } from '../../utils'
 import type { HorizontalNavigationLink, Strategy } from '../../types'
 // @ts-expect-error
@@ -91,7 +91,7 @@ export default defineComponent({
     }
   },
   setup (props) {
-    const { ui, attrs } = useUI('horizontalNavigation', toRef(props, 'ui'), config, toRef(props, 'class'))
+    const { ui, attrs } = useMeiUI('horizontalNavigation', toRef(props, 'ui'), config, toRef(props, 'class'))
 
     const sections = computed(() => (Array.isArray(props.links[0]) ? props.links : [props.links]) as HorizontalNavigationLink[][])
 

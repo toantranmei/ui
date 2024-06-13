@@ -73,7 +73,7 @@ import { defu } from 'defu'
 import UIcon from '../elements/Icon.vue'
 import UButton from '../elements/Button.vue'
 import CommandPaletteGroup from './CommandPaletteGroup.vue'
-import { useUI } from '../../composables/useUI'
+import { useMeiUI } from '../../composables/useMeiUI'
 import { mergeConfig } from '../../utils'
 import type { Group, Command, Button, Strategy } from '../../types'
 // @ts-expect-error
@@ -181,7 +181,7 @@ export default defineComponent({
   },
   emits: ['update:modelValue', 'close'],
   setup (props, { emit, expose }) {
-    const { ui, attrs } = useUI('commandPalette', toRef(props, 'ui'), config, toRef(props, 'class'))
+    const { ui, attrs } = useMeiUI('commandPalette', toRef(props, 'ui'), config, toRef(props, 'class'))
 
     const query = ref('')
     const comboboxInput = ref<ComponentPublicInstance<HTMLInputElement>>()
