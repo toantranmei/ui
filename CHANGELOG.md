@@ -1,5 +1,7 @@
 # Changelog
 
+## [2.0.3](https://github.com/toantranmei/ui/compare/v2.0.2...v2.0.3) (2024-06-13)
+
 ## [2.0.2](https://github.com/toantranmei/ui/compare/v2.0.1...v2.0.2) (2024-06-13)
 
 
