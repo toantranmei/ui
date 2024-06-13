@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.5](https://github.com/toantranmei/ui/compare/v2.0.4...v2.0.5) (2024-06-13)
+
+
+### Bug Fixes
+
+* rename file to use mei ui for pro version ([3038ba8](https://github.com/toantranmei/ui/commit/3038ba8bacd7d76b6fbd2c9df53c32eabc4f936d))
+
 ## [2.0.4](https://github.com/toantranmei/ui/compare/v2.0.3...v2.0.4) (2024-06-13)
 
 ## [2.0.3](https://github.com/toantranmei/ui/compare/v2.0.2...v2.0.3) (2024-06-13)
