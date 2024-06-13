@@ -5,7 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  '@mei/ui': workspace:*
+  '@toantranmei/ui': workspace:*
   '@nuxt/module-builder': 0.5.5
   vue-tsc: 2.0.16
 
@@ -143,7 +143,7 @@ importers:
 
   playground:
     dependencies:
-      '@mei/ui':
+      '@toantranmei/ui':
         specifier: workspace:*
         version: link:..
       nuxt:

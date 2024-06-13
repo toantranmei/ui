@@ -30,12 +30,12 @@ Read more on [ui.toantranmei.com](https://ui.toantranmei.com)
 npx nuxi@latest module add ui
 ```
 
-If you want latest updates, please use `@mei/ui-edge` in your `package.json`:
+If you want latest updates, please use `@toantranmei/ui-edge` in your `package.json`:
 
 ```json
 {
   "devDependencies": {
-    "@mei/ui": "npm:@mei/ui-edge@latest"
+    "@toantranmei/ui": "npm:@toantranmei/ui-edge@latest"
   }
 }
 ```
@@ -70,11 +70,11 @@ Follow the docs to [Set up your local development environment](https://ui.toantr
 Licensed under the [MIT license](https://github.com/toantranmei/ui/blob/dev/LICENSE.md).
 
 <!-- Badges -->
-[npm-version-src]: https://img.shields.io/npm/v/@mei/ui/latest.svg?style=flat&colorA=18181B&colorB=28CF8D
-[npm-version-href]: https://npmjs.com/package/@mei/ui
+[npm-version-src]: https://img.shields.io/npm/v/@toantranmei/ui/latest.svg?style=flat&colorA=18181B&colorB=28CF8D
+[npm-version-href]: https://npmjs.com/package/@toantranmei/ui
 
-[npm-downloads-src]: https://img.shields.io/npm/dm/@mei/ui.svg?style=flat&colorA=18181B&colorB=28CF8D
-[npm-downloads-href]: https://npmjs.com/package/@mei/ui
+[npm-downloads-src]: https://img.shields.io/npm/dm/@toantranmei/ui.svg?style=flat&colorA=18181B&colorB=28CF8D
+[npm-downloads-href]: https://npmjs.com/package/@toantranmei/ui
 
 [license-src]: https://img.shields.io/github/license/toantranmei/ui.svg?style=flat&colorA=18181B&colorB=28CF8D
 [license-href]: https://github.com/toantranmei/ui/blob/main/LICENSE

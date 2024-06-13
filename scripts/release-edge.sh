@@ -15,5 +15,5 @@ if [[ ! -z ${NODE_AUTH_TOKEN} ]] ; then
 fi
 
 # Release package
-echo "Publishing @mei/ui"
+echo "Publishing @toantranmei/ui"
 npm publish -q --access public

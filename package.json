@@ -1,8 +1,8 @@
 {
-  "name": "@mei/ui",
+  "name": "@toantranmei/ui",
   "version": "2.0.2",
   "packageManager": "pnpm@9.1.1",
-  "repository": "mei/ui",
+  "repository": "toantranmei/ui",
   "homepage": "https://ui.toantranmei.com",
   "type": "module",
   "license": "MIT",
@@ -79,7 +79,7 @@
     "zod": "^3.23.8"
   },
   "resolutions": {
-    "@mei/ui": "workspace:*",
+    "@toantranmei/ui": "workspace:*",
     "@nuxt/module-builder": "0.5.5",
     "vue-tsc": "2.0.16"
   }

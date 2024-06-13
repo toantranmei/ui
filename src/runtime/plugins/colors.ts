@@ -12,10 +12,10 @@ export default defineNuxtPlugin(() => {
     const gray: Record<string, string> | undefined = colors[appConfig.meiUI.gray]
 
     if (!primary) {
-      console.warn(`[@mei/ui] Primary color '${appConfig.meiUI.primary}' not found in Tailwind config`)
+      console.warn(`[@toantranmei/ui] Primary color '${appConfig.meiUI.primary}' not found in Tailwind config`)
     }
     if (!gray) {
-      console.warn(`[@mei/ui] Gray color '${appConfig.meiUI.gray}' not found in Tailwind config`)
+      console.warn(`[@toantranmei/ui] Gray color '${appConfig.meiUI.gray}' not found in Tailwind config`)
     }
 
     return `:root {
