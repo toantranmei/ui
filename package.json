@@ -2,7 +2,10 @@
   "name": "@toantranmei/ui",
   "version": "2.0.3",
   "packageManager": "pnpm@9.1.1",
-  "repository": "toantranmei/ui",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/toantranmei/ui.git"
+  },
   "homepage": "https://ui.toantranmei.com",
   "type": "module",
   "license": "MIT",
