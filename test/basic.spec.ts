@@ -51,8 +51,8 @@ describe('nuxt', () => {
     })
     // default values in appConfig
     expect(nuxtOptions.appConfig.meiUI).toMatchObject({
-      primary: 'green',
-      gray: 'cool'
+      primary: 'purple',
+      gray: 'gray'
     })
   })
 })
