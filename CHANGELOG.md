@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.6](https://github.com/toantranmei/ui/compare/v2.0.5...v2.0.6) (2024-06-14)
+
+
+### Features
+
+* add box and text component ([fbb85c4](https://github.com/toantranmei/ui/commit/fbb85c4f5f605bb068a1923460df632d1b381b5a))
+
 ## [2.0.5](https://github.com/toantranmei/ui/compare/v2.0.4...v2.0.5) (2024-06-13)
 
 
