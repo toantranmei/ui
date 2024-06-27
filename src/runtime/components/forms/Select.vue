@@ -40,13 +40,13 @@
 
     <span v-if="(isLeading && leadingIconName) || $slots.leading" :class="leadingWrapperIconClass">
       <slot name="leading" :disabled="disabled" :loading="loading">
-        <UIcon :name="leadingIconName" :class="leadingIconClass" />
+        <MeiIcon :name="leadingIconName" :class="leadingIconClass" />
       </slot>
     </span>
 
     <span v-if="(isTrailing && trailingIconName) || $slots.trailing" :class="trailingWrapperIconClass">
       <slot name="trailing" :disabled="disabled" :loading="loading">
-        <UIcon :name="trailingIconName" :class="trailingIconClass" aria-hidden="true" />
+        <MeiIcon :name="trailingIconName" :class="trailingIconClass" aria-hidden="true" />
       </slot>
     </span>
   </div>
@@ -56,7 +56,7 @@
 import { computed, toRef, defineComponent } from 'vue'
 import type { PropType, ComputedRef } from 'vue'
 import { twMerge, twJoin } from 'tailwind-merge'
-import UIcon from '../elements/Icon.vue'
+import MeiIcon from '../elements/Icon.vue'
 import { useMeiUI } from '../../composables/useMeiUI'
 import { useFormGroup } from '../../composables/useFormGroup'
 import { mergeConfig, get } from '../../utils'
@@ -70,7 +70,7 @@ const config = mergeConfig<typeof select>(appConfig.meiUI.strategy, appConfig.me
 
 export default defineComponent({
   components: {
-    UIcon
+    MeiIcon
   },
   inheritAttrs: false,
   props: {

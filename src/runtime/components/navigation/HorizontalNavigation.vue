@@ -2,9 +2,9 @@
   <nav :class="ui.wrapper" v-bind="attrs">
     <ul v-for="(section, sectionIndex) of sections" :key="`section${sectionIndex}`" :class="ui.container">
       <li v-for="(link, index) of section" :key="`section${sectionIndex}-${index}`" :class="ui.inner">
-        <ULink
+        <MeiLink
           v-slot="{ isActive }"
-          v-bind="getULinkProps(link)"
+          v-bind="getMeiLinkProps(link)"
           :class="[ui.base, ui.before, ui.after]"
           :active-class="ui.active"
           :inactive-class="ui.inactive"
@@ -12,14 +12,14 @@
           @keyup.enter="$event.target.blur()"
         >
           <slot name="avatar" :link="link" :is-active="isActive">
-            <UAvatar
+            <MeiAvatar
               v-if="link.avatar"
               v-bind="{ size: ui.avatar.size, ...link.avatar }"
               :class="[ui.avatar.base]"
             />
           </slot>
           <slot name="icon" :link="link" :is-active="isActive">
-            <UIcon
+            <MeiIcon
               v-if="link.icon"
               :name="link.icon"
               :class="twMerge(twJoin(ui.icon.base, isActive ? ui.icon.active : ui.icon.inactive), link.iconClass)"
@@ -34,7 +34,7 @@
             </span>
           </slot>
           <slot name="badge" :link="link" :is-active="isActive">
-            <UBadge
+            <MeiBadge
               v-if="link.badge"
               v-bind="{
                 size: ui.badge.size,
@@ -45,7 +45,7 @@
               :class="ui.badge.base"
             />
           </slot>
-        </ULink>
+        </MeiLink>
       </li>
     </ul>
   </nav>
@@ -55,12 +55,12 @@
 import { toRef, defineComponent, computed } from 'vue'
 import type { PropType } from 'vue'
 import { twMerge, twJoin } from 'tailwind-merge'
-import UIcon from '../elements/Icon.vue'
-import UAvatar from '../elements/Avatar.vue'
-import UBadge from '../elements/Badge.vue'
-import ULink from '../elements/Link.vue'
+import MeiIcon from '../elements/Icon.vue'
+import MeiAvatar from '../elements/Avatar.vue'
+import MeiBadge from '../elements/Badge.vue'
+import MeiLink from '../elements/Link.vue'
 import { useMeiUI } from '../../composables/useMeiUI'
-import { mergeConfig, getULinkProps } from '../../utils'
+import { mergeConfig, getMeiLinkProps } from '../../utils'
 import type { HorizontalNavigationLink, Strategy } from '../../types'
 // @ts-expect-error
 import appConfig from '#build/app.config'
@@ -70,10 +70,10 @@ const config = mergeConfig<typeof horizontalNavigation>(appConfig.meiUI.strategy
 
 export default defineComponent({
   components: {
-    UIcon,
-    UAvatar,
-    UBadge,
-    ULink
+    MeiIcon,
+    MeiAvatar,
+    MeiBadge,
+    MeiLink
   },
   inheritAttrs: false,
   props: {
@@ -100,7 +100,7 @@ export default defineComponent({
       ui,
       attrs,
       sections,
-      getULinkProps,
+      getMeiLinkProps,
       twMerge,
       twJoin
     }

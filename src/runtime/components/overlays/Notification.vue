@@ -9,8 +9,8 @@
     >
       <div :class="[ui.container, ui.rounded, ui.ring]">
         <div class="flex" :class="[ui.padding, ui.gap, { 'items-start': description || $slots.description, 'items-center': !description && !$slots.description }]">
-          <UIcon v-if="icon" :name="icon" :class="iconClass" />
-          <UAvatar v-if="avatar" v-bind="{ size: ui.avatar.size, ...avatar }" :class="ui.avatar.base" />
+          <MeiIcon v-if="icon" :name="icon" :class="iconClass" />
+          <MeiAvatar v-if="avatar" v-bind="{ size: ui.avatar.size, ...avatar }" :class="ui.avatar.base" />
 
           <div :class="ui.inner">
             <p v-if="(title || $slots.title)" :class="ui.title">
@@ -25,15 +25,15 @@
             </p>
 
             <div v-if="(description || $slots.description) && actions.length" :class="ui.actions">
-              <UButton v-for="(action, index) of actions" :key="index" v-bind="{ ...(ui.default.actionButton || {}), ...action }" @click.stop="onAction(action)" />
+              <MeiButton v-for="(action, index) of actions" :key="index" v-bind="{ ...(ui.default.actionButton || {}), ...action }" @click.stop="onAction(action)" />
             </div>
           </div>
           <div v-if="closeButton || (!description && !$slots.description && actions.length)" :class="twMerge(ui.actions, 'mt-0')">
             <template v-if="!description && !$slots.description && actions.length">
-              <UButton v-for="(action, index) of actions" :key="index" v-bind="{ ...(ui.default.actionButton || {}), ...action }" @click.stop="onAction(action)" />
+              <MeiButton v-for="(action, index) of actions" :key="index" v-bind="{ ...(ui.default.actionButton || {}), ...action }" @click.stop="onAction(action)" />
             </template>
 
-            <UButton v-if="closeButton" aria-label="Close" v-bind="{ ...(ui.default.closeButton || {}), ...closeButton }" @click.stop="onClose" />
+            <MeiButton v-if="closeButton" aria-label="Close" v-bind="{ ...(ui.default.closeButton || {}), ...closeButton }" @click.stop="onClose" />
           </div>
         </div>
         <div v-if="timeout" :class="progressClass" :style="progressStyle" />
@@ -46,9 +46,9 @@
 import { ref, computed, toRef, onMounted, onUnmounted, watch, watchEffect, defineComponent } from 'vue'
 import type { PropType } from 'vue'
 import { twMerge, twJoin } from 'tailwind-merge'
-import UIcon from '../elements/Icon.vue'
-import UAvatar from '../elements/Avatar.vue'
-import UButton from '../elements/Button.vue'
+import MeiIcon from '../elements/Icon.vue'
+import MeiAvatar from '../elements/Avatar.vue'
+import MeiButton from '../elements/Button.vue'
 import { useMeiUI } from '../../composables/useMeiUI'
 import { useTimer } from '../../composables/useTimer'
 import { mergeConfig } from '../../utils'
@@ -61,9 +61,9 @@ const config = mergeConfig<typeof notification>(appConfig.meiUI.strategy, appCon
 
 export default defineComponent({
   components: {
-    UIcon,
-    UAvatar,
-    UButton
+    MeiIcon,
+    MeiAvatar,
+    MeiButton
   },
   inheritAttrs: false,
   props: {

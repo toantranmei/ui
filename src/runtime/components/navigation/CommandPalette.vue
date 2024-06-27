@@ -10,7 +10,7 @@
     @update:model-value="onSelect"
   >
     <div v-show="searchable" :class="ui.input.wrapper">
-      <UIcon v-if="iconName" :name="iconName" :class="iconClass" aria-hidden="true" />
+      <MeiIcon v-if="iconName" :name="iconName" :class="iconClass" aria-hidden="true" />
       <HComboboxInput
         ref="comboboxInput"
         :value="query"
@@ -21,7 +21,7 @@
         @change="query = $event.target.value"
       />
 
-      <UButton v-if="closeButton" aria-label="Close" v-bind="{ ...(ui.default.closeButton || {}), ...closeButton }" :class="ui.input.closeButton.base" @click="onClear" />
+      <MeiButton v-if="closeButton" aria-label="Close" v-bind="{ ...(ui.default.closeButton || {}), ...closeButton }" :class="ui.input.closeButton.base" @click="onClear" />
     </div>
 
     <HComboboxOptions
@@ -51,7 +51,7 @@
     <template v-else-if="emptyState">
       <slot name="empty-state">
         <div :class="ui.emptyState.wrapper">
-          <UIcon v-if="emptyState.icon" :name="emptyState.icon" :class="ui.emptyState.icon" aria-hidden="true" />
+          <MeiIcon v-if="emptyState.icon" :name="emptyState.icon" :class="ui.emptyState.icon" aria-hidden="true" />
           <p :class="query ? ui.emptyState.queryLabel : ui.emptyState.label">
             {{ query ? emptyState.queryLabel : emptyState.label }}
           </p>
@@ -70,8 +70,8 @@ import { useFuse } from '@vueuse/integrations/useFuse'
 import type { UseFuseOptions } from '@vueuse/integrations/useFuse'
 import { twJoin } from 'tailwind-merge'
 import { defu } from 'defu'
-import UIcon from '../elements/Icon.vue'
-import UButton from '../elements/Button.vue'
+import MeiIcon from '../elements/Icon.vue'
+import MeiButton from '../elements/Button.vue'
 import CommandPaletteGroup from './CommandPaletteGroup.vue'
 import { useMeiUI } from '../../composables/useMeiUI'
 import { mergeConfig } from '../../utils'
@@ -88,8 +88,8 @@ export default defineComponent({
     HCombobox,
     HComboboxInput,
     HComboboxOptions,
-    UIcon,
-    UButton,
+    MeiIcon,
+    MeiButton,
     CommandPaletteGroup
   },
   inheritAttrs: false,

@@ -26,13 +26,13 @@
 
       <span v-if="(isLeading && leadingIconName) || $slots.leading" :class="leadingWrapperIconClass">
         <slot name="leading" :disabled="disabled" :loading="loading">
-          <UIcon :name="leadingIconName" :class="leadingIconClass" />
+          <MeiIcon :name="leadingIconName" :class="leadingIconClass" />
         </slot>
       </span>
 
       <HComboboxButton v-if="(isTrailing && trailingIconName) || $slots.trailing" ref="trigger" :class="trailingWrapperIconClass">
         <slot name="trailing" :disabled="disabled" :loading="loading">
-          <UIcon :name="trailingIconName" :class="trailingIconClass" />
+          <MeiIcon :name="trailingIconName" :class="trailingIconClass" />
         </slot>
       </HComboboxButton>
     </div>
@@ -54,8 +54,8 @@
               <li :class="[uiMenu.option.base, uiMenu.option.rounded, uiMenu.option.padding, uiMenu.option.size, uiMenu.option.color, active ? uiMenu.option.active : uiMenu.option.inactive, selected && uiMenu.option.selected, optionDisabled && uiMenu.option.disabled]">
                 <div :class="uiMenu.option.container">
                   <slot name="option" :option="option" :active="active" :selected="selected">
-                    <UIcon v-if="option.icon" :name="option.icon" :class="[uiMenu.option.icon.base, active ? uiMenu.option.icon.active : uiMenu.option.icon.inactive, option.iconClass]" aria-hidden="true" />
-                    <UAvatar
+                    <MeiIcon v-if="option.icon" :name="option.icon" :class="[uiMenu.option.icon.base, active ? uiMenu.option.icon.active : uiMenu.option.icon.inactive, option.iconClass]" aria-hidden="true" />
+                    <MeiAvatar
                       v-else-if="option.avatar"
                       v-bind="{ size: uiMenu.option.avatar.size, ...option.avatar }"
                       :class="uiMenu.option.avatar.base"
@@ -68,7 +68,7 @@
                 </div>
 
                 <span v-if="selected" :class="[uiMenu.option.selectedIcon.wrapper, uiMenu.option.selectedIcon.padding]">
-                  <UIcon :name="selectedIcon" :class="uiMenu.option.selectedIcon.base" aria-hidden="true" />
+                  <MeiIcon :name="selectedIcon" :class="uiMenu.option.selectedIcon.base" aria-hidden="true" />
                 </span>
               </li>
             </HComboboxOption>
@@ -104,8 +104,8 @@ import {
 import { computedAsync, useDebounceFn } from '@vueuse/core'
 import { defu } from 'defu'
 import { twMerge, twJoin } from 'tailwind-merge'
-import UIcon from '../elements/Icon.vue'
-import UAvatar from '../elements/Avatar.vue'
+import MeiIcon from '../elements/Icon.vue'
+import MeiAvatar from '../elements/Avatar.vue'
 import { useMeiUI } from '../../composables/useMeiUI'
 import { usePopper } from '../../composables/usePopper'
 import { useFormGroup } from '../../composables/useFormGroup'
@@ -128,8 +128,8 @@ export default defineComponent({
     HComboboxOptions,
     HComboboxOption,
     HComboboxInput,
-    UIcon,
-    UAvatar
+    MeiIcon,
+    MeiAvatar
   },
   inheritAttrs: false,
   props: {

@@ -2,15 +2,15 @@
   <nav aria-label="Breadcrumb" :class="ui.wrapper" v-bind="attrs">
     <ol :class="ui.ol">
       <li v-for="(link, index) in links" :key="index" :class="ui.li">
-        <ULink
+        <MeiLink
           as="span"
           :class="[ui.base, index === links.length - 1 ? ui.active : !!link.to ? ui.inactive : '']"
           :aria-current="index === links.length - 1 ? 'page' : undefined"
-          v-bind="getULinkProps(link)"
+          v-bind="getMeiLinkProps(link)"
           @click="link.click"
         >
           <slot name="icon" :link="link" :index="index" :is-active="index === links.length - 1">
-            <UIcon
+            <MeiIcon
               v-if="link.icon"
               :name="link.icon"
               :class="twMerge(twJoin(ui.icon.base, index === links.length - 1 ? ui.icon.active : !!link.to ? ui.icon.inactive : ''), link.iconClass)"
@@ -20,11 +20,11 @@
           <slot :link="link" :index="index" :is-active="index === links.length - 1">
             <span v-if="link.label" :class="twMerge(ui.label, link.labelClass)">{{ link.label }}</span>
           </slot>
-        </ULink>
+        </MeiLink>
 
         <slot v-if="index < links.length - 1" name="divider">
           <template v-if="divider">
-            <UIcon v-if="divider.startsWith('i-')" :name="divider" :class="ui.divider.base" role="presentation" />
+            <MeiIcon v-if="divider.startsWith('i-')" :name="divider" :class="ui.divider.base" role="presentation" />
             <span v-else role="presentation">{{ divider }}</span>
           </template>
         </slot>
@@ -37,10 +37,10 @@
 import { defineComponent, toRef } from 'vue'
 import type { PropType } from 'vue'
 import { twMerge, twJoin } from 'tailwind-merge'
-import UIcon from '../elements/Icon.vue'
-import ULink from '../elements/Link.vue'
+import MeiIcon from '../elements/Icon.vue'
+import MeiLink from '../elements/Link.vue'
 import { useMeiUI } from '../../composables/useMeiUI'
-import { mergeConfig, getULinkProps } from '../../utils'
+import { mergeConfig, getMeiLinkProps } from '../../utils'
 import type { BreadcrumbLink, Strategy } from '../../types'
 // @ts-expect-error
 import appConfig from '#build/app.config'
@@ -50,8 +50,8 @@ const config = mergeConfig<typeof breadcrumb>(appConfig.meiUI.strategy, appConfi
 
 export default defineComponent({
   components: {
-    UIcon,
-    ULink
+    MeiIcon,
+    MeiLink
   },
   inheritAttrs: false,
   props: {
@@ -79,7 +79,7 @@ export default defineComponent({
       // eslint-disable-next-line vue/no-dupe-keys
       ui,
       attrs,
-      getULinkProps,
+      getMeiLinkProps,
       twMerge,
       twJoin
     }

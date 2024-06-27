@@ -9,7 +9,7 @@
       <thead :class="ui.thead">
         <tr :class="ui.tr.base">
           <th v-if="modelValue" scope="col" :class="ui.checkbox.padding">
-            <UCheckbox :model-value="indeterminate || selected.length === rows.length" :indeterminate="indeterminate" v-bind="ui.default.checkbox" aria-label="Select all" @change="onChange" />
+            <MeiCheckbox :model-value="indeterminate || selected.length === rows.length" :indeterminate="indeterminate" v-bind="ui.default.checkbox" aria-label="Select all" @change="onChange" />
           </th>
 
           <th
@@ -20,7 +20,7 @@
             :aria-sort="getAriaSort(column)"
           >
             <slot :name="`${column.key}-header`" :column="column" :sort="sort" :on-sort="onSort">
-              <UButton
+              <MeiButton
                 v-if="column.sortable"
                 v-bind="{ ...(ui.default.sortButton || {}), ...sortButton }"
                 :icon="(!sort.column || sort.column !== column.key) ? (sortButton.icon || ui.default.sortButton.icon) : sort.direction === 'asc' ? sortAscIcon : sortDescIcon"
@@ -34,7 +34,7 @@
 
         <tr v-if="loading && progress">
           <td :colspan="0" :class="ui.progress.wrapper">
-            <UProgress v-bind="{ ...(ui.default.progress || {}), ...progress }" size="2xs" />
+            <MeiProgress v-bind="{ ...(ui.default.progress || {}), ...progress }" size="2xs" />
           </td>
         </tr>
       </thead>
@@ -43,7 +43,7 @@
           <td :colspan="columns.length + (modelValue ? 1 : 0)">
             <slot name="loading-state">
               <div :class="ui.loadingState.wrapper">
-                <UIcon v-if="loadingState.icon" :name="loadingState.icon" :class="ui.loadingState.icon" aria-hidden="true" />
+                <MeiIcon v-if="loadingState.icon" :name="loadingState.icon" :class="ui.loadingState.icon" aria-hidden="true" />
                 <p :class="ui.loadingState.label">
                   {{ loadingState.label }}
                 </p>
@@ -56,7 +56,7 @@
           <td :colspan="columns.length + (modelValue ? 1 : 0)">
             <slot name="empty-state">
               <div :class="ui.emptyState.wrapper">
-                <UIcon v-if="emptyState.icon" :name="emptyState.icon" :class="ui.emptyState.icon" aria-hidden="true" />
+                <MeiIcon v-if="emptyState.icon" :name="emptyState.icon" :class="ui.emptyState.icon" aria-hidden="true" />
                 <p :class="ui.emptyState.label">
                   {{ emptyState.label }}
                 </p>
@@ -68,7 +68,7 @@
         <template v-else>
           <tr v-for="(row, index) in rows" :key="index" :class="[ui.tr.base, isSelected(row) && ui.tr.selected, $attrs.onSelect && ui.tr.active, row?.class]" @click="() => onSelect(row)">
             <td v-if="modelValue" :class="ui.checkbox.padding">
-              <UCheckbox v-model="selected" :value="row" v-bind="ui.default.checkbox" aria-label="Select row" @click.stop />
+              <MeiCheckbox v-model="selected" :value="row" v-bind="ui.default.checkbox" aria-label="Select row" @click.stop />
             </td>
 
             <td v-for="(column, subIndex) in columns" :key="subIndex" :class="[ui.td.base, ui.td.padding, ui.td.color, ui.td.font, ui.td.size, row[column.key]?.class]">
@@ -89,10 +89,10 @@ import type { PropType, AriaAttributes } from 'vue'
 import { upperFirst } from 'scule'
 import { defu } from 'defu'
 import { useVModel } from '@vueuse/core'
-import UIcon from '../elements/Icon.vue'
-import UButton from '../elements/Button.vue'
-import UProgress from '../elements/Progress.vue'
-import UCheckbox from '../forms/Checkbox.vue'
+import MeiIcon from '../elements/Icon.vue'
+import MeiButton from '../elements/Button.vue'
+import MeiProgress from '../elements/Progress.vue'
+import MeiCheckbox from '../forms/Checkbox.vue'
 import { useMeiUI } from '../../composables/useMeiUI'
 import { mergeConfig, get } from '../../utils'
 import type { Strategy, Button, ProgressColor, ProgressAnimation } from '../../types'
@@ -129,10 +129,10 @@ interface Column {
 
 export default defineComponent({
   components: {
-    UIcon,
-    UButton,
-    UProgress,
-    UCheckbox
+    MeiIcon,
+    MeiButton,
+    MeiProgress,
+    MeiCheckbox
   },
   inheritAttrs: false,
   props: {

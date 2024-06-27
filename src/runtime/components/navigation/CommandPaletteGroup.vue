@@ -16,8 +16,8 @@
         <div :class="[ui.group.command.base, active ? ui.group.command.active : ui.group.command.inactive, command.disabled ? 'cursor-not-allowed' : 'cursor-pointer']">
           <div :class="ui.group.command.container">
             <slot :name="`${group.key}-icon`" :group="group" :command="command" :active="active" :selected="selected">
-              <UIcon v-if="command.icon" :name="command.icon" :class="[ui.group.command.icon.base, active ? ui.group.command.icon.active : ui.group.command.icon.inactive, command.iconClass]" aria-hidden="true" />
-              <UAvatar
+              <MeiIcon v-if="command.icon" :name="command.icon" :class="[ui.group.command.icon.base, active ? ui.group.command.icon.active : ui.group.command.icon.inactive, command.iconClass]" aria-hidden="true" />
+              <MeiAvatar
                 v-else-if="command.avatar"
                 v-bind="{ size: ui.group.command.avatar.size, ...command.avatar }"
                 :class="ui.group.command.avatar.base"
@@ -39,7 +39,7 @@
             </div>
           </div>
 
-          <UIcon v-if="selected" :name="selectedIcon" :class="ui.group.command.selectedIcon.base" aria-hidden="true" />
+          <MeiIcon v-if="selected" :name="selectedIcon" :class="ui.group.command.selectedIcon.base" aria-hidden="true" />
           <slot
             v-else-if="active && (group.active || $slots[`${group.key}-active`])"
             :name="`${group.key}-active`"
@@ -59,7 +59,7 @@
             :selected="selected"
           >
             <span v-if="command.shortcuts?.length" :class="ui.group.command.shortcuts">
-              <UKbd v-for="shortcut of command.shortcuts" :key="shortcut">{{ shortcut }}</UKbd>
+              <MeiKbd v-for="shortcut of command.shortcuts" :key="shortcut">{{ shortcut }}</MeiKbd>
             </span>
             <span v-else-if="!command.disabled && group.inactive" :class="ui.group.inactive">{{ group.inactive }}</span>
           </slot>
@@ -73,9 +73,9 @@
 import { computed, defineComponent } from 'vue'
 import type { PropType } from 'vue'
 import { ComboboxOption as HComboboxOption, provideUseId } from '@headlessui/vue'
-import UIcon from '../elements/Icon.vue'
-import UAvatar from '../elements/Avatar.vue'
-import UKbd from '../elements/Kbd.vue'
+import MeiIcon from '../elements/Icon.vue'
+import MeiAvatar from '../elements/Avatar.vue'
+import MeiKbd from '../elements/Kbd.vue'
 import type { Group } from '../../types'
 import { commandPalette } from '#mei-ui/ui.config'
 import { useId } from '#imports'
@@ -83,9 +83,9 @@ import { useId } from '#imports'
 export default defineComponent({
   components: {
     HComboboxOption,
-    UIcon,
-    UAvatar,
-    UKbd
+    MeiIcon,
+    MeiAvatar,
+    MeiKbd
   },
   props: {
     group: {

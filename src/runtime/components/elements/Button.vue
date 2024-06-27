@@ -1,7 +1,7 @@
 <template>
-  <ULink :type="type" :disabled="disabled || loading" :class="buttonClass" v-bind="{ ...linkProps, ...attrs }">
+  <MeiLink :type="type" :disabled="disabled || loading" :class="buttonClass" v-bind="{ ...linkProps, ...attrs }">
     <slot name="leading" :disabled="disabled" :loading="loading">
-      <UIcon v-if="isLeading && leadingIconName" :name="leadingIconName" :class="leadingIconClass" aria-hidden="true" />
+      <MeiIcon v-if="isLeading && leadingIconName" :name="leadingIconName" :class="leadingIconClass" aria-hidden="true" dynamic />
     </slot>
 
     <slot>
@@ -11,17 +11,17 @@
     </slot>
 
     <slot name="trailing" :disabled="disabled" :loading="loading">
-      <UIcon v-if="isTrailing && trailingIconName" :name="trailingIconName" :class="trailingIconClass" aria-hidden="true" />
+      <MeiIcon v-if="isTrailing && trailingIconName" :name="trailingIconName" :class="trailingIconClass" aria-hidden="true" dynamic />
     </slot>
-  </ULink>
+  </MeiLink>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, toRef } from 'vue'
 import type { PropType } from 'vue'
 import { twMerge, twJoin } from 'tailwind-merge'
-import UIcon from '../elements/Icon.vue'
-import ULink from '../elements/Link.vue'
+import MeiIcon from '../elements/Icon.vue'
+import MeiLink from '../elements/Link.vue'
 import { useMeiUI } from '../../composables/useMeiUI'
 import { mergeConfig, nuxtLinkProps, getNuxtLinkProps } from '../../utils'
 import { useInjectButtonGroup } from '../../composables/useButtonGroup'
@@ -34,8 +34,8 @@ const config = mergeConfig<typeof button>(appConfig.meiUI.strategy, appConfig.me
 
 export default defineComponent({
   components: {
-    UIcon,
-    ULink
+    MeiIcon,
+    MeiLink
   },
   inheritAttrs: false,
   props: {

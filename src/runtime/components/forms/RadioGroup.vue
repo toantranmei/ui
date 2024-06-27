@@ -6,7 +6,7 @@
           {{ legend }}
         </slot>
       </legend>
-      <URadio
+      <MeiRadio
         v-for="option in normalizedOptions"
         :key="option.value"
         :label="option.label"
@@ -20,13 +20,13 @@
         <template #label>
           <slot name="label" v-bind="{ option }" />
         </template>
-      </URadio>
+      </MeiRadio>
     </fieldset>
   </div>
 </template>
 
 <script lang="ts">
-import URadio from './Radio.vue'
+import MeiRadio from './Radio.vue'
 import { computed, defineComponent, provide, toRef } from 'vue'
 import type { PropType } from 'vue'
 import { useMeiUI } from '../../composables/useMeiUI'
@@ -43,7 +43,7 @@ const configRadio = mergeConfig<typeof radio>(appConfig.meiUI.strategy, appConfi
 
 export default defineComponent({
   components: {
-    URadio
+    MeiRadio
   },
   inheritAttrs: false,
   props: {

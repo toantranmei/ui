@@ -17,9 +17,9 @@
             <span v-if="shortcuts?.length" :class="ui.shortcuts">
               <span :class="ui.middot">&middot;</span>
 
-              <UKbd v-for="shortcut of shortcuts" :key="shortcut" size="xs">
+              <MeiKbd v-for="shortcut of shortcuts" :key="shortcut" size="xs">
                 {{ shortcut }}
-              </UKbd>
+              </MeiKbd>
             </span>
           </div>
         </div>
@@ -32,7 +32,7 @@
 import { computed, ref, toRef, defineComponent } from 'vue'
 import type { PropType } from 'vue'
 import { defu } from 'defu'
-import UKbd from '../elements/Kbd.vue'
+import MeiKbd from '../elements/Kbd.vue'
 import { useMeiUI } from '../../composables/useMeiUI'
 import { usePopper } from '../../composables/usePopper'
 import { mergeConfig } from '../../utils'
@@ -45,7 +45,7 @@ const config = mergeConfig<typeof tooltip>(appConfig.meiUI.strategy, appConfig.m
 
 export default defineComponent({
   components: {
-    UKbd
+    MeiKbd
   },
   inheritAttrs: false,
   props: {

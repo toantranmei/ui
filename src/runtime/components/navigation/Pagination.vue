@@ -1,7 +1,7 @@
 <template>
   <div :class="ui.wrapper" v-bind="attrs">
     <slot name="first" :on-click="onClickFirst">
-      <UButton
+      <MeiButton
         v-if="firstButton && showFirst"
         :size="size"
         :disabled="!canGoFirstOrPrev || disabled"
@@ -14,7 +14,7 @@
     </slot>
 
     <slot name="prev" :on-click="onClickPrev">
-      <UButton
+      <MeiButton
         v-if="prevButton"
         :size="size"
         :disabled="!canGoFirstOrPrev || disabled"
@@ -26,7 +26,7 @@
       />
     </slot>
 
-    <UButton
+    <MeiButton
       v-for="(page, index) of displayedPages"
       :key="`${page}-${index}`"
       :to="typeof page === 'number' ? to?.(page) : null"
@@ -40,7 +40,7 @@
     />
 
     <slot name="next" :on-click="onClickNext">
-      <UButton
+      <MeiButton
         v-if="nextButton"
         :size="size"
         :disabled="!canGoLastOrNext || disabled"
@@ -53,7 +53,7 @@
     </slot>
 
     <slot name="last" :on-click="onClickLast">
-      <UButton
+      <MeiButton
         v-if="lastButton && showLast"
         :size="size"
         :disabled="!canGoLastOrNext || disabled"
@@ -71,7 +71,7 @@
 import { computed, toRef, defineComponent } from 'vue'
 import type { PropType } from 'vue'
 import type { RouteLocationRaw } from '#vue-router'
-import UButton from '../elements/Button.vue'
+import MeiButton from '../elements/Button.vue'
 import { useMeiUI } from '../../composables/useMeiUI'
 import { mergeConfig } from '../../utils'
 import type { Button, ButtonSize, Strategy } from '../../types'
@@ -85,7 +85,7 @@ const buttonConfig = mergeConfig<typeof button>(appConfig.meiUI.strategy, appCon
 
 export default defineComponent({
   components: {
-    UButton
+    MeiButton
   },
   inheritAttrs: false,
   props: {

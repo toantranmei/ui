@@ -17,9 +17,9 @@
         @keydown.space="closeOthers(index, $event)"
       >
         <slot :item="item" :index="index" :open="open" :close="close">
-          <UButton v-bind="{ ...omit(ui.default, ['openIcon', 'closeIcon']), ...attrs, ...omit(item, ['slot', 'disabled', 'content', 'defaultOpen']) }">
+          <MeiButton v-bind="{ ...omit(ui.default, ['openIcon', 'closeIcon']), ...attrs, ...omit(item, ['slot', 'disabled', 'content', 'defaultOpen']) }">
             <template #trailing>
-              <UIcon
+              <MeiIcon
                 :name="!open ? openIcon : closeIcon ? closeIcon : openIcon"
                 :class="[
                   open && !closeIcon ? '-rotate-180' : '',
@@ -28,7 +28,7 @@
                 ]"
               />
             </template>
-          </UButton>
+          </MeiButton>
         </slot>
       </HDisclosureButton>
 
@@ -69,8 +69,8 @@
 import { ref, computed, toRef, defineComponent, watch } from 'vue'
 import type { PropType } from 'vue'
 import { Disclosure as HDisclosure, DisclosureButton as HDisclosureButton, DisclosurePanel as HDisclosurePanel, provideUseId } from '@headlessui/vue'
-import UIcon from '../elements/Icon.vue'
-import UButton from '../elements/Button.vue'
+import MeiIcon from '../elements/Icon.vue'
+import MeiButton from '../elements/Button.vue'
 import { useMeiUI } from '../../composables/useMeiUI'
 import { mergeConfig, omit } from '../../utils'
 import type { AccordionItem, Strategy } from '../../types'
@@ -88,8 +88,8 @@ export default defineComponent({
     HDisclosure,
     HDisclosureButton,
     HDisclosurePanel,
-    UIcon,
-    UButton
+    MeiIcon,
+    MeiButton
   },
   inheritAttrs: false,
   props: {

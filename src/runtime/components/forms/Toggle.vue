@@ -9,21 +9,21 @@
   >
     <span :class="containerClass">
       <span v-if="loading" :class="[ui.icon.active, ui.icon.base]" aria-hidden="true">
-        <UIcon :name="loadingIcon" :class="loadingIconClass" />
+        <MeiIcon :name="loadingIcon" :class="loadingIconClass" />
       </span>
       <span
         v-if="!loading && onIcon"
         :class="[active ? ui.icon.active : ui.icon.inactive, ui.icon.base]"
         aria-hidden="true"
       >
-        <UIcon :name="onIcon" :class="onIconClass" />
+        <MeiIcon :name="onIcon" :class="onIconClass" />
       </span>
       <span
         v-if="!loading && offIcon"
         :class="[active ? ui.icon.inactive : ui.icon.active, ui.icon.base]"
         aria-hidden="true"
       >
-        <UIcon :name="offIcon" :class="offIconClass" />
+        <MeiIcon :name="offIcon" :class="offIconClass" />
       </span>
     </span>
   </HSwitch>
@@ -34,7 +34,7 @@ import { computed, toRef, defineComponent } from 'vue'
 import type { PropType } from 'vue'
 import { Switch as HSwitch, provideUseId } from '@headlessui/vue'
 import { twMerge, twJoin } from 'tailwind-merge'
-import UIcon from '../elements/Icon.vue'
+import MeiIcon from '../elements/Icon.vue'
 import { useMeiUI } from '../../composables/useMeiUI'
 import { useFormGroup } from '../../composables/useFormGroup'
 import { mergeConfig } from '../../utils'
@@ -49,7 +49,7 @@ const config = mergeConfig<typeof toggle>(appConfig.meiUI.strategy, appConfig.me
 export default defineComponent({
   components: {
     HSwitch,
-    UIcon
+    MeiIcon
   },
   inheritAttrs: false,
   props: {

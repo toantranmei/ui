@@ -3,7 +3,7 @@
     <div :class="wrapperClass" role="region" v-bind="attrs">
       <div v-if="notifications.length" :class="ui.container">
         <div v-for="notification of notifications" :key="notification.id">
-          <UNotification
+          <MeiNotification
             v-bind="notification"
             :class="notification.click && 'cursor-pointer'"
             @click="notification.click && notification.click(notification)"
@@ -12,7 +12,7 @@
             <template v-for="(_, name) in $slots" #[name]="slotData">
               <slot :name="name" v-bind="slotData" />
             </template>
-          </UNotification>
+          </MeiNotification>
         </div>
       </div>
     </div>
@@ -23,7 +23,7 @@
 import { computed, toRef, defineComponent } from 'vue'
 import type { PropType } from 'vue'
 import { twMerge, twJoin } from 'tailwind-merge'
-import UNotification from './Notification.vue'
+import MeiNotification from './Notification.vue'
 import { useMeiUI } from '../../composables/useMeiUI'
 import { useToast } from '../../composables/useToast'
 import { mergeConfig } from '../../utils'
@@ -37,7 +37,7 @@ const config = mergeConfig<typeof notifications>(appConfig.meiUI.strategy, appCo
 
 export default defineComponent({
   components: {
-    UNotification
+    MeiNotification
   },
   inheritAttrs: false,
   props: {

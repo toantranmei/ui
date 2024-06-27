@@ -10,7 +10,7 @@
       @error="onError"
     />
     <span v-else-if="text" :class="ui.text">{{ text }}</span>
-    <UIcon v-else-if="icon" :name="icon" :class="iconClass" />
+    <MeiIcon v-else-if="icon" :name="icon" :class="iconClass" />
     <span v-else-if="placeholder" :class="ui.placeholder">{{ placeholder }}</span>
 
     <span v-if="chipColor" :class="chipClass">
@@ -24,7 +24,7 @@
 import { defineComponent, ref, computed, toRef, watch } from 'vue'
 import type { PropType } from 'vue'
 import { twMerge, twJoin } from 'tailwind-merge'
-import UIcon from '../elements/Icon.vue'
+import MeiIcon from '../elements/Icon.vue'
 import { useMeiUI } from '../../composables/useMeiUI'
 import { mergeConfig } from '../../utils'
 import type { AvatarSize, AvatarChipColor, AvatarChipPosition, Strategy } from '../../types'
@@ -36,7 +36,7 @@ const config = mergeConfig<typeof avatar>(appConfig.meiUI.strategy, appConfig.me
 
 export default defineComponent({
   components: {
-    UIcon
+    MeiIcon
   },
   inheritAttrs: false,
   props: {

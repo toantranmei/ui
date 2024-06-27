@@ -35,13 +35,13 @@
                     @click="onClick($event, item, { href, navigate, close, isExternal })"
                   >
                     <slot :name="item.slot || 'item'" :item="item">
-                      <UIcon v-if="item.icon" :name="item.icon" :class="twMerge(twJoin(ui.item.icon.base, active || isActive ? ui.item.icon.active : ui.item.icon.inactive), item.iconClass)" />
-                      <UAvatar v-else-if="item.avatar" v-bind="{ size: ui.item.avatar.size, ...item.avatar }" :class="ui.item.avatar.base" />
+                      <MeiIcon v-if="item.icon" :name="item.icon" :class="twMerge(twJoin(ui.item.icon.base, active || isActive ? ui.item.icon.active : ui.item.icon.inactive), item.iconClass)" />
+                      <MeiAvatar v-else-if="item.avatar" v-bind="{ size: ui.item.avatar.size, ...item.avatar }" :class="ui.item.avatar.base" />
 
                       <span :class="twMerge(ui.item.label, item.labelClass)">{{ item.label }}</span>
 
                       <span v-if="item.shortcuts?.length" :class="ui.item.shortcuts">
-                        <UKbd v-for="shortcut of item.shortcuts" :key="shortcut">{{ shortcut }}</UKbd>
+                        <MeiKbd v-for="shortcut of item.shortcuts" :key="shortcut">{{ shortcut }}</MeiKbd>
                       </span>
                     </slot>
                   </component>
@@ -61,9 +61,9 @@ import type { PropType } from 'vue'
 import { Menu as HMenu, MenuButton as HMenuButton, MenuItems as HMenuItems, MenuItem as HMenuItem, provideUseId } from '@headlessui/vue'
 import { defu } from 'defu'
 import { twMerge, twJoin } from 'tailwind-merge'
-import UIcon from '../elements/Icon.vue'
-import UAvatar from '../elements/Avatar.vue'
-import UKbd from '../elements/Kbd.vue'
+import MeiIcon from '../elements/Icon.vue'
+import MeiAvatar from '../elements/Avatar.vue'
+import MeiKbd from '../elements/Kbd.vue'
 import { useMeiUI } from '../../composables/useMeiUI'
 import { usePopper } from '../../composables/usePopper'
 import { mergeConfig, getNuxtLinkProps } from '../../utils'
@@ -81,9 +81,9 @@ export default defineComponent({
     HMenuButton,
     HMenuItems,
     HMenuItem,
-    UIcon,
-    UAvatar,
-    UKbd
+    MeiIcon,
+    MeiAvatar,
+    MeiKbd
   },
   inheritAttrs: false,
   props: {

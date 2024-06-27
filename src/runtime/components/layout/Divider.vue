@@ -8,8 +8,8 @@
           <span v-if="label" :class="ui.label">
             {{ label }}
           </span>
-          <UIcon v-else-if="icon" :name="icon" :class="ui.icon.base" />
-          <UAvatar v-else-if="avatar" v-bind="{ size: ui.avatar.size, ...avatar }" :class="ui.avatar.base" />
+          <MeiIcon v-else-if="icon" :name="icon" :class="ui.icon.base" />
+          <MeiAvatar v-else-if="avatar" v-bind="{ size: ui.avatar.size, ...avatar }" :class="ui.avatar.base" />
         </slot>
       </div>
 
@@ -22,8 +22,8 @@
 import { toRef, computed, defineComponent } from 'vue'
 import type { PropType } from 'vue'
 import { twMerge, twJoin } from 'tailwind-merge'
-import UIcon from '../elements/Icon.vue'
-import UAvatar from '../elements/Avatar.vue'
+import MeiIcon from '../elements/Icon.vue'
+import MeiAvatar from '../elements/Avatar.vue'
 import { useMeiUI } from '../../composables/useMeiUI'
 import { mergeConfig } from '../../utils'
 import type { Avatar, DividerSize, Strategy } from '../../types'
@@ -35,8 +35,8 @@ const config = mergeConfig<typeof divider>(appConfig.meiUI.strategy, appConfig.m
 
 export default defineComponent({
   components: {
-    UIcon,
-    UAvatar
+    MeiIcon,
+    MeiAvatar
   },
   inheritAttrs: false,
   props: {

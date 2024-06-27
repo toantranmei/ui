@@ -20,7 +20,7 @@
     <template v-if="label || $slots.label">
       <slot name="label" v-bind="{ percent, value }">
         <div :class="labelClass">
-          <UIcon v-if="icon" :name="icon" /> {{ label }}
+          <MeiIcon v-if="icon" :name="icon" /> {{ label }}
         </div>
       </slot>
     </template>
@@ -31,7 +31,7 @@
 import { computed, defineComponent, toRef } from 'vue'
 import type { SlotsType, PropType } from 'vue'
 import { twJoin } from 'tailwind-merge'
-import UIcon from './Icon.vue'
+import MeiIcon from './Icon.vue'
 import { useMeiUI } from '../../composables/useMeiUI'
 import { mergeConfig } from '../../utils'
 import type { Strategy, MeterColor, MeterSize } from '../../types'
@@ -43,7 +43,7 @@ const config = mergeConfig<typeof meter>(appConfig.meiUI.strategy, appConfig.mei
 
 export default defineComponent({
   components: {
-    UIcon
+    MeiIcon
   },
   inheritAttrs: false,
   slots: Object as SlotsType<{

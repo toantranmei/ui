@@ -13,7 +13,7 @@
 
     <div v-if="arrows" :class="ui.arrows.wrapper">
       <slot name="prev" :on-click="onClickPrev" :disabled="isFirst">
-        <UButton
+        <MeiButton
           v-if="prevButton"
           :disabled="isFirst"
           v-bind="{ ...ui.default.prevButton, ...prevButton }"
@@ -24,7 +24,7 @@
       </slot>
 
       <slot name="next" :on-click="onClickNext" :disabled="isLast">
-        <UButton
+        <MeiButton
           v-if="nextButton"
           :disabled="isLast"
           v-bind="{ ...ui.default.nextButton, ...nextButton }"
@@ -60,7 +60,7 @@ import { ref, toRef, computed, defineComponent } from 'vue'
 import type { PropType } from 'vue'
 import { twMerge } from 'tailwind-merge'
 import { mergeConfig } from '../../utils'
-import UButton from '../elements/Button.vue'
+import MeiButton from '../elements/Button.vue'
 import type { Strategy, Button } from '../../types'
 import { useMeiUI } from '../../composables/useMeiUI'
 import { useCarouselScroll } from '../../composables/useCarouselScroll'
@@ -73,7 +73,7 @@ const config = mergeConfig<typeof carousel>(appConfig.meiUI.strategy, appConfig.
 
 export default defineComponent({
   components: {
-    UButton
+    MeiButton
   },
   inheritAttrs: false,
   props: {
