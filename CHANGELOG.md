@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.0.7](https://github.com/toantranmei/ui/compare/v2.0.6...v2.0.7) (2024-06-27)
+
+
+### Bug Fixes
+
+* button icon props is not working with dynamic mode ([47dd9a9](https://github.com/toantranmei/ui/commit/47dd9a9dbf2398db8bffc988d352fc2bf3770713))
+* rename function to Mei prefix for link types ([75449ff](https://github.com/toantranmei/ui/commit/75449ff01d614dcc75ecb966e631b0f52e7946d6))
+
 ## [2.0.6](https://github.com/toantranmei/ui/compare/v2.0.5...v2.0.6) (2024-06-14)
 
 
