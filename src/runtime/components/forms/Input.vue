@@ -200,23 +200,23 @@ export default defineComponent({
 
     const onInput = (event: Event) => {
       if (!modelModifiers.value.lazy) {
-        updateInput((event.target as HTMLInputElement).value)
+        updateInput((event?.target as HTMLInputElement).value)
       }
     }
 
     const onChange = (event: Event) => {
       if (props.type === 'file') {
-        const value = (event.target as HTMLInputElement).files
+        const value = (event?.target as HTMLInputElement).files
         emit('change', value)
       } else {
-        const value = (event.target as HTMLInputElement).value
+        const value = (event?.target as HTMLInputElement).value
         emit('change', value)
         if (modelModifiers.value.lazy) {
           updateInput(value)
         }
         // Update trimmed input so that it has same behavior as native input https://github.com/vuejs/core/blob/5ea8a8a4fab4e19a71e123e4d27d051f5e927172/packages/runtime-dom/src/directives/vModel.ts#L63
         if (modelModifiers.value.trim) {
-          (event.target as HTMLInputElement).value = value.trim()
+          (event?.target as HTMLInputElement).value = value.trim()
         }
       }
     }

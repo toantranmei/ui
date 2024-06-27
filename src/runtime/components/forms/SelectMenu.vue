@@ -518,7 +518,7 @@ export default defineComponent({
     }
 
     function onQueryChange (event: any) {
-      query.value = event.target.value
+      query.value = event?.target.value
     }
 
     provideUseId(() => useId())

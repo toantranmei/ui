@@ -119,7 +119,7 @@ export default defineComponent({
     })
 
     function onChange (event: Event) {
-      emit('change', (event.target as HTMLInputElement).value)
+      emit('change', (event?.target as HTMLInputElement).value)
     }
 
     const inputClass = computed(() => {

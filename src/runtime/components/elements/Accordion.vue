@@ -153,7 +153,7 @@ export default defineComponent({
 
       buttonRefs.value.forEach((button) => {
         if (button.open) {
-          button.close(e.target as EventTarget)
+          button.close(e?.target as EventTarget)
         }
       })
     }

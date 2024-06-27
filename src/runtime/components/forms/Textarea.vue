@@ -186,12 +186,12 @@ export default defineComponent({
     const onInput = (event: Event) => {
       autoResize()
       if (!modelModifiers.value.lazy) {
-        updateInput((event.target as HTMLInputElement).value)
+        updateInput((event?.target as HTMLInputElement).value)
       }
     }
 
     const onChange = (event: Event) => {
-      const value = (event.target as HTMLInputElement).value
+      const value = (event?.target as HTMLInputElement).value
       emit('change', value)
 
       if (modelModifiers.value.lazy) {
@@ -200,7 +200,7 @@ export default defineComponent({
 
       // Update trimmed input so that it has same behavior as native input
       if (modelModifiers.value.trim) {
-        (event.target as HTMLInputElement).value = value.trim()
+        (event?.target as HTMLInputElement).value = value.trim()
       }
     }
 

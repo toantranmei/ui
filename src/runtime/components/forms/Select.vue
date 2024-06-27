@@ -190,11 +190,11 @@ export default defineComponent({
     const size = computed(() => sizeButtonGroup.value || sizeFormGroup.value)
 
     const onInput = (event: Event) => {
-      emit('update:modelValue', (event.target as HTMLInputElement).value)
+      emit('update:modelValue', (event?.target as HTMLInputElement).value)
     }
 
     const onChange = (event: Event) => {
-      emit('change', (event.target as HTMLInputElement).value)
+      emit('change', (event?.target as HTMLInputElement).value)
       emitFormChange()
     }
 
