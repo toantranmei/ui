@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.8](https://github.com/toantranmei/ui/compare/v2.0.7...v2.0.8) (2024-06-27)
+
+
+### Bug Fixes
+
+* add conditional undefined for event params ([02d5196](https://github.com/toantranmei/ui/commit/02d51963359416dd8bfc43e1a3327a60f25a4c92))
+
 ## [2.0.7](https://github.com/toantranmei/ui/compare/v2.0.6...v2.0.7) (2024-06-27)
 
 
