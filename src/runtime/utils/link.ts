@@ -126,7 +126,7 @@ export const getNuxtLinkProps = (props) => {
   }, {})
 }
 
-export const getULinkProps = (props) => {
+export const getMeiLinkProps = (props) => {
   const keys = [...Object.keys(nuxtLinkProps), ...Object.keys(uLinkProps)]
 
   return keys.reduce((acc, key) => {
