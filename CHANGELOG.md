@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.1.0](https://github.com/toantranmei/ui/compare/v2.0.8...v2.1.0) (2024-07-12)
+
+
+### Bug Fixes
+
+* remove un-used testing and typecheck ([4fbc48c](https://github.com/toantranmei/ui/commit/4fbc48c7d40bfed336b01cd39acbb4d736d4e1c3))
+* update ci.yml ([dc8126b](https://github.com/toantranmei/ui/commit/dc8126bbda23a7138484ace30b0483cd5cde247d))
+* upgrade version node for ci workflow ([09ba1a8](https://github.com/toantranmei/ui/commit/09ba1a89f5180e530a29dfdf02f234b7dcf924f2))
+* upgrade version node for ci workflow ([b30e5f2](https://github.com/toantranmei/ui/commit/b30e5f2b57580e4e0e453b1a703869fee044ea8e))
+
 ## [2.0.8](https://github.com/toantranmei/ui/compare/v2.0.7...v2.0.8) (2024-06-27)
 
 
