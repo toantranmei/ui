@@ -83,5 +83,6 @@ export default async function installTailwind (
       configTemplate.dst,
       join(nuxt.options.rootDir, 'tailwind.config')
     ]
+    // @ts-ignore
   }, nuxt.options.tailwindcss))
 }
